@@ -1,0 +1,17 @@
+ /* .container-flex{
+    display: flex;
+    border: 2px solid black;
+}
+.left-container{
+    display: flex;
+    justify-content: flex-start;
+    border: 2px solid black;
+    flex: 50%;
+}
+.right-container{
+    display: flex;
+    justify-content: flex-end;
+    border: 2px solid black;
+    flex: 50%;
+} */
+
