@@ -12,6 +12,8 @@
     "@testing-library/user-event": "^13.5.0",
     "apexcharts": "^3.35.0",
     "axios": "^1.6.8",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "framer-motion": "^11.0.14",
     "mongoose": "^8.2.3",
     "react": "^18.2.0",
@@ -46,5 +48,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }

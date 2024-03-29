@@ -10,13 +10,6 @@ export default function Login() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     const loggedIn = localStorage.getItem('loggedIn');
-    //     if (loggedIn === 'true') {
-    //         setLogin(true);
-    //     }
-    // }, []);
-
     const handleUsernameChange = (e) => {
         setEmail(e.target.value);
     };

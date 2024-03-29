@@ -15,7 +15,7 @@
   background-color: #fff; /* White container background */
   padding: 30px;
   border-radius: 5px;
-  width: 400px; /* Adjust width as needed */
+  width: 33%; /* Adjust width as needed */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
@@ -55,7 +55,10 @@
   cursor: pointer;
   border-radius: 4px;
   font-size: 16px;
-  width: 400px;        /* Set a specific width for the button */
+  width: 100%;        /* Set a specific width for the button */
+}
+.button:hover {
+  background-color: #08705b; /* Darker green on hover */
 }
 
 :root {
@@ -100,9 +103,6 @@
 
 
 /* Button Hover Effect */
-.button:hover {
-  background-color: #08705b; /* Darker green on hover */
-}
 .paragraph{
   text-align: center;
 }

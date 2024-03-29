@@ -14,12 +14,13 @@ import Product from './pages/Product.js';
 import Designation from './pages/Designation.js';
 import Test from './pages/Test.js';
 import ViewUser from './pages/ViewUser.js';
+import SideBar from './components/Sidebar.js';
 
 function App() {
   return (
     <Router>
-      <Navbar/>
-      <div>
+      <SideBar>
+      <div className='main-div'>
         <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="/login" element={<Login/>}/>
@@ -32,10 +33,11 @@ function App() {
         <Route path="/productcompany" element={<ProductCompany/>}/>
         <Route path="/addproduct" element={<Product/>}/>
         <Route path="/adddesignation" element={<Designation/>}/>
-        <Route path="/test" element={<Test/>}/>
+        {/* <Route path="/test" element={<Test/>}/> */}
         <Route path="/viewuser" element={<ViewUser/>}/>
         </Routes>
       </div>
+      </SideBar>
     </Router>
   );
 }
