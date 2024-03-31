@@ -15,10 +15,10 @@ function Test() {
                         imagePath={logo}
                     />
                 ))}
-                <TestComponent
+                {/* <TestComponent
                     name="John Doe"
                     imagePath={logo}
-                />
+                /> */}
             </div>
         </div>
     )

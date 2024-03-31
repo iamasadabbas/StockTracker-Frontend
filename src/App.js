@@ -15,6 +15,7 @@ import Designation from './pages/Designation.js';
 import Test from './pages/Test.js';
 import ViewUser from './pages/ViewUser.js';
 import SideBar from './components/Sidebar.js';
+import ViewRequest from './pages/Request.js';
 
 function App() {
   return (
@@ -33,8 +34,9 @@ function App() {
         <Route path="/productcompany" element={<ProductCompany/>}/>
         <Route path="/addproduct" element={<Product/>}/>
         <Route path="/adddesignation" element={<Designation/>}/>
-        {/* <Route path="/test" element={<Test/>}/> */}
+        <Route path="/test" element={<Test/>}/>
         <Route path="/viewuser" element={<ViewUser/>}/>
+        <Route path="/requests" element={<ViewRequest/>}/>
         </Routes>
       </div>
       </SideBar>
