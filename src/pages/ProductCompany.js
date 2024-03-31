@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../styles/AddRole.css'
 import axios from 'axios';
 
-const URL = process.env.BASE_URL || 'http://localhost:3000';
+const URL = process.env.BASE_URL;
 export default function ProductType() {
     const [productCompanyInput, setProductCompanyInput] = useState('');
     const [productCompanyDescriptionInput, setProductCompanyDescriptionInput] = useState('');

@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import axiosInstance from './axiosInstance';
 
-const URL = process.env.BASE_URL || 'http://localhost:3000';
+const URL = process.env.BASE_URL;
 
 export default function Product() {
   const [name, setName] = useState('');

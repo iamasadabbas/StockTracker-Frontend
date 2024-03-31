@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const URL = process.env.BASE_URL || 'http://localhost:3000';
+const URL = process.env.BASE_URL;
 
 export default function Signup() {
   // const [users, setUsers] = useState([]);

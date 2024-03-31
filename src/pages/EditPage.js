@@ -3,7 +3,7 @@ import axiosInstance from './axiosInstance';
 import '../styles/RoleTaskEdit.css';
 import { useLocation } from 'react-router-dom';
 
-const URL = process.env.BASE_URL || 'http://localhost:3000';
+const URL = process.env.BASE_URL;
 
 const EditPage = () => {
     const [allTaskId, setAllTaskId] = useState([]);
