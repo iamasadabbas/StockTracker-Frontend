@@ -3,7 +3,7 @@ import axiosInstance from "./axiosInstance";
 import '../styles/RoleTaskEdit.css'
 import { useNavigate } from 'react-router-dom'; 
 
-const URL = process.env.BASE_URL;
+const URL = process.env.BASE_URL || 'http://localhost:4000';
 
 export default function RoleTaskEdit() {
 

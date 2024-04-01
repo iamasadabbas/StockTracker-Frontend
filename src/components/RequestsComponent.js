@@ -1,17 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/Requests.css';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons'; // Import the close icon
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import axiosInstance from '../pages/axiosInstance';
+const URL=process.env.BASE_URL || 'http://localhost:4000'
+let config = {
+    headers: { 'Content-Type': 'application/json' },
+  }
 
 function RequestsComponent(props) {
-    const [currentViewId, setCurrentViewId] = useState('');
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
     const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
+    const [allRequest, setAllRequest] = useState([]);
+    const [assignInput,setAssignInput]=useState('');
+    const handleInputChange=(e)=>{
+        setAssignInput(e.target.value);
+    }
+    const handleAssignSubmit=async(_id,totalQuantity)=>{
+        const remainingQuantity=totalQuantity-assignInput;
+        const response=await axiosInstance.put(`${URL}/product//updateProductById/${_id}`,{quantity:remainingQuantity},config)
 
-    const handleView = () => {
-        console.log("View clicked for request ID:", props._id);
-        setCurrentViewId(props._id);
+            axiosInstance.put(`${URL}/request/updateRequestStatus/${_id}`,{status:'processing'},config).then((response) => {
+                if(response){
+                    console.log(response);
+                }
+             })
+            
+            
+            setIsAssignModalOpen(false)
+            alert('updated Successfully')
+
+        
+    }
+
+    const handleView = (_id) => {
+        axiosInstance.get(`${URL}/request/getProductRequestByRequestId/${_id}`,config).then((response) => {
+           const requests= response.data.request[0].request_id.product_id;
+           setAllRequest(requests)
+        })
         setIsViewModalOpen(true);
     };
     const handleAssign = () => {
@@ -28,8 +55,7 @@ function RequestsComponent(props) {
                 <td>{props.userName}</td>
                 <td>{props.dateTime}</td>
                 <td>{props.status}</td>
-                <td><button className='view-button' onClick={handleView}>View</button></td>
-
+                <td><button className='view-button' onClick={()=>{handleView(props._id)}}>View</button></td>
             </tr>
             <div>
                 <Modal className='View-modal'
@@ -51,19 +77,21 @@ function RequestsComponent(props) {
                     <ModalBody>
                         <table className='table'>
                             <thead>
-                                <th>Product-Name</th>
+                                <th>Product Name</th>
                                 <th>ProductCompany</th>
                                 <th>Requested-quantity</th>
                                 <th colSpan={2}>Action</th>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>pointer</td>
-                                    <td>dell</td>
-                                    <td>5</td>
-                                    <th><button className='button' onClick={handleReject}>Reject</button></th>
-                                    <th><button className='button' onClick={handleAssign}>Assign</button></th>
+                                {allRequest.map(request => (
+                                <tr key={request._id}>
+                                    <td>{request._id.name}</td>
+                                    <td>{request._id.product_code}</td>
+                                    <td>{request.requested_quantity}</td>
+                                    <td><button className='button' onClick={()=>{handleReject(request._id)}}>Reject</button></td>
+                                    <td><button className='button' onClick={()=>{handleAssign(request._id)}}>Assign</button></td>
                                 </tr>
+                                ))}
                             </tbody>
                         </table>
                     </ModalBody>
@@ -87,12 +115,14 @@ function RequestsComponent(props) {
                                 <th>Action</th>
                             </thead>
                             <tbody>
+                            {allRequest.map(request => (
                                 <tr>
-                                    <td>2</td>
-                                    <td>5</td>
-                                    <td><input type='number'></input></td>
-                                    <button className='button'>submit</button>
+                                    <td>{request.requested_quantity}</td>
+                                    <td>{request._id.quantity}</td>
+                                    <td><input type='number' onChange={handleInputChange}></input></td>
+                                    <button className='button' onClick={()=>{handleAssignSubmit(request._id._id,request._id.quantity)}}>submit</button>
                                 </tr>
+                            ))}
                             </tbody>
                         </table>
                     </ModalBody>

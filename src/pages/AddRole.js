@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/AddRole.css'
 import axios from 'axios';
+import axiosInstance from './axiosInstance';
+let config = {
+    headers: { 'Content-Type': 'application/json' },
+  }
 
-const URL = process.env.BASE_URL ;
+const URL = process.env.BASE_URL || 'http://localhost:4000' ;
 export default function Role() {
     const [roleInput, setRoleInput] = useState('');
     const [descriptionInput, setDesignationInput]=useState('');
@@ -17,8 +21,8 @@ export default function Role() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try{
-        const response = await axios.post(`${URL}/user/addRole`, { name: roleInput,description:descriptionInput });
-        // console.log(response);
+        const response = await axiosInstance.post(`${URL}/user/addRole`, { name: roleInput,description:descriptionInput },config);
+        console.log(response);
         if (response.status === 201) {
             alert('role added successfully')
             setRoleInput('')

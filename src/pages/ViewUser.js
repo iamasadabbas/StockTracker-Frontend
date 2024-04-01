@@ -6,7 +6,7 @@ import '../styles/ViewUser.css'
 let config = {
   headers: { 'Content-Type': 'application/json' },
 }
-const BASE_URL = process.env.BASE_URL;
+const BASE_URL = process.env.BASE_URL  || 'http://localhost:4000';
 
 
 

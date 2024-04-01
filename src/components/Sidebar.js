@@ -8,12 +8,18 @@ import { BsCartCheck } from "react-icons/bs";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import SidebarMenu from "./SidebarMenu.js";
+import { RiGitPullRequestFill } from "react-icons/ri";
 import '../styles/Sidebar.css'
 const routes = [
   {
     path: "/",
     name: "Home",
     icon: <FaHome />,
+  },
+  {
+    path: "/requests",
+    name: "Requests",
+    icon: <RiGitPullRequestFill  />,
   },
 
   {

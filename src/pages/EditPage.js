@@ -3,7 +3,7 @@ import axiosInstance from './axiosInstance';
 import '../styles/RoleTaskEdit.css';
 import { useLocation } from 'react-router-dom';
 
-const URL = process.env.BASE_URL;
+const URL = process.env.BASE_URL || 'http://localhost:4000';
 
 const EditPage = () => {
     const [allTaskId, setAllTaskId] = useState([]);
@@ -50,7 +50,7 @@ const EditPage = () => {
             })
             .catch((error) => {
                 console.error('Error fetching roles:', error);
-                alert('Error fetching roles. Please try again later.');
+                alert('Error fetching roles task. Please try again later.');
             });
     }
 

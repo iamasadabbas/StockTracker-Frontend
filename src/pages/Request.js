@@ -1,21 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import RequestsComponent from '../components/RequestsComponent';
 import '../styles/Requests.css';
+import axiosInstance from './axiosInstance';
+const URL=process.env.BASE_URL || 'http://localhost:4000'
+let config = {
+    headers: { 'Content-Type': 'application/json' },
+  }
 
 function ViewRequest() {
-    // You can add your request data here, for demonstration, I'm using hardcoded data
-    const requests = [
-        { reqId: "1", userName: "Asad", dateTime: '31/03', status: 'waiting', _id: '64ab394r' },
-        { reqId: "2", userName: "John", dateTime: '30/03', status: 'approved', _id: '64ab394s' },
-        { reqId: "2", userName: "John", dateTime: '30/03', status: 'approved', _id: '64ab394s' },
-        { reqId: "2", userName: "John", dateTime: '30/03', status: 'approved', _id: '64ab394s' },
-        { reqId: "2", userName: "John", dateTime: '30/03', status: 'approved', _id: '64ab394s' },
-        // Add more requests as needed
-    ];
+    const [allRequest,setAllRequest]=useState([]);
+    useEffect(() => {
+        axiosInstance.get(`${URL}/request/getAllProductRequest`,config).then((response) => {
+            const requests=response.data.request;
+            // console.log(requests);
+            setAllRequest(requests)
 
-    const handleView = (id) => {
-        // Implement view functionality here if needed in the parent component
-    };
+        }).catch((error) => {
+            console.error('Error fetching users:', error);
+          });
+    },[])
 
     return (
         <>
@@ -32,14 +35,15 @@ function ViewRequest() {
                     </tr>
                 </thead>
                 <tbody>
-                    {requests.map((request, index) => (
+                    {allRequest.map((request, index) => (
                         <RequestsComponent
                             key={index}
-                            reqId={request.reqId}
-                            userName={request.userName}
-                            dateTime={request.dateTime}
+                            reqId={request.request_number}
+                            userName={request.user_id.name}
+                            dateTime={request.createdAt}
                             status={request.status}
-                            _id={request._id}
+                            _id={request.request_id._id}
+                            requestId={request._id}
                         />
                     ))}
                 </tbody>
