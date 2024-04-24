@@ -12,9 +12,10 @@
     border-radius: 10px;
     justify-content: center;
     align-items: center;
-    width: 50%;
-    height: 50%;
+    width: 80%;
+    height: 80%;
     overflow: auto;
+    align-items: flex-start;
 
 }
 .view-button{
@@ -27,6 +28,8 @@
 }
 .table{
     table-layout: auto;
+    width: 100%;
+    /* height: 100%; */
 }
 .view-request-conatiner .table-head{
     background-color: brown;

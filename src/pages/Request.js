@@ -10,15 +10,21 @@ let config = {
 function ViewRequest() {
     const [allRequest,setAllRequest]=useState([]);
     useEffect(() => {
-        axiosInstance.get(`${URL}/request/getAllProductRequest`,config).then((response) => {
+        fetchData();
+    },[])
+
+    const fetchData = async() =>{
+        await axiosInstance.get(`${URL}/request/getAllProductRequest`,config).then((response) => {
             const requests=response.data.request;
-            // console.log(requests);
             setAllRequest(requests)
 
         }).catch((error) => {
             console.error('Error fetching users:', error);
           });
-    },[])
+    }
+    const handleRefreshFromModal=()=>{
+        fetchData();
+    }
 
     return (
         <>
@@ -36,14 +42,18 @@ function ViewRequest() {
                 </thead>
                 <tbody>
                     {allRequest.map((request, index) => (
+                        
                         <RequestsComponent
                             key={index}
+                            // {...console.log(request)}
                             reqId={request.request_number}
                             userName={request.user_id.name}
                             dateTime={request.createdAt}
                             status={request.status}
                             _id={request.request_id._id}
                             requestId={request._id}
+                            request={request}
+                            onModalComplete={handleRefreshFromModal}
                         />
                     ))}
                 </tbody>

@@ -1,0 +1,72 @@
+.body-template {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+.heading-template {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+    width: 100%
+}
+
+.date-template {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-items: end;
+    padding-right: 75px;
+    width: 100%
+}
+
+.subject-template {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-items: start;
+    padding-left: 75px;
+    width: 100%
+}
+
+.paragraph-template {
+    font-size: large;
+}
+
+.table-template {
+    padding-top: 20px;
+    width: 90%;
+    align-self: center;
+}
+
+.assistantDirector-signature {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-items: end;
+    width: 100%;
+    padding-right: 75px;
+    padding-top: 30px;
+}
+
+.director-signature {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+    margin-top: 70px;
+    padding-left: 75px;
+    padding-top: 30px;
+}
+
+.duptyRegistrar-signature {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+    padding-left: 75px;
+    margin-top: 70px;
+    padding-top: 30px;
+}

@@ -16,6 +16,9 @@ import Test from './pages/Test.js';
 import ViewUser from './pages/ViewUser.js';
 import SideBar from './components/Sidebar.js';
 import ViewRequest from './pages/Request.js';
+import Demand from './pages/demand.js';
+import AddDemandProduct from './pages/AddDemandProduct.js';
+import TemplatePrintPage from './pages/TemplatePrintPage.js';
 
 function App() {
   return (
@@ -37,6 +40,9 @@ function App() {
         <Route path="/test" element={<Test/>}/>
         <Route path="/viewuser" element={<ViewUser/>}/>
         <Route path="/requests" element={<ViewRequest/>}/>
+        <Route path="/demand" element={<Demand/>}/>
+        <Route path="/demandproduct" element={<AddDemandProduct/>}/>
+        <Route path="/templatePrint" element={<TemplatePrintPage/>}/>
         </Routes>
       </div>
       </SideBar>

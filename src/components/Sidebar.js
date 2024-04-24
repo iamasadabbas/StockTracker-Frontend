@@ -7,8 +7,9 @@ import { AiFillHeart, AiTwotoneFileExclamation } from "react-icons/ai";
 import { BsCartCheck } from "react-icons/bs";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import SidebarMenu from "./SidebarMenu.js";
+import { BiPurchaseTag } from "react-icons/bi";
 import { RiGitPullRequestFill } from "react-icons/ri";
+import SidebarMenu from "./SidebarMenu.js";
 import '../styles/Sidebar.css'
 const routes = [
   {
@@ -20,6 +21,11 @@ const routes = [
     path: "/requests",
     name: "Requests",
     icon: <RiGitPullRequestFill  />,
+  },
+  {
+    path: "/demand",
+    name: "Demand",
+    icon: <BiPurchaseTag />,
   },
 
   {

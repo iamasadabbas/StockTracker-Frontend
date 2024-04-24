@@ -25,9 +25,9 @@ export default function Product() {
   const handleNameChange = (e) => {
     setName(e.target.value);
   };
-  const handleProduct_codeChange = (e) => {
-    setProduct_code(e.target.value);
-  };
+  // const handleProduct_codeChange = (e) => {
+  //   setProduct_code(e.target.value);
+  // };
 
   const handleSpecificationsChange = (e) => {
     setSpecifications(e.target.value);
@@ -36,15 +36,15 @@ export default function Product() {
     setSelectedTypeValue(e.target.value);
   };
 
-  const handleCompanyDropdownChange = (e) => {
-    setSelectedCompanyValue(e.target.value);
-  };
+  // const handleCompanyDropdownChange = (e) => {
+  //   setSelectedCompanyValue(e.target.value);
+  // };
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
   };
-  const handleQuantityChange = (e) => {
-    setQuantity(e.target.value);
-  };
+  // const handleQuantityChange = (e) => {
+  //   setQuantity(e.target.value);
+  // };
 
   const getIds = async () => {
     allProductType.forEach(element => {
@@ -55,19 +55,19 @@ export default function Product() {
       }
     });
 
-    allProductCompany.forEach(element => {
-      //    console.log(element._id); 
-      if (element.name === selectedCompanyValue) {
-        // console.log(element._id);
-        setSelectedCompanyId(element._id)
-      }
-    });
+    // allProductCompany.forEach(element => {
+    //   //    console.log(element._id); 
+    //   if (element.name === selectedCompanyValue) {
+    //     // console.log(element._id);
+    //     setSelectedCompanyId(element._id)
+    //   }
+    // });
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!name || !product_code || !specifications || !description || !quantity) {
+    if (!name || !specifications || !description ) {
       setError('Please enter all fields');
       return;
     }
@@ -75,24 +75,24 @@ export default function Product() {
     try {
       const response = await axios.post(`${URL}/product/addProduct`, {
         name: name,
-        product_code: product_code,
         specifications: specifications,
         type_id: selectedTypeId,
-        company_id: selectedCompanyId,
         description: description,
-        quantity: quantity,
+        // company_id: selectedCompanyId,
+        // product_code: product_code,
+        // quantity: quantity,
       });
 
-      // console.log(response);
+      console.log(response);
 
       if (response.status === 200) {
         alert('Registration successful');
         setName('');
-        setProduct_code('');
+        // setProduct_code('');
         setSpecifications('');
         setDescription('');
-        setDescription('');
-        setQuantity('');
+        setSelectedTypeValue('')
+        // setQuantity('');
       } else if (response.status === 409) {
         alert('Email already exists');
       } else if (response.status === 400) {
@@ -125,24 +125,24 @@ export default function Product() {
         console.error('Error fetching roles:', error);
         alert('Error fetching roles. Please try again later.');
       });
-    axiosInstance.get(`${URL}/product/getProductCompany`, config)
-      .then((response) => {
-        // console.log(response);
-        if (response.status === 200) {
-          setAllProductCompany(response.data.product);
-          // console.log(response.data.result);
-        } else {
-          alert('error');
-        }
-      })
-      .catch((error) => {
-        console.error('Error fetching roles:', error);
-        alert('Error fetching roles. Please try again later.');
-      });
+    // axiosInstance.get(`${URL}/product/getProductCompany`, config)
+    //   .then((response) => {
+    //     // console.log(response);
+    //     if (response.status === 200) {
+    //       setAllProductCompany(response.data.product);
+    //       // console.log(response.data.result);
+    //     } else {
+    //       alert('error');
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error fetching roles:', error);
+    //     alert('Error fetching roles. Please try again later.');
+    //   });
   }, []);
   useEffect(() => {
     getIds()
-  }, [selectedCompanyValue, selectedTypeValue])
+  }, [ selectedTypeValue])
 
   return (
     <div className='body'>
@@ -151,7 +151,7 @@ export default function Product() {
         <form onSubmit={handleSubmit}>
 
           <input className='input' required value={name} onChange={handleNameChange} placeholder='Enter Your Name' />
-          <input className='input' required value={product_code} type='text' onChange={handleProduct_codeChange} placeholder='Enter product_code' />
+          {/* <input className='input' required value={product_code} type='text' onChange={handleProduct_codeChange} placeholder='Enter product_code' /> */}
           <input className='input' required value={specifications} type='text' onChange={handleSpecificationsChange} placeholder='Enter specifications' />
           <select className='input' value={selectedTypeValue} onChange={handleTypeDropdownChange}>
             <option value="">Select Type</option>
@@ -162,20 +162,20 @@ export default function Product() {
             ))}
           </select>
           <br />
-          <select className='input' value={selectedCompanyValue} onChange={handleCompanyDropdownChange}>
+          {/* <select className='input' value={selectedCompanyValue} onChange={handleCompanyDropdownChange}>
             <option value="">Select Company</option>
             {allProductCompany.map((element) => (
               <option key={element._id} value={element.name}>
                 {element.name}
               </option>
             ))}
-          </select>
+          </select> */}
 
 
           {/* <input className='input' required value={type_id} type='text'  onChange={handleType_idChange} placeholder='Enter type_id' /> */}
           {/* <input className='input' required value={company_id} type='text' onChange={handleCompany_idChange} placeholder='Enter company_id' /> */}
           <input className='input' required value={description} type='text' onChange={handleDescriptionChange} placeholder='Enter description' />
-          <input className='input' required value={quantity} type='number' onChange={handleQuantityChange} placeholder='Enter quantity' />
+          {/* <input className='input' required value={quantity} type='number' onChange={handleQuantityChange} placeholder='Enter quantity' /> */}
           <button className='button' type='submit'>Add Product</button>
         </form>
         {error && <div className="error-message">{typeof error === 'object' ? JSON.stringify(error) : error}</div>}
