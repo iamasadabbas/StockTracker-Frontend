@@ -1,0 +1,17 @@
+.button-genrateInvoice{
+    background-color: #009578;
+  color: white;
+  padding: 10px 25px;
+  margin: auto;
+  margin-top: 20px;
+  border: none;
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  /* align-items: center;
+    justify-content: center; */
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 16px;
+  width: 200px;
+}

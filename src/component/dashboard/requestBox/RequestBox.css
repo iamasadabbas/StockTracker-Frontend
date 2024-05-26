@@ -1,0 +1,44 @@
+.request-table-container {
+    width: calc(100% - 0px); /* Subtracting 40px for margin */
+    max-width: 100%;
+    overflow: auto;
+}
+
+.request-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+}
+
+.request-table-head {
+    background-color: #f4f4f4;
+    color: #c98787;
+}
+
+.request-table-header {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    background-color: #f8f8f8;
+    font-weight: bold;
+}
+
+.request-table-body {
+    max-height: 400px; /* Set maximum height */
+    overflow-y: auto; /* Add vertical scrollbar when content exceeds maximum height */
+}
+
+.request-table-row:nth-child(even) {
+    background-color: #d6baba;
+}
+
+.request-table-row:hover {
+    background-color: #d7e3d3;
+}
+
+.request-table-cell {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap;
+}

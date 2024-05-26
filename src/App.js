@@ -1,50 +1,48 @@
-import { Route, BrowserRouter as Router,Routes } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css'
-import Login from './pages/Login.js';
-import AddUser from './pages/AddUser.js';
-import Home from './pages/Home.js';
-import AddRole from './pages/AddRole.js';
-import RoleTaskEdit from './pages/RoleTaskEdit.js';
-import Task from './pages/Task.js';
-import EditPage from './pages/EditPage.js';
-import Navbar from './components/Navbar.js';
-import ProductType from './pages/ProductType.js';
-import ProductCompany from './pages/ProductCompany.js';
-import Product from './pages/Product.js';
-import Designation from './pages/Designation.js';
-import Test from './pages/Test.js';
-import ViewUser from './pages/ViewUser.js';
-import SideBar from './components/Sidebar.js';
-import ViewRequest from './pages/Request.js';
-import Demand from './pages/demand.js';
-import AddDemandProduct from './pages/AddDemandProduct.js';
-import TemplatePrintPage from './pages/TemplatePrintPage.js';
+import SideBar from './component/Layout/Siderbar/Sidebar.js'
+import Request from './component/Request/Request.js';
+import AddDemandProduct from './component/demand/addProductToDemand/AddDemandProduct.js'
+import Demand from './component/demand/demandPage/demand.js'
+import ViewDemandPage from './component/demand/viewDemand/ViewDemandPage.js';
+import TemplatePrint from './component/demand/printTemplate/TemplatePrint.js';
+import AddRole from './component/role/AddRole/AddRole.js'
+import RoleTaskEdit from './component/role/EditRoleTask/RoleTaskEdit.js';
+import EditTask from './component/role/EditRoleTask/EditTask.js'
+import AddTask from './component/addTask/AddTask.js'
+import AddProduct from './component/product/AddProduct/AddProduct.js'
+import ProductType from './component/product/AddProductType/ProductType.js';
+import AddUser from './component/user/AddUser/AddUser.js'
+import ViewUser from './component/user/ViewUser/ViewUser.js';
+import  AddDesignation  from './component/addDesignation/AddDesignation.js';
+import AddSignatureRecord from './component/signatureRecord/AddSignatureRecord/AddSignatureRecord.js';
+import { ViewSignatureRecord } from './component/signatureRecord/ViewSignatureRecord/ViewSignatureRecord.js';
+import MainDashboard from './component/dashboard/mainDashboard/mainDashboard.js';
 
 function App() {
   return (
     <Router>
       <SideBar>
-      <div className='main-div'>
         <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/login" element={<Login/>}/>
-        <Route path="/adduser" element={<AddUser/>}/>
-        <Route path="/addrole" element={<AddRole/>}/>
-        <Route path="/roletaskedit" element={<RoleTaskEdit/>}/>
-        <Route path="/addtask" element={<Task/>}/>
-        <Route path="/editpage" element={<EditPage/>}/>
-        <Route path="/producttype" element={<ProductType/>}/>
-        <Route path="/productcompany" element={<ProductCompany/>}/>
-        <Route path="/addproduct" element={<Product/>}/>
-        <Route path="/adddesignation" element={<Designation/>}/>
-        <Route path="/test" element={<Test/>}/>
-        <Route path="/viewuser" element={<ViewUser/>}/>
-        <Route path="/requests" element={<ViewRequest/>}/>
-        <Route path="/demand" element={<Demand/>}/>
-        <Route path="/demandproduct" element={<AddDemandProduct/>}/>
-        <Route path="/templatePrint" element={<TemplatePrintPage/>}/>
+          <Route path="/" element={<MainDashboard/>}/>
+          <Route path="/requests" element={<Request />} />
+          <Route path="/demandproduct" element={<AddDemandProduct/>}/>
+          <Route path="/demand" element={<Demand/>}/>
+          <Route path="/viewDemand" element={<ViewDemandPage/>}/>
+          <Route path="/templatePrint" element={<TemplatePrint/>}/>
+          <Route path="/addrole" element={<AddRole/>}/>
+          <Route path="/roletaskedit" element={<RoleTaskEdit/>}/>
+          <Route path="/editTask" element={<EditTask/>}/>
+          <Route path="/addTask" element={<AddTask/>}/>
+          <Route path="/addproduct" element={<AddProduct/>}/>
+          <Route path="/producttype" element={<ProductType/>}/>
+          <Route path="/adduser" element={<AddUser/>}/>
+          <Route path="/viewuser" element={<ViewUser/>}/>
+          <Route path="/adddesignation" element={<AddDesignation/>}/>
+          <Route path="/addSignatureRecord" element={<AddSignatureRecord/>}/>
+          <Route path="/viewSignatureRecord" element={<ViewSignatureRecord/>}/>
+
         </Routes>
-      </div>
       </SideBar>
     </Router>
   );

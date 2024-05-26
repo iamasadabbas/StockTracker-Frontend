@@ -1,0 +1,42 @@
+/* ViewSignatureRecord.css */
+
+.vsr-table-container {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .vsr-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+  }
+  
+  .vsr-th, .vsr-td {
+    padding: 16px 20px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .vsr-th {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .vsr-tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .vsr-error-message {
+    color: red;
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .vsr-status-toggle {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+  }
+  

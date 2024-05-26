@@ -1,0 +1,14 @@
+.cardView{
+    /* margin-top: 50px; */
+    width: 100%;
+    margin: 1.5%;
+    display: flex;
+    direction: row;
+    gap: 50px;
+}
+
+.cardView-container{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+}

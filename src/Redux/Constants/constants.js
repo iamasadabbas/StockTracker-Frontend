@@ -1,3 +1,0 @@
-export const ADD_DEMAND_DATA = "ADD_DEMAND_DATA";
-export const DEMAND_DETAIL= "DEMAND_DETAIL";
-export const CLEAR_DEMAND_DATA = "CLEAR_DEMAND_DATA";

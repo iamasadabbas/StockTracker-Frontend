@@ -1,0 +1,48 @@
+.container-ViewDemand {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+}
+.table-ViewDemand {
+    width: 90%;
+    border-collapse: collapse;
+}
+
+.table-ViewDemand th,
+.table-ViewDemand td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.table-ViewDemand th {
+    background-color: #f2f2f2;
+}
+
+.table-ViewDemand tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table-ViewDemand tbody tr:hover {
+    background-color: #ddd;
+}
+
+.button-ViewDemand {
+    background-color: #009578; /* Green background color */
+    color: white;
+    padding: 15px 25px;
+    margin-right: auto;
+    border: none;
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+    text-align: center; /* Center text within flex container */
+    width: 30%;
+    box-sizing: border-box; /* Include padding in width calculation */
+}
