@@ -33,7 +33,7 @@ export const addProduct = (name, specifications, selectedTypeId, description) =>
             type_id: selectedTypeId,
             description: description,
         })
-        console.log(result.data.message);
+        // console.log(result.data.message);
           dispatch({ type: ADD_PRODUCT_SUCCESS, payload: result.data.message })
     } catch (error) {
         dispatch({ type: ADD_PRODUCT_FAIL, payload: error.message })
@@ -49,7 +49,7 @@ export const addProductType = (productTypeInput) => async (dispatch) => {
         const result = await axiosInstance.post(`/product/addProductType`, {
             name: productTypeInput
         })
-        console.log(result.data.message);
+        // console.log(result.data.message);
           dispatch({ type: ADD_PRODUCT_TYPE_SUCCESS, payload: result.data.message })
     } catch (error) {
         dispatch({ type: ADD_PRODUCT_TYPE_FAIL, payload: error.message })

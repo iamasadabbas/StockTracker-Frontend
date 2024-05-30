@@ -1,3 +1,4 @@
+import { act } from "react";
 import { 
   ADD_DEMAND_DATA,
   UPDATE_DATA, 
@@ -57,12 +58,31 @@ export const demandReducer = (state = initialState, action) => {
         loading: false,
         error: action.payload
       };
-    case ADD_DEMAND_DATA:
-      // console.log("Adding demand data:", action.payload);
-      return {
-        ...state,
-        data: [...state.data, action.payload] // Concatenating the new data with the existing data array
-      };
+      case ADD_DEMAND_DATA:
+  // console.log(action.payload);
+  const existingProductIndex = state.data.findIndex(product => product._id === action.payload._id);
+
+  if (existingProductIndex !== -1) {
+    // If the product already exists, update its quantity
+    const updatedData = [...state.data];
+    updatedData[existingProductIndex] = {
+      ...updatedData[existingProductIndex],
+      quantity: parseInt(updatedData[existingProductIndex].quantity) + parseInt(action.payload.quantity)
+    };
+
+    return {
+      ...state,
+      data: updatedData
+    };
+  } else {
+    // If the product doesn't exist, add it to the data array
+    return {
+      ...state,
+      data: [...state.data, action.payload]
+    };
+  }
+
+      
     case DEMAND_DETAIL:
       return { 
         ...state, 
@@ -111,6 +131,7 @@ export const allProductReducer = (state = {allProduct: []}, action) => {
         loading: true,
       };
     case GET_ALL_PRODUCT_FROM_LOCATION_SUCCESS:
+      console.log(action.payload);
       return {
         loading: false,
         allProduct: action.payload,

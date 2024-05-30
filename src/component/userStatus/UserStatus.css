@@ -1,0 +1,42 @@
+/* ViewSignatureRecord.css */
+
+.userStatus-table-container {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .userStatus-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+  }
+  
+  .userStatus-th, .userStatus-td {
+    padding: 16px 20px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .userStatus-th {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .userStatus-tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .userStatus-error-message {
+    color: red;
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .userStatus-status-toggle {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+  }
+  

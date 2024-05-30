@@ -54,6 +54,7 @@ const EditTask = () => {
                         <table className='table'>
                             <thead>
                                 <tr>
+                                    <th>S:No</th>
                                     <th>Task</th>
                                     <th>Operation</th>
                                 </tr>
@@ -62,6 +63,7 @@ const EditTask = () => {
                                 {roleTasks && roleTasks.map((task, index) => (
 
                                     <tr key={task.task_id._id}>
+                                        <td>{index+1}</td>
                                         <td>{task.task_id.name}</td>
                                         <td>
                                             <input

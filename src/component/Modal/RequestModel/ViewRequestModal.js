@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateRequestStatus } from '../../actions/requestAction';
+import { clearError, updateRequestStatus } from '../../actions/requestAction';
 import AssignModal from './AssignModal';
 import Loader from '../../Loader/Loader';
 import { useAlert } from 'react-alert';
 import './ViewRequestModal.css'
 import '../Modal.css'
+import { getAllRequest } from '../../actions/requestAction';
+import { updateRequestedProductStatus } from '../../actions/requestAction';
 
-const ViewRequestModal = ({ request, isModalOpen, setIsModalOpen, currentRequestId }) => {
-    const { loading, requestedProduct,requestStatus, error } = useSelector((state) => state.requestedProduct)
-    // console.log(requestedProduct);
+const ViewRequestModal = ({ isModalOpen, setIsModalOpen,currentRequestId }) => {
+    const { loading, requestData, error } = useSelector((state) => state.currentRequest)
+    // console.log(requestData);
     const alert =useAlert()
     const dispatch=useDispatch();
     const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
@@ -21,6 +23,8 @@ const ViewRequestModal = ({ request, isModalOpen, setIsModalOpen, currentRequest
     // Toggle modal function
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen)
+        dispatch(getAllRequest())
+
     };
     const handleAssign = (requestedItem) => {
         // console.log(requestedItem);
@@ -28,8 +32,12 @@ const ViewRequestModal = ({ request, isModalOpen, setIsModalOpen, currentRequest
         setIsAssignModalOpen(true)
 
     }
-    const handleReject = () => {
 
+    const handleReject = (product_id) => {
+        // console.log(product_id);
+        const status='rejected'
+        const received_quantity=0
+            dispatch(updateRequestedProductStatus(currentRequestId, product_id, received_quantity,status))
     }
     
     const checkStatus=()=>{
@@ -57,68 +65,69 @@ const ViewRequestModal = ({ request, isModalOpen, setIsModalOpen, currentRequest
 
         if(error){
             alert.error(error)
+            dispatch(clearError())
         }
         // checkStatus()
     },[error])
 
     return (
-        <>
-            {loading ? (
-                <Loader />
-
-            ) : (
-                <Modal className='Modal' size='lg' isOpen={isModalOpen} toggle={toggleModal}>
-                
-                    <ModalHeader toggle={toggleModal}>
-                        <FontAwesomeIcon className='svg-icon' icon={faTimes} style={{ float: 'right', cursor: 'pointer', }} onClick={toggleModal} />
-                        <table className='View_Modal_Table'>
-                            <thead>
-                                <tr>
-                                    <th>{request.request_number}</th>
-                                    <th>{request.user_id.name}</th>
-                                    <th>{request.status}</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </ModalHeader>
-                    <ModalBody>
-                        <table className='View_Modal_Table'>
-                            <thead>
-                                <tr>
-                                    <th>Product Name</th>
-                                    <th>Requested Quantity</th>
-                                    <th>Status</th>
-                                    {request.status !== "completed" && request.status !== "rejected" ? <th colSpan={2}>Action</th> : null}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {requestedProduct?.map(requestedItem => (
-                                    <tr key={requestedItem._id}>
-                                        <td>{requestedItem._id.name}</td>
-                                        <td>{requestedItem.requested_quantity}</td>
-                                        <td>{requestedItem.status}</td>
-                                        {requestedItem.status === "waiting" && (
-                                            <>
-                                                <td><button className='button' onClick={() => { handleReject(requestedItem._id) }}>Reject</button></td>
-                                                <td><button className='button' onClick={() => { handleAssign(requestedItem) }}>Assign</button></td>
-                                            </>
-                                        )}
+        <Fragment>
+            <Modal className='Modal' size='lg' isOpen={isModalOpen} toggle={toggleModal}>
+                {loading ? (
+                    // <div className="fullscreen-loader">
+                        <Loader />
+                    // </div>
+                ) : (
+                    <>
+                        <ModalHeader toggle={toggleModal}>
+                            <FontAwesomeIcon className='svg-icon' icon={faTimes} style={{ float: 'right', cursor: 'pointer' }} onClick={toggleModal} />
+                            <table className='View_Modal_Table'>
+                                <thead>
+                                    <tr>
+                                        <th>{requestData?.request_number}</th>
+                                        <th>{requestData?.user_id?.name}</th>
+                                        <th>{requestData?.status}</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </ModalBody>
-                </Modal>
-
-            )}
+                                </thead>
+                            </table>
+                        </ModalHeader>
+                        <ModalBody>
+                            <table className='View_Modal_Table'>
+                                <thead>
+                                    <tr>
+                                        <th>Product Name</th>
+                                        <th>Requested Quantity</th>
+                                        <th>Status</th>
+                                        {/* {request.status !== "completed" && request.status !== "rejected" ? <th colSpan={2}>Action</th> : null} */}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {requestData?.request_id?.product_id?.map(requestedItem => (
+                                        <tr key={requestedItem._id}>
+                                            <td>{requestedItem._id.name}</td>
+                                            <td>{requestedItem.requested_quantity}</td>
+                                            <td>{requestedItem.status}</td>
+                                            {requestedItem.status === "waiting" && (
+                                                <>
+                                                    <td><button className='button' onClick={() => { handleReject(requestedItem._id._id) }}>Reject</button></td>
+                                                    <td><button className='button' onClick={() => { handleAssign(requestedItem) }}>Assign</button></td>
+                                                </>
+                                            )}
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </ModalBody>
+                    </>
+                )}
+            </Modal>
             {isAssignModalOpen && <AssignModal
                 isAssignModalOpen={isAssignModalOpen}
                 setIsAssignModalOpen={setIsAssignModalOpen}
                 requestItems={requestItems}
                 currentRequestId={currentRequestId}
-                requestedProduct={requestedProduct}
             />}
-        </>
+        </Fragment>
     );
 
 }

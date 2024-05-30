@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { addProduct, clearError, getAllProductType } from '../../actions/productAction'
+import { addProduct, clearError, clearMessage, getAllProductType } from '../../actions/productAction'
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../../Loader/Loader';
 import './AddProduct.css'
@@ -51,9 +51,10 @@ export default function Product() {
     useEffect(() => {
         if(message){
          alert.success(message);
+         dispatch(clearMessage())
          }else if(error){
              alert.error(error); 
-             dispatch(clearError())
+           return ()=>  dispatch(clearError())
          }
     }, [error,message]);
     useEffect(() => {
@@ -73,13 +74,13 @@ export default function Product() {
             {
                 loading ? (
                     <Loader />
-                ) : (
+                ) : ( error ? (null):(
                     <div className='body'>
                         <div className="container">
                             <h1 className='heading'>Add Product</h1>
                             <form onSubmit={handleSubmit}>
 
-                                <input className='input' required value={name} onChange={handleNameChange} placeholder='Enter Your Name' />
+                                <input className='input' required value={name} onChange={handleNameChange} placeholder='Enter product name' />
                                 <input className='input' required value={specifications} type='text' onChange={handleSpecificationsChange} placeholder='Enter specifications' />
                                 <select className='input' value={selectedTypeValue} onChange={handleTypeDropdownChange}>
                                     <option value="">Select Type</option>
@@ -96,6 +97,7 @@ export default function Product() {
                             {error && <div className="error-message">{typeof error === 'object' ? JSON.stringify(error) : error}</div>}
                         </div>
                     </div>
+                )
                 )
             }
         </Fragment>

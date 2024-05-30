@@ -12,15 +12,16 @@ const ApproveModal = ({ isApproveModalOpen, setIsApproveModalOpen, request_id })
     const [isReceiveModalOpen, setIsReceiveModalOpen] = useState(false);
     const [product, setProduct] = useState([]);
     const {loading,error,currentDemand}=useSelector((state)=>state.allDemand)
+    // console.log(currentDemand);
     const isAllProductReceived = currentDemand?.products?.every(product => product.received_quantity !== null);
-    console.log(currentDemand.products);
+    // console.log(currentDemand.locationId);
 
     const handleReject = (id) => {
         console.log(id);
     };
 
     const handleReceive = (product) => {
-        console.log('entered');
+        // console.log('entered');
         setProduct(product);
         setIsReceiveModalOpen(!isReceiveModalOpen);
     };
@@ -89,6 +90,7 @@ const ApproveModal = ({ isApproveModalOpen, setIsApproveModalOpen, request_id })
                     setIsApproveModalOpen={setIsApproveModalOpen}
                     product={product}
                     request_id={request_id}
+                    locationId={currentDemand.locationId}
                 />}
             </div>
         </div>

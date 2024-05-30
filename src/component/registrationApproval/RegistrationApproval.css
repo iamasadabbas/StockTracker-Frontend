@@ -1,0 +1,65 @@
+.registration-approval {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.loading, .error {
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+}
+
+.registration-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.registration-table th, .registration-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.registration-table th {
+    background-color: #f4f4f4;
+    color: #333;
+    font-weight: bold;
+}
+
+.registration-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.registration-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.registration-table td {
+    color: #555;
+}
+
+.registration-table select {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.registration-table button {
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.registration-table button:hover {
+    background-color: #45a049;
+}
+.heading-NoRequest {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Ensures the div takes up the full height of the viewport */
+}

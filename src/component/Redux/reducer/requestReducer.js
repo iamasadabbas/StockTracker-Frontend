@@ -17,6 +17,9 @@ import {
     REQUESTED_PRODUCT_REQUEST,
     REQUESTED_PRODUCT_SUCCESS,
     REQUESTED_PRODUCT_FAIL,
+    GET_REQUEST_BY_ID_REQUEST,
+    GET_REQUEST_BY_ID_SUCCESS,
+    GET_REQUEST_BY_ID_FAIL,
     CLEAR_ERROR
 
 } from "../constants/requestConstant";
@@ -27,28 +30,31 @@ export const requestReducer = (state = { requests: [] }, action) => {
         case GET_ALL_REQUEST_REQUEST:
 
             return {
+                ...state,
                 loading: true,
             }
-            case UPDATE_REQUEST_STATUS_SUCCESS:
-            case GET_ALL_REQUEST_SUCCESS:
-                // console.log(action.payload);
-                return {
-                    loading: false,
-                    requests: action.payload
-                }
+        case UPDATE_REQUEST_STATUS_SUCCESS:
+        case GET_ALL_REQUEST_SUCCESS:
+            // console.log(action.payload);
+            return {
+                ...state,
+                loading: false,
+                requests: action.payload
+            }
         case UPDATE_REQUEST_STATUS_FAIL:
         case GET_ALL_REQUEST_FAIL:
 
             return {
+                ...state,
                 loading: false,
                 error: action.payload,
                 requests: null,
 
             }
-            case CLEAR_ERROR:
-            return{
+        case CLEAR_ERROR:
+            return {
                 ...state,
-                error:null
+                error: null
             }
         default:
             return { ...state }
@@ -82,15 +88,15 @@ export const productQuantityReducer = (state = { quantity: 0 }, action) => {
                 loading: false,
                 error: action.payload,
             }
-            case CLEAR_ERROR:
-            return{
+        case CLEAR_ERROR:
+            return {
                 ...state,
-                error:null
+                error: null
             }
-            case CLEAR_ERROR:
-            return{
+        case CLEAR_ERROR:
+            return {
                 ...state,
-                message:null,
+                message: null,
             }
         default:
             return { ...state }
@@ -99,28 +105,59 @@ export const productQuantityReducer = (state = { quantity: 0 }, action) => {
 
 export const requestedProductReducer = (state = { requestedProduct: [] }, action) => {
     switch (action.type) {
-        case UPDATE_REQUESTED_PRODUCT_STATUS_REQUEST:
         case REQUESTED_PRODUCT_REQUEST:
             return {
                 loading: true,
                 requestedProduct: []
             }
-        case UPDATE_REQUESTED_PRODUCT_STATUS_SUCCESS:
         case REQUESTED_PRODUCT_SUCCESS:
             return {
                 loading: false,
                 requestedProduct: action.payload,
             }
-        case UPDATE_REQUESTED_PRODUCT_STATUS_FAIL:
         case REQUESTED_PRODUCT_FAIL:
             return {
                 loading: false,
                 error: action.payload,
             }
-            case CLEAR_ERROR:
-            return{
+        case CLEAR_ERROR:
+            return {
                 ...state,
-                error:null
+                error: null
+            }
+        default:
+            return { ...state }
+    }
+}
+
+
+export const currentRequestReducer = (state = { request: [] }, action) => {
+    switch (action.type) {
+        case GET_REQUEST_BY_ID_REQUEST:
+        case UPDATE_REQUESTED_PRODUCT_STATUS_REQUEST:
+            return {
+                loading: true,
+            }
+        case GET_REQUEST_BY_ID_SUCCESS:
+        case UPDATE_REQUESTED_PRODUCT_STATUS_SUCCESS:
+
+            return {
+                loading: false,
+                requestData: action.payload
+            }
+        case GET_REQUEST_BY_ID_FAIL:
+        case UPDATE_REQUESTED_PRODUCT_STATUS_FAIL:
+
+
+            return {
+                loading: false,
+                error: action.payload,
+
+            }
+        case CLEAR_ERROR:
+            return {
+                ...state,
+                error: null
             }
         default:
             return { ...state }

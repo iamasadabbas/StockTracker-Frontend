@@ -24,7 +24,7 @@ export const addSignatureRecord = (nameInput, designationInput) => async (dispat
       dispatch({ type: ADD_SIGNATURE_RECORD_SUCCESS, payload: response.data.message });
     } catch (error) {
       // console.log(error);
-      dispatch({ type: ADD_SIGNATURE_RECORD_FAIL, payload: error.response.data.message });
+      dispatch({ type: ADD_SIGNATURE_RECORD_FAIL, payload: error.message });
     }
   };
 export const getAllSignatureRecord = () => async (dispatch) => {
@@ -35,7 +35,7 @@ export const getAllSignatureRecord = () => async (dispatch) => {
       dispatch({ type: GET_SIGNATURE_RECORD_SUCCESS, payload: response.data.data });
     } catch (error) {
       // console.log(error);
-      dispatch({ type: GET_SIGNATURE_RECORD_FAIL, payload: error.response.data.message });
+      dispatch({ type: GET_SIGNATURE_RECORD_FAIL, payload: error.message });
     }
   };
 
@@ -48,7 +48,7 @@ export const updateSignatureRecordStatus = (id,status) => async (dispatch) => {
       dispatch({ type: UPDATE_SIGNATURE_RECORD_STATUS_SUCCESS, payload: response.data.result });
     } catch (error) {
       // console.log(error);
-      dispatch({ type: UPDATE_SIGNATURE_RECORD_STATUS_FAIL, payload: error.response.data.message });
+      dispatch({ type: UPDATE_SIGNATURE_RECORD_STATUS_FAIL, payload: error.message });
     }
   };
 

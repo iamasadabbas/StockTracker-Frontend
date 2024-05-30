@@ -86,6 +86,7 @@ function ViewDemandedReciept() {
                         <table className='table-ViewDemand'>
                             <thead>
                                 <tr>
+                                    <th>S:No</th>
                                     <th>ApplicationId</th>
                                     <th>Subject</th>
                                     <th>Date</th>
@@ -94,14 +95,15 @@ function ViewDemandedReciept() {
                                 </tr>
                             </thead>
                             <tbody className='table-body'>
-                                {allDemand?.map((demand) => (
-                                    <tr key={demand._id}>
+                                {allDemand?.map((demand,index) => (
+                                    <tr key={demand._id}>                                        
+                                        <td>{index+1}</td>
                                         <td>{demand.applicationId}</td>
                                         <td>{demand.subject}</td>
                                         <td>{demand.date}</td>
                                         <td>{demand.status}</td>
                                         <td><button className='button-ViewDemand' onClick={() => { viewDemand(demand._id) }}>View</button></td>
-                                        <td><button className='button-ViewDemand' onClick={() => { handleApprove(demand) }}>Approve</button></td>
+                                        <td><button className='button-ViewDemand' onClick={() => { handleApprove(demand) }}>{demand.status=='Approved'?('details'):('Approve')}</button></td>
                                     </tr>
                                 ))}
                             </tbody>

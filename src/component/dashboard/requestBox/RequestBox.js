@@ -23,8 +23,8 @@ const RequestBox = ({ request }) => {
                             
                             <tr key={item._id} className="request-table-row"> {/* Assign a unique class name */}
                                 <td className="request-table-cell">{item.request_number}</td> {/* Assign a unique class name */}
-                                
-                                <td className="request-table-cell">{item.user_id.name}</td> {/* Assign a unique class name */}
+                                {/* {console.log(item)} */}
+                                <td className="request-table-cell">{item.user_id?.name}</td> {/* Assign a unique class name */}
                                 <td className="request-table-cell">{item.status}</td> {/* Assign a unique class name */}
                             </tr>
                         ))

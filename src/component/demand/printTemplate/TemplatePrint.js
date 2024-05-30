@@ -92,6 +92,7 @@ function TemplatePrint() {
                             {products && products.length > 0 ? (
                                 <thead>
                                     <tr>
+                                        <th>S:No</th>
                                         <th>Name</th>
                                         <th>Specifications</th>
                                         <th>Description</th>
@@ -99,8 +100,9 @@ function TemplatePrint() {
                                     </tr>
                                 </thead>) : null}
                             <tbody>
-                                {products && products?.map((product) => (
+                                {products && products?.map((product,index) => (
                                     <tr key={product._id}>
+                                        <td>{index+1}</td>
                                         <td>{product._id.name}</td>
                                         <td>{product._id.specifications}</td>
                                         <td>{product._id.description}</td>

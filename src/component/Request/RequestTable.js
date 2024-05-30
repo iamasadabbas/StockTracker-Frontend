@@ -1,13 +1,14 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState,useEffect } from 'react';
 import ViewRequestModal from '../Modal/RequestModel/ViewRequestModal';
-import { getRequestedProduct } from '../actions/requestAction';
+import { getRequestById, getRequestedProduct } from '../actions/requestAction';
 import { useDispatch } from 'react-redux';
-
+import { getAllRequest } from '../actions/requestAction';
 const RequestTable = (props) => {
     const [currentRequestId,setCurrentRequestId] =useState('')
     const dispatch=useDispatch();
     
     const { request } = props;
+    const SNo=props.SNo
     const reqId = request.request_number;
     const userName = request.user_id.name;
     const dateTime = request.createdAt;
@@ -22,15 +23,18 @@ const RequestTable = (props) => {
 
     // Function to handle view button click
     const handleViewButtonClick = (request) => {
-        const currentRequestId=request.request_id._id
+        const currentRequestId=request.request_id?._id
+        dispatch(getRequestById(request._id))
         setCurrentRequestId(currentRequestId)
         dispatch(getRequestedProduct(currentRequestId))
         setIsModalOpen(true); 
     };
+    // }, [isModalOpen]);
 
     return (
         <Fragment>
             <tr>
+                <td>{SNo}</td>
                 <td>{reqId}</td>
                 <td>{userName}</td>
                 <td>{formattedDateTime}</td>

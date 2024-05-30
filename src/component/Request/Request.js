@@ -13,6 +13,7 @@ const Request = () => {
     
 
     const { requests, loading,error } = useSelector((state) => state.requests);
+    // console.log(requests);
 
     useEffect(() => {
         if(error){
@@ -37,6 +38,7 @@ const Request = () => {
                         <thead className='table-head'>
                             <tr>
                                 <th>S.No</th>
+                                <th>Req.Id</th>
                                 <th>User</th>
                                 <th>Date.Time</th>
                                 <th>Status</th>
@@ -48,6 +50,7 @@ const Request = () => {
                            
                             <RequestTable
                                 key={index}
+                                SNo={index+1}
                                 request={request}
                             />
                         ))}

@@ -1,131 +1,148 @@
 import { NavLink } from "react-router-dom";
 import { FaBars, FaHome, FaLock, FaUser } from "react-icons/fa";
-import { AiFillHeart, AiTwotoneFileExclamation } from "react-icons/ai";
-import { BsCartCheck } from "react-icons/bs";
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { BiPurchaseTag } from "react-icons/bi";
 import { RiGitPullRequestFill } from "react-icons/ri";
+import { BiPurchaseTag } from "react-icons/bi";
 import { IoReceiptOutline } from "react-icons/io5";
 import { LuClipboardSignature } from "react-icons/lu";
-import { MdPersonalInjury } from "react-icons/md";
-import { BsClipboardData } from "react-icons/bs";
+import { MdPersonalInjury, MdOutlineTask } from "react-icons/md";
+import { BsClipboardData, BsFillPersonCheckFill, BsCartCheck } from "react-icons/bs";
 import { TbBrandProducthunt } from "react-icons/tb";
-import { MdOutlineTask } from "react-icons/md";
-import { BsFillPersonCheckFill } from "react-icons/bs";
+import { FaUserTag, FaUserPen } from "react-icons/fa6";
+import { IoIosLogOut } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../actions/userDataAction";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import SidebarMenu from "./SidebarMenu";
+import './Sidebar.css';
 
-
-
-import SidebarMenu from "./SidebarMenu.js";
-
-import './Sidebar.css'
 const routes = [
   {
     path: "/",
     name: "Dashboard",
     icon: <FaHome />,
+    roles: ["Admin", "StoreKeeper"]
   },
   {
     path: "/requests",
     name: "Requests",
-    icon: <RiGitPullRequestFill  />,
+    icon: <RiGitPullRequestFill />,
+    roles: ["StoreKeeper"]
   },
   {
     path: "/demand",
     name: "Demand",
     icon: <BiPurchaseTag />,
+    roles: ["StoreKeeper"]
   },
   {
     path: "/viewDemand",
     name: "View Demand",
     icon: <IoReceiptOutline />,
+    roles: ["StoreKeeper"]
   },
-
   {
     path: "/Role",
     name: "Role",
     icon: <BsFillPersonCheckFill />,
+    roles: ["Admin"],
     subRoutes: [
       {
         path: "/addrole",
         name: "Add Role",
         icon: <FaUser />,
+        roles: ["Admin"]
       },
       {
         path: "/roletaskedit",
         name: "Role Task Edit",
         icon: <FaLock />,
+        roles: ["Admin"]
       }
-    ],
+    ]
   },
-
   {
     path: "/addtask",
     name: "Add Task",
     icon: <MdOutlineTask />,
+    roles: ["Admin"]
   },
-  
-
+  {
+    path: "/registrationApproval",
+    name: "User Approval",
+    icon: <FaUserTag />,
+    roles: ["StoreKeeper"]
+  },
+  {
+    path: "/userStatus",
+    name: "User Status",
+    icon: <FaUserPen />,
+    roles: ["Admin"]
+  },
   {
     name: "product",
     icon: <TbBrandProducthunt />,
+    roles: ["StoreKeeper"],
     subRoutes: [
       {
         path: "/addproduct",
-        name: "Add Product ",
+        name: "Add Product",
         icon: <FaUser />,
+        roles: ["StoreKeeper"]
       },
       {
         path: "/producttype",
-        name: "product type",
+        name: "Product Type",
         icon: <FaLock />,
-      },
-    ],
+        roles: ["StoreKeeper"]
+      }
+    ]
   },
   {
     name: "Signature",
     icon: <LuClipboardSignature />,
+    roles: ["StoreKeeper"],
     subRoutes: [
       {
         path: "/addSignatureRecord",
         name: "Add Record",
         icon: <MdPersonalInjury />,
+        roles: ["StoreKeeper"]
       },
       {
         path: "/viewSignatureRecord",
         name: "View Record",
         icon: <BsClipboardData />,
-      },
-    ],
+        roles: ["StoreKeeper"]
+      }
+    ]
   },
-  
-      // {
-      //   path: "/adduser",
-      //   name: "Add User",
-      //   icon: <FaUser />,
-      // },
-      {
-        path: "/viewuser",
-        name: "view User",
-        icon: <FaLock />,
-      },
+  {
+    path: "/viewuser",
+    name: "View User",
+    icon: <FaLock />,
+    roles: ["Admin"]
+  },
   {
     path: "/adddesignation",
-    name: "add designation",
+    name: "Add Designation",
     icon: <BsCartCheck />,
-  },
-  
-  {
-    path: "/login",
-    name: "login",
-    icon: <AiFillHeart />,
-  },
-  
+    roles: ["Admin"]
+  }
 ];
 
-const SideBar = ({ children }) => {
+const SideBar = ({ children, role }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
+
+  const handleLogout = async () => {
+    await dispatch(logout());
+    navigate('/login');
+  };
+
   const inputAnimation = {
     hidden: {
       width: 0,
@@ -160,100 +177,100 @@ const SideBar = ({ children }) => {
     },
   };
 
+  const filteredRoutes = routes.filter(route => route.roles.includes(role));
+
   return (
-    <>
-      <div className="main-container">
-        <motion.div
-          animate={{
-            width: isOpen ? "15%" : "3.5%",
+    <div className="main-container">
+      <motion.div
+        animate={{
+          width: isOpen ? "15%" : "3.5%",
+          transition: {
+            duration: 0.5,
+            type: "spring",
+            damping: 10,
+          },
+        }}
+        className="sidebar"
+      >
+        <div className="top_section">
+          <AnimatePresence>
+            {isOpen && (
+              <motion.h1
+                variants={showAnimation}
+                initial="hidden"
+                animate="show"
+                exit="hidden"
+                className="logo"
+              >
+                StockTracker
+              </motion.h1>
+            )}
+          </AnimatePresence>
 
-            transition: {
-              duration: 0.5,
-              type: "spring",
-              damping: 10,
-            },
-          }}
-          className={`sidebar `}
-        >
-          <div className="top_section">
-            <AnimatePresence>
-              {isOpen && (
-                <motion.h1
-                  variants={showAnimation}
-                  initial="hidden"
-                  animate="show"
-                  exit="hidden"
-                  className="logo"
-                >
-                  StockTracker
-                </motion.h1>
-              )}
-            </AnimatePresence>
-
-            <div className="bars">
-              <FaBars onClick={toggle} />
-            </div>
+          <div className="bars">
+            <FaBars onClick={toggle} />
           </div>
-          {/* <div className="search">
-            <div className="search_icon">
-              <BiSearch />
-            </div>
-            <AnimatePresence>
-              {isOpen && (
-                <motion.input
-                  initial="hidden"
-                  animate="show"
-                  exit="hidden"
-                  variants={inputAnimation}
-                  type="text"
-                  placeholder="Search"
-                />
-              )}
-            </AnimatePresence>
-          </div> */}
-          <section className="routes">
-            {routes.map((route, index) => {
-              if (route.subRoutes) {
-                return (
-                  <SidebarMenu
-                    setIsOpen={setIsOpen}
-                    route={route}
-                    showAnimation={showAnimation}
-                    isOpen={isOpen}
-                  />
-                );
-              }
+        </div>
 
+        <section className="routes">
+          {filteredRoutes.map((route, index) => {
+            if (route.subRoutes) {
               return (
-                <NavLink
-                  to={route.path}
+                <SidebarMenu
                   key={index}
-                  className="link"
-                  activeClassName="active"
-                >
-                  <div className="icon">{route.icon}</div>
-                  <AnimatePresence>
-                    {isOpen && (
-                      <motion.div
-                        variants={showAnimation}
-                        initial="hidden"
-                        animate="show"
-                        exit="hidden"
-                        className="link_text"
-                      >
-                        {route.name}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </NavLink>
+                  setIsOpen={setIsOpen}
+                  route={route}
+                  showAnimation={showAnimation}
+                  isOpen={isOpen}
+                />
               );
-            })}
-          </section>
-        </motion.div>
+            }
 
-        <main style={{height:"100vh", overflowY: "auto"}}>{children}</main>
-      </div>
-    </>
+            return (
+              <NavLink
+                to={route.path}
+                key={index}
+                className="link"
+                activeClassName="active"
+              >
+                <div className="icon">{route.icon}</div>
+                <AnimatePresence>
+                  {isOpen && (
+                    <motion.div
+                      variants={showAnimation}
+                      initial="hidden"
+                      animate="show"
+                      exit="hidden"
+                      className="link_text"
+                    >
+                      {route.name}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </NavLink>
+            );
+          })}
+        </section>
+        <div className="logout-button" onClick={handleLogout}>
+          <IoIosLogOut className="icon" />
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                variants={showAnimation}
+                initial="hidden"
+                animate="show"
+                exit="hidden"
+                className="link_text"
+              >
+                Logout
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </motion.div>
+
+      <main style={{ height: "100vh", overflowY: "auto" }}>{children}</main>
+    </div>
   );
 };
 

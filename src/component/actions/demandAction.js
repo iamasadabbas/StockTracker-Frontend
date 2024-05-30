@@ -24,15 +24,19 @@ import {
   GET_ACTIVE_ASSISTANT_DIRECTOR_FAIL,
   GET_DEMAND_BY_ID_REQUEST,
   GET_DEMAND_BY_ID_SUCCESS,
+  ADD_PRODUCT_QUANTITY_THROUGH_DEMAND_REQUEST,
+  ADD_PRODUCT_QUANTITY_THROUGH_DEMAND_SUCCESS,
+  ADD_PRODUCT_QUANTITY_THROUGH_DEMAND_FAIL,
   GET_DEMAND_BY_ID_FAIL,
   CLEAR_ERROR
 } from '../Redux/constants/demandConstants'
 
-export const getAllProduct = (locationId) => async (dispatch) => {
+export const getAllProduct = () => async (dispatch) => {
   try {
     dispatch({ type: GET_ALL_PRODUCT_FROM_LOCATION_REQUEST })
-    axiosInstance.get(`/productLocation/getProductByLocationId/${locationId}`).then((response) => {
-      dispatch({ type: GET_ALL_PRODUCT_FROM_LOCATION_SUCCESS, payload: response.data.request })
+    axiosInstance.get(`/product/getAllProduct`).then((response) => {
+      console.log(response.data.product);
+      dispatch({ type: GET_ALL_PRODUCT_FROM_LOCATION_SUCCESS, payload: response.data.product })
     }) .catch((error) => {
       dispatch({ type: GET_ALL_PRODUCT_FROM_LOCATION_FAIL, payload: error.message });
     });
@@ -78,7 +82,7 @@ export const saveDemand = (demandData) => async (dispatch) => {
       dispatch({ type: SAVE_DEMAND_FAIL, payload: error.message });
     });
   } catch (error) {
-    dispatch({ type: SAVE_DEMAND_FAIL, payload: error.data.message })
+    dispatch({ type: SAVE_DEMAND_FAIL, payload: error.message })
   }
 }
 
@@ -91,7 +95,7 @@ export const getActiveAssistantDirectorSignatureRecord = () => async (dispatch) 
     dispatch({ type: GET_ACTIVE_ASSISTANT_DIRECTOR_SUCCESS, payload: response.data.data });
   } catch (error) {
     // console.log(error);
-    dispatch({ type: GET_ACTIVE_ASSISTANT_DIRECTOR_FAIL, payload: error.response.data.message });
+    dispatch({ type: GET_ACTIVE_ASSISTANT_DIRECTOR_FAIL, payload: error.message });
   }
 };
 
@@ -101,7 +105,7 @@ export const postReceivedQuantity = (request_id, product_id, received_quantity) 
     let response = await axiosInstance.put(`/demand/postDemandQunatity/${request_id}/${product_id}`, { received_quantity: received_quantity })
     dispatch({ type: POST_DEMAND_QUANTITY_SUCCESS, payload: response.data })
   } catch (error) {
-    dispatch({ type: POST_DEMAND_QUANTITY_FAIL, payload: error.data.message })
+    dispatch({ type: POST_DEMAND_QUANTITY_FAIL, payload: error.message })
   }
 }
 export const updateDemandStatus = (request_id,status) => async (dispatch) => {
@@ -111,7 +115,7 @@ export const updateDemandStatus = (request_id,status) => async (dispatch) => {
     console.log(response);
     dispatch({ type: UPDATE_DEMAND_STATUS_SUCCESS,payload:response.data.alldemand})
   } catch (error) {
-    dispatch({ type: UPDATE_DEMAND_STATUS_FAIL, payload: error.data.message })
+    dispatch({ type: UPDATE_DEMAND_STATUS_FAIL, payload: error.message })
   }
 }
 export const getDemandById = (id) => async (dispatch) => {
@@ -121,9 +125,23 @@ export const getDemandById = (id) => async (dispatch) => {
     // console.log(response);
     dispatch({ type: GET_DEMAND_BY_ID_SUCCESS,payload:response.data.demandedProduct})
   } catch (error) {
-    dispatch({ type: GET_DEMAND_BY_ID_FAIL, payload: error.data.message })
+    dispatch({ type: GET_DEMAND_BY_ID_FAIL, payload: error.message })
   }
 }
+export const addProductQuantityThroughDemand = (location_id,product_id,quantity) => async (dispatch) => {
+  try {
+    dispatch({ type: ADD_PRODUCT_QUANTITY_THROUGH_DEMAND_REQUEST })
+
+    let response = await axiosInstance.post(`/productLocation/addProductQuantityThroughDemand/${location_id}/${product_id}`,{quantity})
+    console.log(response);
+    dispatch({ type: ADD_PRODUCT_QUANTITY_THROUGH_DEMAND_SUCCESS,payload:response.data.demandedProduct})
+  } catch (error) {
+    dispatch({ type: ADD_PRODUCT_QUANTITY_THROUGH_DEMAND_FAIL, payload: error.message })
+  }
+}
+
+
+
 export const clearError = () => async (dispatch) => {
   dispatch({ type: CLEAR_ERROR });
 };

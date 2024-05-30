@@ -15,16 +15,16 @@ function AllProductTable() {
     const alert = useAlert();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const locationId = '660ed51b8cc6708776801a2c';
 
     const { loading, allProduct, error } = useSelector((state) => state.allProduct);
+    // console.log(allProduct);
     const [currentProduct, setCurrentProduct] = useState({});
     const [inputQuantityChange, setInputQuantityChange] = useState('');
     const [isQuantityModalOpen, setIsQuantityModalOpen] = useState(false);
     const [searchInput, setSearchInput] = useState('');
 
     const handleAddButton = (product) => {
-        setCurrentProduct(product.product_id); // Ensure product_id is passed correctly
+        setCurrentProduct(product); // Ensure product_id is passed correctly
         setIsQuantityModalOpen(true);
     };
 
@@ -47,8 +47,8 @@ function AllProductTable() {
     };
 
     useEffect(() => {
-        dispatch(getAllProduct(locationId));
-    }, [dispatch, locationId]);
+        dispatch(getAllProduct());
+    }, [dispatch]);
 
     useEffect(() => {
         if (error) {
@@ -59,7 +59,7 @@ function AllProductTable() {
 
     const searchData = useMemo(() => {
         return allProduct?.filter((product) => {
-            return product.product_id.name.toLowerCase().includes(searchInput.toLowerCase());
+            return product.name.toLowerCase().includes(searchInput.toLowerCase());
         });
     }, [searchInput, allProduct]);
 
@@ -74,23 +74,22 @@ function AllProductTable() {
                     <table className='table'>
                         <thead>
                             <tr>
+                                <th>S:No</th>
                                 <th>Name</th>
                                 <th>Specifications</th>
                                 <th>Description</th>
-                                <th>Available</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {searchInput === ''
-                                ? allProduct.map((product) => {
-                                      const { _id, name, specifications, description } = product.product_id;
+                                ? allProduct?.map((product,index) => {
                                       return (
-                                          <tr key={_id}>
-                                              <td>{name}</td>
-                                              <td>{specifications}</td>
-                                              <td>{description}</td>
-                                              <td>{product.quantity}</td>
+                                          <tr key={product._id}>
+                                              <td>{index+1}</td>
+                                              <td>{product?.name}</td>
+                                              <td>{product?.specifications}</td>
+                                              <td>{product?.description}</td>
                                               <td>
                                                   <button
                                                       className='button-AddProduct'
@@ -102,23 +101,21 @@ function AllProductTable() {
                                           </tr>
                                       );
                                   })
-                                : searchData.map((product) => {
-                                      const { _id, name, specifications, description } = product.product_id;
+                                : searchData?.map((product) => {
                                       return (
-                                          <tr key={_id}>
-                                              <td>{name}</td>
-                                              <td>{specifications}</td>
-                                              <td>{description}</td>
-                                              <td>{product.quantity}</td>
-                                              <td>
-                                                  <button
-                                                      className='button-AddProduct'
-                                                      onClick={() => handleAddButton(product)}
-                                                  >
-                                                      Add
-                                                  </button>
-                                              </td>
-                                          </tr>
+                                        <tr key={product._id}>
+                                        <td>{product.name}</td>
+                                        <td>{product.specifications}</td>
+                                        <td>{product.description}</td>
+                                        <td>
+                                            <button
+                                                className='button-AddProduct'
+                                                onClick={() => handleAddButton(product)}
+                                            >
+                                                Add
+                                            </button>
+                                        </td>
+                                    </tr>
                                       );
                                   })}
                         </tbody>
@@ -148,7 +145,7 @@ function AllProductTable() {
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>{currentProduct.name}</td>
+                                        <td>{currentProduct?.name}</td>
                                         <td>
                                             <input
                                              type='number' 

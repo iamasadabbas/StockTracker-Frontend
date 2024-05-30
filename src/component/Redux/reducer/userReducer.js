@@ -14,6 +14,9 @@ import {
     DELETE_USER_REQUEST,
     DELETE_USER_SUCCESS,
     DELETE_USER_FAIL,
+    UPDATE_USER_STATUS_REQUEST,
+    UPDATE_USER_STATUS_SUCCESS,
+    UPDATE_USER_STATUS_FAIL,
     CLEAR_MESSAGE,
     CLEAR_ERROR
 } from '../constants/userConstants'
@@ -25,7 +28,9 @@ export const userReducer = (state = { message: '', allRole: [],allUser:[],allDes
         case GET_ALL_DESIGNATION_REQUEST:
         case GET_ALL_USER_REQUEST:
         case DELETE_USER_REQUEST:
+        case UPDATE_USER_STATUS_REQUEST:
             return {
+                ...state,
                 loading: true,
             };
         case ADD_USER_SUCCESS:
@@ -40,6 +45,13 @@ export const userReducer = (state = { message: '', allRole: [],allUser:[],allDes
                 ...state,
                 loading: false,
                 allUser: action.payload,
+            };
+        case UPDATE_USER_STATUS_SUCCESS:
+
+            return {
+                ...state,
+                loading: false,
+                allUser: action.payload.user,
             };
         case GET_ALL_ROLE_SUCCESS:
             return {
@@ -64,6 +76,7 @@ export const userReducer = (state = { message: '', allRole: [],allUser:[],allDes
         case GET_ALL_DESIGNATION_FAIL:
         case GET_ALL_USER_FAIL:
         case DELETE_USER_FAIL:
+        case UPDATE_USER_STATUS_FAIL:
             return {
                 ...state,
                 loading: false,

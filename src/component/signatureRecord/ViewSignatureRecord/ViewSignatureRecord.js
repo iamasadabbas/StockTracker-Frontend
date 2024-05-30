@@ -1,52 +1,58 @@
 import React, { Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllSignatureRecord } from "../../actions/signatureRecordAction";
+import { clearError, getAllSignatureRecord } from "../../actions/signatureRecordAction";
 import Loader from '../../Loader/Loader';
 import Switch from 'react-switch';
 import './ViewSignatureRecord.css'; // import the CSS file
 import { updateSignatureRecordStatus } from "../../actions/signatureRecordAction";
+import { useAlert } from "react-alert";
 
 export const ViewSignatureRecord = () => {
+  const alert=useAlert()
   const dispatch = useDispatch();
   const { allSignatureRecord, loading, error } = useSelector((state) => state.signatureRecord);
 
   useEffect(() => {
+    if(error){
+      alert.error(error);
+      return ()=>dispatch(clearError())
+    }
     dispatch(getAllSignatureRecord());
-  }, [dispatch]);
+  }, [dispatch,error]);
 
   const toggleStatus = (id, currentStatus) => {
-    const status=!currentStatus
-    console.log(status);
-    dispatch(updateSignatureRecordStatus(id,status))
+    const status = !currentStatus
+    dispatch(updateSignatureRecordStatus(id, status))
   };
 
   return (
     <Fragment>
       {loading ? (
         <Loader />
-      ) : (
+      ) : (error ? (null) : (
+
+
         <div className="vsr-table-container">
-          {error && <p className="vsr-error-message">Error: {error}</p>}
+          {/* {error && <p className="vsr-error-message">Error: {error}</p>} */}
           <table className="vsr-table">
             <thead className="vsr-thead">
               <tr className="vsr-tr">
+                <th className="vsr-th">S:No</th>
                 <th className="vsr-th">Name</th>
                 <th className="vsr-th">Designation</th>
                 <th className="vsr-th">Status</th>
               </tr>
             </thead>
             <tbody>
-              {allSignatureRecord.map((record) => (
+              {allSignatureRecord.map((record,index) => (
                 <tr className="vsr-tr" key={record.id}>
+                  <td className="vsr-td">{index+1}</td>
                   <td className="vsr-td">{record.name}</td>
                   <td className="vsr-td">{record.designation}</td>
-                  {
-                    console.log(record.status)
-                  }
                   <td className="vsr-status-toggle">
-                    <Switch 
+                    <Switch
                       onChange={() => toggleStatus(record._id, record.status)}
-                      checked={record.status} 
+                      checked={record.status}
                     />
                   </td>
                 </tr>
@@ -54,6 +60,7 @@ export const ViewSignatureRecord = () => {
             </tbody>
           </table>
         </div>
+      )
       )}
     </Fragment>
   );

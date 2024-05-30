@@ -15,7 +15,7 @@ export default function RoleTaskEdit() {
     useEffect(() => {
         if (error) {
             alert.error(error);
-            dispatch(clearError());
+           return ()=> dispatch(clearError());
         }
         dispatch(getAllRole());
         dispatch(getAllTask());
@@ -38,6 +38,9 @@ export default function RoleTaskEdit() {
             {loading ? (
                 <Loader />
             ) : (
+                error ?(null):(
+
+                
                 <div>
                     <h2 className='heading'>Role data</h2>
                     <div className='container-table'>
@@ -61,6 +64,7 @@ export default function RoleTaskEdit() {
                         </table>
                     </div>
                 </div>
+                )
             )}
         </div>
     );

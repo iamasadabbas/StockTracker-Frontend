@@ -8,11 +8,13 @@ import {  UPDATE_DATA, CLEAR_DETAILS, CLEAR_DEMAND_DATA } from '../../Redux/cons
 import { MdOutlineDelete } from "react-icons/md";
 import { clearError, saveDemand } from '../../actions/demandAction.js'
 import { getActiveAssistantDirectorSignatureRecord } from '../../actions/demandAction.js';
+import { useAlert } from 'react-alert';
 import Loader from '../../Loader/Loader.js';
 
 
 function AddedProduct() {
     const dispatch = useDispatch();
+    const alert=useAlert();
     const user_id = '65f9808effdbe72cf5b6fdcb'
     const { error, loading, data, detail,AssistantDirector } = useSelector(state => state.demandReducer)
     const componentPDF = useRef();
@@ -49,18 +51,13 @@ function AddedProduct() {
     useEffect(() => {
         if (error) {
             alert.error(error);
-            dispatch(clearError());
+            return ()=>dispatch(clearError());
         }
         dispatch(getActiveAssistantDirectorSignatureRecord())
     }, [error])
 
     return (
-        <Fragment>
-            {
-                loading ? (
-                    <Loader />
-                ) : (
-                    <div>
+                    <div className='addedProduct-container'>
                         <div
                             ref={componentPDF}
                             className='print-div'
@@ -71,6 +68,7 @@ function AddedProduct() {
                                 {data && data?.length > 0 ? (
                                     <thead>
                                         <tr>
+                                            <th>S:No</th>
                                             <th>Name</th>
                                             <th>Specifications</th>
                                             <th>Description</th>
@@ -79,8 +77,9 @@ function AddedProduct() {
                                         </tr>
                                     </thead>) : null}
                                 <tbody>
-                                    {data && data?.map((product) => (
+                                    {data && data?.map((product,index) => (
                                         <tr key={product?._id}>
+                                            <td>{index+1}</td>
                                             <td>{product?.name}</td>
                                             <td>{product?.specifications}</td>
                                             <td>{product?.description}</td>
@@ -99,8 +98,5 @@ function AddedProduct() {
                     </div>
                 )
             }
-        </Fragment>
-    )
-}
 
 export default AddedProduct

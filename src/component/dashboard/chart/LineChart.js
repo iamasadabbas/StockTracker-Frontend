@@ -1,18 +1,22 @@
 import React, { useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
 
-const LineChart = ({ data }) => {
+const LineChart = ({ data, label }) => {
   const chartRef = useRef(null);
+  const chartInstance = useRef(null);
 
   useEffect(() => {
-    const ctx = chartRef.current.getContext('2d');
+    if (chartInstance.current) {
+      chartInstance.current.destroy(); // Cleanup existing chart before creating a new one
+    }
 
-    const chart = new Chart(ctx, {
+    const ctx = chartRef.current.getContext('2d');
+    chartInstance.current = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: data?.map((_, index) => `Day ${index + 1}`), // Labeling days
+        labels: data?.map((_, index) => `Day ${index + 1}`),
         datasets: [{
-          label: 'Daily Requests',
+          label: `Daily ${label}`,
           data: data,
           borderColor: 'blue',
           backgroundColor: 'rgba(0, 0, 255, 0.2)',
@@ -26,7 +30,7 @@ const LineChart = ({ data }) => {
             beginAtZero: true,
             title: {
               display: true,
-              text: 'Number of Requests'
+              text: `Number of ${label}`
             }
           },
           x: {
@@ -48,9 +52,9 @@ const LineChart = ({ data }) => {
     });
 
     return () => {
-      chart.destroy(); // Cleanup on unmount
+      chartInstance.current.destroy(); // Cleanup on unmount
     };
-  }, [data]);
+  }, [data, label]); // Add label to dependencies to handle label changes
 
   return <canvas ref={chartRef} style={{ width: '100%', height: '400px' }} />;
 };

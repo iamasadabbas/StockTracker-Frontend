@@ -10,12 +10,13 @@ import { updateDemandStatus } from '../../actions/demandAction';
 import { getProductQuantity } from '../../actions/requestAction';
 import { updateProductQuantity } from '../../actions/requestAction';
 import { getDemandById } from '../../actions/demandAction';
+import { addProductQuantityThroughDemand } from '../../actions/demandAction';
 
-const ReceiveModal = ({ isReceiveModalOpen, setIsReceiveModalOpen,product,request_id,isApproveModalOpen,setIsApproveModalOpen }) => {
-    const alert=useAlert();
-    const {loading} =useSelector((state)=>state.demandReducer)
-    const {quantity,message,error} =useSelector((state)=>state.quantity)
-    const dispatch=useDispatch();
+const ReceiveModal = ({ isReceiveModalOpen, setIsReceiveModalOpen, product, request_id, isApproveModalOpen, setIsApproveModalOpen, locationId }) => {
+    const alert = useAlert();
+    // const {loading} =useSelector((state)=>state.demandReducer)
+    // const { loading, quantity, message, error } = useSelector((state) => state.quantity)
+    const dispatch = useDispatch();
     const [receiveInput, setReceiveInput] = useState('');
     const handleInputChange = (e) => {
         const enteredValue = e.target.value;
@@ -29,44 +30,31 @@ const ReceiveModal = ({ isReceiveModalOpen, setIsReceiveModalOpen,product,reques
 
     const handleReceiveSubmit = async (product_id) => {
         try {
-            const received_quantity=receiveInput
-            const remainingQuantity=Number(quantity)+Number(receiveInput)
-            dispatch(postReceivedQuantity(request_id,product_id,received_quantity))
-            const status="Partial Approved"
-             dispatch(updateDemandStatus(request_id,status))
-            const productId=product_id
-             dispatch(updateProductQuantity(productId,remainingQuantity))
-         setIsReceiveModalOpen(!isReceiveModalOpen)
-        //  setTimeout(() => {
+            dispatch(postReceivedQuantity(request_id, product_id, receiveInput))
+            const status = "Approved"
+            dispatch(updateDemandStatus(request_id, status))
+            const productId = product_id
+            //  dispatch(updateProductQuantity(productId,remainingQuantity))
+            dispatch(addProductQuantityThroughDemand(locationId, productId, receiveInput))
+            setIsReceiveModalOpen(!isReceiveModalOpen)
+            //  setTimeout(() => {
             dispatch(getDemandById(request_id))
-        //  }, 500);
-         
+            //  }, 500);
+
         } catch (error) {
             alert.error(error)
         }
     }
-    const handleCloseClick=()=>{
+    const handleCloseClick = () => {
         setIsReceiveModalOpen(!isReceiveModalOpen)
     }
-    useEffect(()=>{
-        if(error){
-            alert.error(error);
-            return clearError();
-        }else if(message){
-            alert.success(message);
-            return clearError();
-        }
+    useEffect(() => {
         // console.log(product);
         dispatch(getProductQuantity(product._id._id))
-    },[error,message])
-    
+    }, [])
+
     return (
         <Fragment>
-            {
-                loading ?(
-                    <Loader/>
-                ):(
-                    <Fragment>
             <Modal className='Modal'
                 size='lg'
                 isOpen={isReceiveModalOpen}
@@ -114,10 +102,8 @@ const ReceiveModal = ({ isReceiveModalOpen, setIsReceiveModalOpen,product,reques
                 </ModalBody>
             </Modal>
         </Fragment>
-                )
-            }
-        </Fragment>
     )
 }
+
 
 export default ReceiveModal

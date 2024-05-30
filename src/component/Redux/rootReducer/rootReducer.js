@@ -1,6 +1,6 @@
 
 import { combineReducers } from 'redux';
-import { requestReducer,productQuantityReducer,requestedProductReducer} from '../reducer/requestReducer';
+import { requestReducer,productQuantityReducer,requestedProductReducer,currentRequestReducer} from '../reducer/requestReducer';
 import { demandReducer,allProductReducer,allLocationReducer,allDemandReducer} from '../reducer/demandReducer';
 import { addRoleReducer,getAllRoleReducer } from '../reducer/roleReducer';
 import {addTaskReducer} from '../reducer/taskReducer';
@@ -9,6 +9,8 @@ import { userReducer } from '../reducer/userReducer';
 import { addDesignationReducer } from '../reducer/addDesignationReducer';
 import { addSignatureRecordReducer } from '../reducer/signatureRecordReducer';
 import { dashboardReducer } from '../reducer/dashboardReducer';
+import { allRegistrationApproval } from '../reducer/registrationApprovalReducer';
+import {userDataReducer} from '../reducer/userDataReducer'
 
 export const rootReducer = combineReducers({
     requests:requestReducer,
@@ -25,5 +27,8 @@ export const rootReducer = combineReducers({
     user:userReducer,
     dasignation:addDesignationReducer,
     signatureRecord:addSignatureRecordReducer,
-    dashboard:dashboardReducer
+    dashboard:dashboardReducer,
+    allRegistration:allRegistrationApproval,
+    currentRequest:currentRequestReducer,
+    userData:userDataReducer
 });
