@@ -1,5 +1,11 @@
 
-  
+  .heading-productDetails{
+    color: #007bff;
+    /* display: flex;
+    margin: auto;
+    align-items: center;
+    justify-content: center; */
+  }
   /* Table */
   .View_Modal_Table {
     width: 100%;

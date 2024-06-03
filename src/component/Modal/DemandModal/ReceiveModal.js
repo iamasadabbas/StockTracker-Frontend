@@ -4,13 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useAlert } from 'react-alert';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearError, getAllDemand, postReceivedQuantity } from '../../actions/demandAction';
-import Loader from '../../Loader/Loader';
-import { updateDemandStatus } from '../../actions/demandAction';
-import { getProductQuantity } from '../../actions/requestAction';
-import { updateProductQuantity } from '../../actions/requestAction';
-import { getDemandById } from '../../actions/demandAction';
-import { addProductQuantityThroughDemand } from '../../actions/demandAction';
+import { addProductQuantityThroughDemand, getDemandById, postReceivedQuantity,updateDemandStatus } from '../../../actions/demandAction';
+import { getProductQuantity } from '../../../actions/requestAction';
 
 const ReceiveModal = ({ isReceiveModalOpen, setIsReceiveModalOpen, product, request_id, isApproveModalOpen, setIsApproveModalOpen, locationId }) => {
     const alert = useAlert();
@@ -37,9 +32,9 @@ const ReceiveModal = ({ isReceiveModalOpen, setIsReceiveModalOpen, product, requ
             //  dispatch(updateProductQuantity(productId,remainingQuantity))
             dispatch(addProductQuantityThroughDemand(locationId, productId, receiveInput))
             setIsReceiveModalOpen(!isReceiveModalOpen)
-            //  setTimeout(() => {
+             setTimeout(() => {
             dispatch(getDemandById(request_id))
-            //  }, 500);
+             }, 500);
 
         } catch (error) {
             alert.error(error)

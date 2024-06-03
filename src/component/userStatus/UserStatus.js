@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAlert } from 'react-alert';
-import { clearError, getAllUser, updateUserStatus } from '../actions/userAction';
+import { clearError, getAllUser, updateUserStatus } from '../../actions/userAction';
 import Loader from '../Loader/Loader';
 import Switch from 'react-switch';
 import './UserStatus.css';
@@ -19,17 +19,20 @@ const UserStatus = () => {
     useEffect(() => {
         if (error) {
             alert.error(error);
-            dispatch(clearError());
+          return ()=>  dispatch(clearError());
+        }else{
+            dispatch(getAllUser());
         }
-        dispatch(getAllUser());
-    }, [dispatch, error, alert]);
+    }, [error]);
 
     return (
         <Fragment>
             {loading ? (
                 <Loader />
-            ) : (
+            ) : ( error ? (<div></div>):(
                 allUser && (
+                    <>
+                    <h2 className='page-heading'>User Status</h2>
                     <div className="userStatus-table-container">
                         <table className="userStatus-table">
                             <thead className="userStatus-thead">
@@ -52,6 +55,7 @@ const UserStatus = () => {
                                             <Switch
                                                 onChange={() => toggleStatus(record?._id, record?.status)}
                                                 checked={record?.status}
+                                                onColor='007BFF'
                                             />
                                         </td>
                                     </tr>
@@ -59,7 +63,9 @@ const UserStatus = () => {
                             </tbody>
                         </table>
                     </div>
+                    </>
                 )
+            )
             )}
         </Fragment>
     );

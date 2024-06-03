@@ -1,11 +1,10 @@
 import React, { Fragment, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllRequest } from '../actions/requestAction';
 import Loader from '../Loader/Loader';
 import RequestTable from './RequestTable.js';
 import { useAlert } from 'react-alert';
 import './Request.css'
-import { clearError } from '../actions/requestAction.js';
+import { getAllRequest,clearError } from '../../actions/requestAction.js';
 
 const Request = () => {
     const dispatch = useDispatch();
@@ -30,9 +29,10 @@ const Request = () => {
             ) : ( error ? (
                 <div></div>
             ):(
-
-            
+                <>
                 <Fragment className='tbody-request-table'>
+                <h1 className='page-heading'>Requests</h1>
+                    
                     <div className='view-request-conatiner'>
                     <table className='table'>
                         <thead className='table-head'>
@@ -58,6 +58,7 @@ const Request = () => {
                     </table>
                 </div>
                 </Fragment>
+                </>
                 )
             )}
         </Fragment>

@@ -76,7 +76,7 @@ export const saveDemand = (demandData) => async (dispatch) => {
   try {
     dispatch({ type: SAVE_DEMAND_REQUEST })
     axiosInstance.post(`/demand/demandProduct`, demandData).then((response) => {
-      console.log(response);
+      // console.log(response);
       dispatch({ type: SAVE_DEMAND_SUCCESS })
     }).catch((error) => {
       dispatch({ type: SAVE_DEMAND_FAIL, payload: error.message });
@@ -112,7 +112,7 @@ export const updateDemandStatus = (request_id,status) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_DEMAND_STATUS_REQUEST })
     let response = await axiosInstance.put(`/demand/updateDemandStatus/${request_id}`, { status:status})
-    console.log(response);
+    // console.log(response);
     dispatch({ type: UPDATE_DEMAND_STATUS_SUCCESS,payload:response.data.alldemand})
   } catch (error) {
     dispatch({ type: UPDATE_DEMAND_STATUS_FAIL, payload: error.message })
@@ -133,15 +133,12 @@ export const addProductQuantityThroughDemand = (location_id,product_id,quantity)
     dispatch({ type: ADD_PRODUCT_QUANTITY_THROUGH_DEMAND_REQUEST })
 
     let response = await axiosInstance.post(`/productLocation/addProductQuantityThroughDemand/${location_id}/${product_id}`,{quantity})
-    console.log(response);
+    // console.log(response);
     dispatch({ type: ADD_PRODUCT_QUANTITY_THROUGH_DEMAND_SUCCESS,payload:response.data.demandedProduct})
   } catch (error) {
     dispatch({ type: ADD_PRODUCT_QUANTITY_THROUGH_DEMAND_FAIL, payload: error.message })
   }
 }
-
-
-
 export const clearError = () => async (dispatch) => {
   dispatch({ type: CLEAR_ERROR });
 };

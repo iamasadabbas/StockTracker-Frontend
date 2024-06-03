@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import './RoleTaskEdit.css';
-import { clearError, getAllRole, getAllTask, assignTasksToRoles } from '../../actions/roleAction';
+import { clearError, getAllRole, getAllTask, assignTasksToRoles } from '../../../actions/roleAction';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../../Loader/Loader';
 import { useAlert } from 'react-alert';

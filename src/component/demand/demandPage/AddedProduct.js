@@ -4,12 +4,10 @@ import '../AllProduct.css'
 import { useDispatch, useSelector } from 'react-redux';
 import TemplatePrint from '../printTemplate/TemplatePrint.js';
 import './AddedProduct.css'
-import {  UPDATE_DATA, CLEAR_DETAILS, CLEAR_DEMAND_DATA } from '../../Redux/constants/demandConstants.js';
+import {  UPDATE_DATA, CLEAR_DETAILS, CLEAR_DEMAND_DATA } from '../../../Redux/constants/demandConstants.js';
 import { MdOutlineDelete } from "react-icons/md";
-import { clearError, saveDemand } from '../../actions/demandAction.js'
-import { getActiveAssistantDirectorSignatureRecord } from '../../actions/demandAction.js';
+import { clearError, saveDemand,getActiveAssistantDirectorSignatureRecord } from '../../../actions/demandAction.js'
 import { useAlert } from 'react-alert';
-import Loader from '../../Loader/Loader.js';
 
 
 function AddedProduct() {

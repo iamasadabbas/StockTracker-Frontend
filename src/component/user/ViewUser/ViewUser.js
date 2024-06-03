@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import './ViewUser.css'
 import { useDispatch, useSelector } from 'react-redux';
-import { clearError, deleteUser, getAllUser } from '../../actions/userAction';
+import { clearError, deleteUser, getAllUser } from '../../../actions/userAction';
 import Loader from '../../Loader/Loader'
 import { useAlert } from 'react-alert';
 
@@ -93,6 +93,8 @@ function ViewUser() {
         loading ? (
           <Loader />
         ) : (error ? (null) : (
+          <>
+          <h2 className='page-heading'>Users</h2>
           <div className='Container-view-user'>
             <div className='container-viewUser'>
               <table className='table'>
@@ -142,6 +144,7 @@ function ViewUser() {
             </>
             }
           </div>
+          </>
         )
         )
       }

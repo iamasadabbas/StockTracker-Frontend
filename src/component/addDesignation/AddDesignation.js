@@ -1,10 +1,9 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addDesignation } from '../actions/addDesignationAction';
 import Loader from '../Loader/Loader';
 import { useAlert } from 'react-alert';
-import { clearMessage } from '../actions/addDesignationAction';
-import { clearError } from '../actions/addDesignationAction';
+import { clearMessage,clearError,addDesignation } from '../../actions/addDesignationAction';
+
 export default function AddDesignation() {
     const alert = useAlert()
     const dispatch = useDispatch()

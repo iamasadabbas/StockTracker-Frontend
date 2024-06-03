@@ -40,7 +40,7 @@ import {
       dispatch({ type: LOGIN_SUCCESS, payload: data.data.user })
     } catch (error) {
       // console.log(error);
-      dispatch({ type: LOGIN_FAIL, payload: error.response.data.error })
+      dispatch({ type: LOGIN_FAIL, payload: error.message })
     }
   }
   //Register
@@ -91,13 +91,14 @@ import {
 
   
   
-  export const updateProfile = (userData) => async (dispatch) => {
+  export const updateProfile = (myForm) => async (dispatch) => {
+    console.log([...myForm]);
     try {
       dispatch({ type: UPDATE_PROFILE_REQUEST });
   
       const config = { Headers: { "Content-Type": "multipart/form-data" } };
   
-      const { data } = await axiosInstance.put("/api/user/me/update", userData, config);
+      const { data } = await axiosInstance.put("/user/editUserDetail", myForm, config);
   
       dispatch({ type: UPDATE_PROFILE_SUCCESS, payload: data.success });
     } catch (error) {

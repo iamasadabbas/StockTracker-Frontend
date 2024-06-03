@@ -1,18 +1,16 @@
 import React, { useEffect, useState, useRef, Fragment } from 'react';
 import './ViewDemand.css';
 import './ViewDemandModal.css'
-import axiosInstance from '../../axiosInstance/axiosInstance';
+import axiosInstance from '../../../axiosInstance/axiosInstance';
 import TemplatePrint from '../printTemplate/TemplatePrint';
 import { useNavigate } from 'react-router-dom';
-import { CURRENT_DEMAND } from '../../Redux/constants/demandConstants';
+import { CURRENT_DEMAND } from '../../../Redux/constants/demandConstants';
 import { useDispatch, useSelector } from 'react-redux';
 import { useReactToPrint } from 'react-to-print';
-import { getAllDemand } from '../../actions/demandAction';
 import { useAlert } from 'react-alert';
 import Loader from '../../Loader/Loader';
 import ApproveModal from '../../Modal/DemandModal/ApproveModal';
-import { clearError } from '../../actions/demandAction';
-import { getDemandById } from '../../actions/demandAction';
+import { clearError,getDemandById,getAllDemand } from '../../../actions/demandAction';
 
 const URL = process.env.BASE_URL || 'http://localhost:4000';
 
@@ -81,6 +79,8 @@ function ViewDemandedReciept() {
                 <Loader />
             ) : (
                 error ? (null) : (
+                    <>
+                        <h1 className='heading-viewDemand'>View Demand</h1>
                     <div className='container-ViewDemand'>
                         <div ref={componentPDF} className='print-div' style={{ display: 'none' }}><TemplatePrint /></div>
                         <table className='table-ViewDemand'>
@@ -109,6 +109,7 @@ function ViewDemandedReciept() {
                             </tbody>
                         </table>
                     </div>
+                    </>
                 )
             )}
             <div>

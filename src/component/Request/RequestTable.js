@@ -1,8 +1,7 @@
 import React, { Fragment, useState,useEffect } from 'react';
 import ViewRequestModal from '../Modal/RequestModel/ViewRequestModal';
-import { getRequestById, getRequestedProduct } from '../actions/requestAction';
+import { getRequestById, getRequestedProduct } from '../../actions/requestAction';
 import { useDispatch } from 'react-redux';
-import { getAllRequest } from '../actions/requestAction';
 const RequestTable = (props) => {
     const [currentRequestId,setCurrentRequestId] =useState('')
     const dispatch=useDispatch();
@@ -33,6 +32,7 @@ const RequestTable = (props) => {
 
     return (
         <Fragment>
+            
             <tr>
                 <td>{SNo}</td>
                 <td>{reqId}</td>

@@ -4,6 +4,12 @@
     height: 80%;
 
 }
+.page-heading{
+    display: flex;
+    margin: 1%;
+    align-items: center;
+    justify-content: center;
+}
 .Container-view-user{
     display: flex;
     flex-direction: column;

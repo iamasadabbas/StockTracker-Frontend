@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import './AddRole.css'
-import { addRole,clearError } from '../../actions/roleAction';
+import { addRole,clearError } from '../../../actions/roleAction';
 import { useDispatch,useSelector } from 'react-redux';
 import Loader from '../../Loader/Loader';
 import { useAlert } from 'react-alert';

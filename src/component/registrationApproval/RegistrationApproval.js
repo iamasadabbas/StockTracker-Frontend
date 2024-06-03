@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAlert } from 'react-alert';
-import { getAllRegistrationApproval, updateRole } from '../actions/registrationApprovalAction';
-import { getAllRole } from '../actions/roleAction';
+import { getAllRegistrationApproval, updateRole } from '../../actions/registrationApprovalAction';
+import { getAllRole } from '../../actions/roleAction';
 import Loader from '../Loader/Loader';
 import './RegistrationApproval.css';
 
@@ -49,6 +49,8 @@ const RegistrationApproval = ({show}) => {
                 // <p className="error">Error: {error}</p>
             ) : (
                 allRegistration && allRegistration.length > 0 ? (
+                    <>
+                        <h2 className='page-heading'>User Approval</h2>
                     <table className="registration-table">
                         <thead>
                             <tr>
@@ -58,8 +60,9 @@ const RegistrationApproval = ({show}) => {
                                     <th>Status</th>
                                 ):(
                                     <>
-                                <th>Email</th>
-                                <th>Phone Number</th>
+                                <th>Department</th>
+                                <th>Designation</th>
+                                <th>faculty</th>
                                 <th>Role</th>
                                 <th>Action</th>
                                 </>
@@ -67,16 +70,18 @@ const RegistrationApproval = ({show}) => {
                             </tr>
                         </thead>
                         <tbody>
+                            {/* {console.log(allRegistration)} */}
                             {allRegistration.map((user,index) => (
                                 <tr key={user._id}>
                                     <td>{index+1}</td>
                                     <td>{user.name}</td>
                                     {show==='requestBox' ? (
-                                    <th>{user.role_id===null ? ('waiting'):("")}</th>
+                                    <td>{user.role_id===null ? ('waiting'):("")}</td>
                                 ):(
                                     <>
-                                    <td>{user.email}</td>
-                                    <td>{user.phone_no}</td>
+                                    <td>{user.department_id.name}</td>
+                                    <td>{user.designation_id.name}</td>
+                                    <td>{user.faculty_id.name}</td>
                                     <td>
                                         <select
                                             value={selectedRoles[user._id] || ''}
@@ -89,7 +94,7 @@ const RegistrationApproval = ({show}) => {
                                         </select>
                                     </td>
                                     <td>
-                                        <button onClick={() => handleSubmit(user._id)}>Submit</button>
+                                        <button onClick={() => handleSubmit(user._id)}>Approve</button>
                                     </td>
                                     </>
                                     )}
@@ -97,6 +102,7 @@ const RegistrationApproval = ({show}) => {
                             ))}
                         </tbody>
                     </table>
+                    </>
                 ) : (
                     <div className='heading-NoRequest'>
                         <h1 >No requests</h1>

@@ -10,6 +10,12 @@
     width: 90%;
     border-collapse: collapse;
 }
+.heading-viewDemand{
+    display: flex;
+    margin: 1%;
+    align-items: center;
+    justify-content: center;
+}
 
 .table-ViewDemand th,
 .table-ViewDemand td {

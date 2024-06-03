@@ -2,8 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 import Loader from '../../Loader/Loader';
 import { useAlert } from 'react-alert';
-import { addSignatureRecord, clearMessage } from '../../actions/signatureRecordAction';
-import { clearError } from '../../actions/signatureRecordAction';
+import { addSignatureRecord, clearMessage,clearError } from '../../../actions/signatureRecordAction';
 
 export default function AddSignatureRecord() {
   const alert=useAlert()

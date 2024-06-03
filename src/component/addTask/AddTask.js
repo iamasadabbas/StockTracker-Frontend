@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import {addTask, clearError} from '../actions/addTaskAction'
+import {addTask, clearError} from '../../actions/addTaskAction'
 import { useDispatch,useSelector } from 'react-redux';
 import Loader from '../Loader/Loader';
 import { useAlert } from 'react-alert';

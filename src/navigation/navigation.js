@@ -1,48 +1,58 @@
 import { useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useSelector } from "react-redux";
-import SideBar from './Layout/Siderbar/Sidebar.js';
-import Loader from './Loader/Loader.js';
-import ProtectedRoute from './routes/ProtectedRoute.js';
-import MainDashboard from './dashboard/mainDashboard/mainDashboard.js';
-import Request from './Request/Request.js';
-import AddDemandProduct from './demand/addProductToDemand/AddDemandProduct.js';
-import Demand from './demand/demandPage/demand.js';
-import ViewDemandPage from './demand/viewDemand/ViewDemandPage.js';
-import TemplatePrint from './demand/printTemplate/TemplatePrint.js';
-import AddRole from './role/AddRole/AddRole.js';
-import RoleTaskEdit from './role/EditRoleTask/RoleTaskEdit.js';
-import EditTask from './role/EditRoleTask/EditTask.js';
-import AddTask from './addTask/AddTask.js';
-import AddProduct from './product/AddProduct/AddProduct.js';
-import ProductType from './product/AddProductType/ProductType.js';
-import AddUser from './user/AddUser/AddUser.js';
-import ViewUser from './user/ViewUser/ViewUser.js';
-import AddDesignation from './addDesignation/AddDesignation.js';
-import AddSignatureRecord from './signatureRecord/AddSignatureRecord/AddSignatureRecord.js';
-import { ViewSignatureRecord } from './signatureRecord/ViewSignatureRecord/ViewSignatureRecord.js';
-import RegistrationApproval from './registrationApproval/RegistrationApproval.js';
-import UserStatus from './userStatus/UserStatus.js';
-import Login from './login/Login.js';
+import SideBar from '../component/Layout/Siderbar/Sidebar.js';
+import Loader from '../component/Loader/Loader.js';
+import ProtectedRoute from '../routes/ProtectedRoute.js';
+import MainDashboard from '../component/dashboard/mainDashboard/mainDashboard.js';
+import Request from '../component/Request/Request.js';
+import AddDemandProduct from '../component/demand/addProductToDemand/AddDemandProduct.js';
+import Demand from '../component/demand/demandPage/demand.js';
+import ViewDemandPage from '../component/demand/viewDemand/ViewDemandPage.js';
+import TemplatePrint from '../component/demand/printTemplate/TemplatePrint.js';
+import AddRole from '../component/role/AddRole/AddRole.js';
+import RoleTaskEdit from '../component/role/EditRoleTask/RoleTaskEdit.js';
+import EditTask from '../component/role/EditRoleTask/EditTask.js';
+import AddTask from '../component/addTask/AddTask.js';
+import AddProduct from '../component/product/AddProduct/AddProduct.js';
+import ProductType from '../component/product/AddProductType/ProductType.js';
+import AddUser from '../component/user/AddUser/AddUser.js';
+import ViewUser from '../component/user/ViewUser/ViewUser.js';
+import AddDesignation from '../component/addDesignation/AddDesignation.js';
+import AddSignatureRecord from '../component/signatureRecord/AddSignatureRecord/AddSignatureRecord.js';
+import { ViewSignatureRecord } from '../component/signatureRecord/ViewSignatureRecord/ViewSignatureRecord.js';
+import RegistrationApproval from '../component/registrationApproval/RegistrationApproval.js';
+import UserStatus from '../component/userStatus/UserStatus.js';
+import Login from '../component/login/Login.js';
+import Header from '../component/Layout/Header/Header.js';
+import Profile from '../component/Profile/Profile.js';
+import './Navigation.css'
+import UpdateProfile from '../component/Profile/UpdateProfile.js';
 
 export default function Navigation() {
   const navigate = useNavigate();
   const { loading1, isAuthenticated, user } = useSelector((state) => state.userData);
 
-  useEffect(() => {
-    if (!loading1 && !isAuthenticated) {
-      navigate('/login');
-    }
-  }, [loading1, isAuthenticated, navigate]);
+  // useEffect(() => {
+  //   if (!loading1 && !isAuthenticated) {
+  //     navigate('/login');
+  //   }
+  // }, [loading1, isAuthenticated, navigate]);
 
   if (loading1 || isAuthenticated === undefined) {
     return <Loader />;
   }
 
   return (
+    <>
     <SideBar role={user?.role_id?.name}>
+    {/* <div className='Header-main'>
+      <Header/>
+    </div> */}
       <Routes>
       <Route path="/login" element={<Login />} />
+      {/* <Route path="/profile" element={<Profile />} /> */}
+      {/* <Route path="/updateProfile" element={<UpdateProfile />} /> */}
         <Route path="/" element={<ProtectedRoute component={MainDashboard} role={'StoreKeeper'} />} />
         <Route path="/requests" element={<ProtectedRoute component={Request} role={'StoreKeeper'} />} />
         <Route path="/demandproduct" element={<ProtectedRoute component={AddDemandProduct} role={'StoreKeeper'} />} />
@@ -64,5 +74,6 @@ export default function Navigation() {
         <Route path="/userStatus" element={<ProtectedRoute component={UserStatus} role={'Admin'} />} />
       </Routes>
     </SideBar>
+    </>
   );
 }

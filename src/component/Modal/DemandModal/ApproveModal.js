@@ -5,7 +5,6 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import ReceiveModal from './ReceiveModal';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../../Loader/Loader';
-import { getDemandById } from '../../actions/demandAction';
 
 const ApproveModal = ({ isApproveModalOpen, setIsApproveModalOpen, request_id }) => {
     const dispatch=useDispatch();
@@ -59,7 +58,10 @@ const ApproveModal = ({ isApproveModalOpen, setIsApproveModalOpen, request_id })
                             <tr>
                                 <th>Product Name</th>
                                 <th>Requested-quantity</th>
-                                <th>Received-quantity</th>
+                                {
+                                    currentDemand.status !=='Pending' &&(<th>Received quantity</th>)
+                                }
+                                
                                 {
                                     !isAllProductReceived && (<th colSpan={1}>Action</th>)
                                 }
@@ -70,7 +72,9 @@ const ApproveModal = ({ isApproveModalOpen, setIsApproveModalOpen, request_id })
                                 <tr key={product._id}>
                                     <td>{product._id.name}</td>
                                     <td>{product.quantity}</td>
-                                    <td>{product.received_quantity || 'N/A'}</td>
+                                    {
+                                        currentDemand.status !=='Pending' &&(<td>{product.received_quantity}</td>)
+                                    }
                                     {!product.received_quantity && (
                                         <td><button className='button' onClick={() => { handleReceive(product) }}>Receive</button></td>
                                     )}

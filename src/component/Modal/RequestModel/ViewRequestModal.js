@@ -3,15 +3,12 @@ import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearError, updateRequestStatus } from '../../actions/requestAction';
 import AssignModal from './AssignModal';
 import Loader from '../../Loader/Loader';
 import { useAlert } from 'react-alert';
 import './ViewRequestModal.css'
 import '../Modal.css'
-import { getAllRequest } from '../../actions/requestAction';
-import { updateRequestedProductStatus } from '../../actions/requestAction';
-
+import { getAllRequest,updateRequestedProductStatus,clearError } from '../../../actions/requestAction';
 const ViewRequestModal = ({ isModalOpen, setIsModalOpen,currentRequestId }) => {
     const { loading, requestData, error } = useSelector((state) => state.currentRequest)
     // console.log(requestData);
@@ -81,6 +78,7 @@ const ViewRequestModal = ({ isModalOpen, setIsModalOpen,currentRequestId }) => {
                     <>
                         <ModalHeader toggle={toggleModal}>
                             <FontAwesomeIcon className='svg-icon' icon={faTimes} style={{ float: 'right', cursor: 'pointer' }} onClick={toggleModal} />
+
                             <table className='View_Modal_Table'>
                                 <thead>
                                     <tr>
@@ -92,11 +90,16 @@ const ViewRequestModal = ({ isModalOpen, setIsModalOpen,currentRequestId }) => {
                             </table>
                         </ModalHeader>
                         <ModalBody>
+                            <h3 className='heading-productDetails'>Product Details:</h3>
                             <table className='View_Modal_Table'>
                                 <thead>
                                     <tr>
                                         <th>Product Name</th>
                                         <th>Requested Quantity</th>
+                                        {
+                                            requestData.status !== "waiting" &&(<th>Received Quantity</th>)
+                                        }
+                                        
                                         <th>Status</th>
                                         {/* {request.status !== "completed" && request.status !== "rejected" ? <th colSpan={2}>Action</th> : null} */}
                                     </tr>
@@ -106,6 +109,10 @@ const ViewRequestModal = ({ isModalOpen, setIsModalOpen,currentRequestId }) => {
                                         <tr key={requestedItem._id}>
                                             <td>{requestedItem._id.name}</td>
                                             <td>{requestedItem.requested_quantity}</td>
+                                            {
+                                                requestedItem.status !=="waiting" && (<td>{requestedItem.received_quantity || 'N/A'}</td>)
+                                            }
+                                            
                                             <td>{requestedItem.status}</td>
                                             {requestedItem.status === "waiting" && (
                                                 <>

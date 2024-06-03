@@ -1,5 +1,10 @@
 /* ViewSignatureRecord.css */
-
+.heading-signatureRecord{
+  display: flex;
+  margin: 1%;
+  justify-content: center;
+  align-items: center;
+}
 .vsr-table-container {
     width: 80%;
     margin: 20px auto;
@@ -20,7 +25,7 @@
   }
   
   .vsr-th {
-    background-color: #4CAF50;
+    background-color: #007bff;
     color: white;
   }
   
@@ -38,5 +43,6 @@
     margin-top: 10px;
     display: flex;
     align-items: center;
+    /* color: #007bff; */
   }
   

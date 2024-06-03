@@ -1,8 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 // import './AddUser.css'
 import { useDispatch,useSelector } from 'react-redux';
-import { addUser, getAllDesignation } from '../../actions/userAction';
-import { getAllRole } from '../../actions/roleAction';
+import { addUser, getAllDesignation,getAllRole } from '../../../actions/userAction';
 import Loader from '../../Loader/Loader';
 
 

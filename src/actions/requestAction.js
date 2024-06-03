@@ -21,7 +21,7 @@ import {
     GET_REQUEST_BY_ID_SUCCESS,
     GET_REQUEST_BY_ID_FAIL,
     CLEAR_ERROR
-} from '../Redux/constants/requestConstant.js'
+} from '../Redux/constants/requestConstant'
 import axiosInstance from '../axiosInstance/axiosInstance'
 
 export const getAllRequest = () => async (dispatch) => {
@@ -96,7 +96,8 @@ export const getRequestById = (currentRequestId) => async (dispatch) => {
       // console.log(result.data.request);
       dispatch({ type: GET_REQUEST_BY_ID_SUCCESS, payload: result.data.request })
     } catch (error) {
-      dispatch({ type: GET_REQUEST_BY_ID_FAIL, payload: error.message })
+      console.log(error);
+      dispatch({ type: GET_REQUEST_BY_ID_FAIL, payload: error.response.message })
     }
   }
 

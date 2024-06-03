@@ -3,7 +3,7 @@
   font-family: Arial, sans-serif; /* Adjust font family as needed */
   margin: 0;
   padding: 0;
-  background-color: #009578; /* Light gray background */
+  background-color: #ffffff; /* Light gray background */
   min-height: 100vh; /* Set height to 100% of viewport height (optional) */
   display: flex; /* Allow for centering of content */
   justify-content: center; /* Center content horizontally */
@@ -16,7 +16,7 @@
   padding: 30px;
   border-radius: 5px;
   width: 33%; /* Adjust width as needed */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 /* Heading Styles */
@@ -46,7 +46,7 @@
 
 /* Button Styles */
 .button {
-  background-color: #009578; /* Green background color */
+  background-color: #007BFF; /* Green background color */
   color: white;
   padding: 15px 25px;  /* Increase padding for larger button size */
   margin: 8px 0;
@@ -58,7 +58,7 @@
   width: 100%;        /* Set a specific width for the button */
 }
 .button:hover {
-  background-color: #08705b; /* Darker green on hover */
+  background-color: #0366d0; /* Darker green on hover */
 }
 
 :root {

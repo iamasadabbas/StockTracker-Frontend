@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { addProduct, clearError, clearMessage, getAllProductType } from '../../actions/productAction'
+import { addProduct, clearError, clearMessage, getAllProductType } from '../../../actions/productAction'
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../../Loader/Loader';
 import './AddProduct.css'
@@ -91,7 +91,7 @@ export default function Product() {
                                     ))}
                                 </select>
                                 <br />
-                                <input className='input' required value={description} type='text' onChange={handleDescriptionChange} placeholder='Enter description' />
+                                <input className='input'  value={description} type='text' onChange={handleDescriptionChange} placeholder='Enter description' />
                                 <button className='button' type='submit'>Add Product</button>
                             </form>
                             {error && <div className="error-message">{typeof error === 'object' ? JSON.stringify(error) : error}</div>}

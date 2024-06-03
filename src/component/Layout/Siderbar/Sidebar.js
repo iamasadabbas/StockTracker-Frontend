@@ -11,7 +11,7 @@ import { FaUserTag, FaUserPen } from "react-icons/fa6";
 import { IoIosLogOut } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../actions/userDataAction";
+import { logout } from "../../../actions/userDataAction";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import SidebarMenu from "./SidebarMenu";
@@ -177,7 +177,7 @@ const SideBar = ({ children, role }) => {
     },
   };
 
-  const filteredRoutes = routes.filter(route => route.roles.includes(role));
+  const filteredRoutes = role === "SuperAdmin" ? routes : routes.filter(route => route.roles.includes(role));
 
   return (
     <div className="main-container">

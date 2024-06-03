@@ -1,11 +1,9 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { addProduct, clearError, getAllProductType } from '../../actions/productAction'
+import {  clearError,addProductType,clearMessage } from '../../../actions/productAction'
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../../Loader/Loader';
 import '../AddProduct/AddProduct.css'
 import { useAlert } from 'react-alert';
-import { addProductType } from '../../actions/productAction';
-import { clearMessage } from '../../actions/productAction';
 
 export default function ProductType() {
     const alert=useAlert()

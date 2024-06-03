@@ -6,7 +6,7 @@ import './Login.css';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import { useAlert } from 'react-alert';
-import { login, clearError } from '../actions/userDataAction';
+import { login, clearError } from '../../actions/userDataAction';
 import Loader from '../Loader/Loader';
 
 const Login = () => {

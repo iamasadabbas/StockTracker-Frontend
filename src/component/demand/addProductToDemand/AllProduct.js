@@ -6,9 +6,9 @@ import Loader from '../../Loader/Loader';
 import '../../Modal/Modal.css';
 import '../AllProduct.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { ADD_DEMAND_DATA } from '../../Redux/constants/demandConstants';
+import { ADD_DEMAND_DATA } from '../../../Redux/constants/demandConstants';
 import { useNavigate } from 'react-router-dom';
-import { getAllProduct, clearError } from '../../actions/demandAction';
+import { getAllProduct, clearError } from '../../../actions/demandAction';
 import { useAlert } from 'react-alert';
 
 function AllProductTable() {

@@ -2,11 +2,10 @@ import React, { Fragment, useEffect, useState } from 'react';
 import './Bar.css';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { DEMAND_DETAIL } from '../../Redux/constants/demandConstants';
-import { getAllLocation } from '../../actions/demandAction';
+import { DEMAND_DETAIL } from '../../../Redux/constants/demandConstants';
+import { getAllLocation,clearError } from '../../../actions/demandAction';
 import Loader from '../../Loader/Loader';
 import { useAlert } from 'react-alert';
-import { clearError } from '../../actions/demandAction';
 
 function Bar({ print }) {
     const alert = useAlert();
@@ -37,11 +36,12 @@ function Bar({ print }) {
     useEffect(() => {
         if (error) {
             alert.error(error);
-            dispatch(clearError());
-        } else {
+          return ()=>  dispatch(clearError());
+        }else{
+
             dispatch(getAllLocation());
         }
-    }, [error, dispatch, alert]);
+    }, [error]);
 
     const handlePrint = () => {
         print();

@@ -10,7 +10,7 @@ import { addDesignationReducer } from '../reducer/addDesignationReducer';
 import { addSignatureRecordReducer } from '../reducer/signatureRecordReducer';
 import { dashboardReducer } from '../reducer/dashboardReducer';
 import { allRegistrationApproval } from '../reducer/registrationApprovalReducer';
-import {userDataReducer} from '../reducer/userDataReducer'
+import {userDataReducer,profileReducer} from '../reducer/userDataReducer'
 
 export const rootReducer = combineReducers({
     requests:requestReducer,
@@ -30,5 +30,6 @@ export const rootReducer = combineReducers({
     dashboard:dashboardReducer,
     allRegistration:allRegistrationApproval,
     currentRequest:currentRequestReducer,
-    userData:userDataReducer
+    userData:userDataReducer,
+    profile:profileReducer
 });

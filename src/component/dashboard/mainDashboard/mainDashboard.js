@@ -14,8 +14,9 @@ import {
   getProductCount,
   getWaitingProductRequest,
   get7DaysRequest,
-  get7DaysUserApproval
-} from '../../actions/dashboardAction';
+  get7DaysUserApproval,
+  clearError
+} from '../../../actions/dashboardAction';
 import './mainDashboard.css';
 import { VscPackage } from "react-icons/vsc";
 import { AiOutlineStock } from "react-icons/ai";
@@ -50,7 +51,7 @@ const MainDashboard = () => {
   } = useSelector((state) => state.dashboard);
 
   useEffect(() => {
-    if (user && user?.role_id && user?.role_id?.name) {
+    if (isAuthenticated && user && user?.role_id && user?.role_id?.name) {
       setRole(user.role_id.name);
     }
   }, [user]);
@@ -114,7 +115,7 @@ const MainDashboard = () => {
       dispatch(get7DaysRequest());
       dispatch(getProductCount());
       dispatch(getWaitingProductRequest());
-    } else if (role === 'Admin') {
+    } else if (role === 'Admin' || role === 'SuperAdmin') {
       dispatch(getTotalUserCount());
       dispatch(getTotalActiveUserCount());
       dispatch(getTotalRoleCount());
@@ -124,16 +125,11 @@ const MainDashboard = () => {
   }, [dispatch, role]);
 
   useEffect(() => {
-    console.log('Role:', role);
-    console.log('Admin data:', {
-      totalUser,
-      totalActiveUser,
-      totalRole,
-      totalUserApproval,
-      userApproval,
-      approvalCounts,
-    });
-  }, [role, totalUser, totalActiveUser, totalRole, totalUserApproval, userApproval, approvalCounts]);
+    if(error){
+      alert.error(error);
+      return ()=> dispatch(clearError())
+    }
+  }, [error]);
 
   const isDataLoadedForStoreKeeper = () => (
     waitingRequestCount !== undefined && productCount !== undefined && request !== undefined && lowStockProduct !== undefined && requestCounts !== undefined && outOfStockProduct !== undefined
@@ -150,7 +146,7 @@ const MainDashboard = () => {
         ? (
         <Loader />
       ) : (
-        error ? <div>{error}</div> : (
+        error ? <div>{}</div> : (
           <div>
             {/* {console.log(isDataLoadedForStoreKeeper)} */}
             {role === "StoreKeeper" && isDataLoadedForStoreKeeper() && (
@@ -169,7 +165,7 @@ const MainDashboard = () => {
                 </div>
               </div>
             )}
-            {role === "Admin" && isDataLoadedForAdmin() && (
+            {(role === "Admin" || role === "SuperAdmin")  && isDataLoadedForAdmin() && (
               <div>
                 <h1 className='dashboard-heading'>Dashboard</h1>
                 <div className='cardView-dashboard'>

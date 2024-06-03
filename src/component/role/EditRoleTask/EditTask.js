@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAlert } from 'react-alert';
-import { getRoleTasks, updateRoleTask, clearError } from '../../actions/roleAction';
+import { getRoleTasks, updateRoleTask, clearError } from '../../../actions/roleAction';
 import './RoleTaskEdit.css';
 import Loader from '../../Loader/Loader';
 

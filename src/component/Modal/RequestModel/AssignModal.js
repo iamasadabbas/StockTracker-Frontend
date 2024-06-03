@@ -3,13 +3,11 @@ import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useAlert } from 'react-alert';
-import { getProductQuantity, updateProductQuantity, updateRequestedProductStatus, getRequestedProduct, updateRequestStatus, clearError } from '../../actions/requestAction.js';
+import { getProductQuantity, updateProductQuantity, updateRequestedProductStatus, getRequestedProduct, updateRequestStatus, clearError } from '../../../actions/requestAction.js';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllRequest } from '../../actions/requestAction.js';
 
 import Loader from '../../Loader/Loader.js';
 import '../Modal.css'
-import { current } from '@reduxjs/toolkit';
 
 const AssignModal = ({ isAssignModalOpen, setIsAssignModalOpen, requestItems, currentRequestId, requestedProduct }) => {
     const dispatch = useDispatch();
@@ -34,7 +32,7 @@ const AssignModal = ({ isAssignModalOpen, setIsAssignModalOpen, requestItems, cu
         // console.log(currentRequestId);
         try {
             const received_quantity = assignInput;
-            const status='delivered'
+            const status='assigned'
             dispatch(updateRequestedProductStatus(currentRequestId, product_id, received_quantity,status))
             const remainingQuantity = productAvailableQuantity - assignInput;
             dispatch(updateProductQuantity(product_id, remainingQuantity))
