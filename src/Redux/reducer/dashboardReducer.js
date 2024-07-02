@@ -85,12 +85,14 @@ export const dashboardReducer = (state = {message:'',productCount:0}, action) =>
           requestCounts:action.payload.requestCounts
         };
       case GET_7DAYS_USER_APPROVAL_SUCCESS:
+        console.log(action.payload);
         return {
             ...state,
           loading: false,
           approvalCounts:action.payload
         };
       case GET_USER_APPROVAL_REQUEST_SUCCESS:
+        console.log(action.payload);
         return {
             ...state,
           loading: false,

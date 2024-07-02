@@ -1,25 +1,28 @@
 .loading {
-    width: 100vw;
-    height: 100vh;
-    background-color: white;
-    display: grid;
-    place-items: center;
-    max-width: 100%;
+  width: 100vw;
+  height: 100vh;
+  background-color: #f0f2f5;
+  display: grid;
+  place-items: center;
+  max-width: 100%;
+}
+
+.loading > div {
+  width: 10vmax;
+  height: 10vmax;
+  display: inline-block;
+  border: 10px solid transparent;
+  border-top: 10px solid #3498db; /* Change color as needed */
+  border-radius: 50%;
+  animation: loadingRotate 1s ease-in-out infinite;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes loadingRotate {
+  0% {
+    transform: rotate(0deg);
   }
-  
-  .loading > div {
-    width: 10vmax;
-    height: 10vmax;
-    border-bottom: 5px solid rgba(0, 0, 0, 0.719);
-  
-    border-radius: 50%;
-  
-    animation: loadingRotate 800ms linear infinite;
+  100% {
+    transform: rotate(360deg);
   }
-  
-  @keyframes loadingRotate {
-    to {
-      transform: rotateZ(-360deg);
-    }
-  }
-  
+}

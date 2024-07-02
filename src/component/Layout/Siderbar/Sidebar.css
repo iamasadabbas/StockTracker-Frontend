@@ -7,7 +7,6 @@
     display: flex;
   }
   main {
-    /* padding: 10px; */
     width: 100%;
   }
   
@@ -17,12 +16,12 @@
     place-items: center;
   }
   
-  /* Sidebar */
   .sidebar {
     background: rgb(0, 7, 61);
     color: white;
     height: 100vh;
     overflow-y: auto;
+    z-index: 1;
   }
   
   .top_section {
@@ -42,22 +41,6 @@
   .hide {
     display: none;
   }
-  
-  /* .search {
-    display: flex;
-    align-items: center;
-    margin: 10px 0;
-    height: 30px;
-    padding: 10px;
-  }
-  .search input {
-    border: none;
-    margin-left: 10px;
-    border-radius: 5px;
-    background: rgb(238, 238, 238);
-  
-    color: white;
-  } */
   
   .routes {
     margin-top: 15px;
@@ -95,7 +78,6 @@
   .menu {
     display: flex;
     color: white;
-  
     padding: 5px 10px;
     border-right: 4px solid transparent;
     transition: 0.2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
@@ -103,7 +85,13 @@
   }
   .menu_item {
     display: flex;
+    align-items: center;
     gap: 10px;
+  }
+  .icon{
+    display: flex;
+    font-size: 30px;
+    align-self: center;
   }
   .menu_container {
     display: flex;
@@ -112,17 +100,6 @@
   .menu_container .link {
     padding-left: 20px;
     border-bottom: #fff 0.5px solid;
-  }
-
-  .logout-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px;
-    cursor: pointer;
-    background-color:rgb(0, 7, 61); /* Adjust background color as needed */
-    border: none; /* Adjust border color as needed */
-    border-radius: 4px; /* Adjust border radius as needed */
   }
   
   .logout-button:hover {

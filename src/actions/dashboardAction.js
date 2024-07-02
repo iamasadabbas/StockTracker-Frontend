@@ -106,7 +106,7 @@ export const getUserApproval = () => async (dispatch) => {
       dispatch({ type: GET_USER_APPROVAL_REQUEST_REQUEST });
   
       const response = await axiosInstance.get(`/user/getUserApprovalRequest`);
-      // console.log(response.data.totalRole);
+      console.log(response.data);
       dispatch({ type: GET_USER_APPROVAL_REQUEST_SUCCESS, payload: response.data });
     } catch (error) {
       console.log(error);

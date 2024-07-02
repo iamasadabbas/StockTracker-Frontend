@@ -14,6 +14,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../actions/userDataAction";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { GoOrganization } from "react-icons/go";
+import ReactTooltip from 'react-tooltip';
+
 import SidebarMenu from "./SidebarMenu";
 import './Sidebar.css';
 
@@ -22,7 +25,8 @@ const routes = [
     path: "/",
     name: "Dashboard",
     icon: <FaHome />,
-    roles: ["Admin", "StoreKeeper"]
+    roles: ["Admin", "StoreKeeper","SuperAdmin"]
+    
   },
   {
     path: "/requests",
@@ -43,14 +47,13 @@ const routes = [
     roles: ["StoreKeeper"]
   },
   {
-    path: "/Role",
     name: "Role",
     icon: <BsFillPersonCheckFill />,
     roles: ["Admin"],
     subRoutes: [
       {
-        path: "/addrole",
-        name: "Add Role",
+        path: "/role",
+        name: "Role",
         icon: <FaUser />,
         roles: ["Admin"]
       },
@@ -63,16 +66,23 @@ const routes = [
     ]
   },
   {
-    path: "/addtask",
-    name: "Add Task",
+    path: "/task",
+    name: "Task",
     icon: <MdOutlineTask />,
     roles: ["Admin"]
   },
+  // {
+  //   path: "/addtask",
+  //   name: "Add Task",
+  //   icon: <MdOutlineTask />,
+  //   roles: ["Admin"]
+  // },
+  
   {
     path: "/registrationApproval",
     name: "User Approval",
     icon: <FaUserTag />,
-    roles: ["StoreKeeper"]
+    roles: ["Admin"]
   },
   {
     path: "/userStatus",
@@ -86,8 +96,8 @@ const routes = [
     roles: ["StoreKeeper"],
     subRoutes: [
       {
-        path: "/addproduct",
-        name: "Add Product",
+        path: "/products",
+        name: "Products",
         icon: <FaUser />,
         roles: ["StoreKeeper"]
       },
@@ -95,6 +105,12 @@ const routes = [
         path: "/producttype",
         name: "Product Type",
         icon: <FaLock />,
+        roles: ["StoreKeeper"]
+      },
+      {
+        path: "/availableproduct",
+        name: "Available Product",
+        icon: <BsClipboardData />,
         roles: ["StoreKeeper"]
       }
     ]
@@ -125,6 +141,12 @@ const routes = [
     roles: ["Admin"]
   },
   {
+    path: "/company",
+    name: "Company",
+    icon: <GoOrganization />,
+    roles: ["StoreKeeper"]
+  },
+  {
     path: "/adddesignation",
     name: "Add Designation",
     icon: <BsCartCheck />,
@@ -137,11 +159,6 @@ const SideBar = ({ children, role }) => {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
-
-  const handleLogout = async () => {
-    await dispatch(logout());
-    navigate('/login');
-  };
 
   const inputAnimation = {
     hidden: {
@@ -183,7 +200,7 @@ const SideBar = ({ children, role }) => {
     <div className="main-container">
       <motion.div
         animate={{
-          width: isOpen ? "15%" : "3.5%",
+          width: isOpen ? "15%" : "4%",
           transition: {
             duration: 0.5,
             type: "spring",
@@ -251,22 +268,7 @@ const SideBar = ({ children, role }) => {
             );
           })}
         </section>
-        <div className="logout-button" onClick={handleLogout}>
-          <IoIosLogOut className="icon" />
-          <AnimatePresence>
-            {isOpen && (
-              <motion.div
-                variants={showAnimation}
-                initial="hidden"
-                animate="show"
-                exit="hidden"
-                className="link_text"
-              >
-                Logout
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+        
       </motion.div>
 
       <main style={{ height: "100vh", overflowY: "auto" }}>{children}</main>

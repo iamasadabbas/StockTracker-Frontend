@@ -1,29 +1,35 @@
-import React, { Fragment, useRef, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { Fragment, useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import './Login.css';
-import LockOpenIcon from '@mui/icons-material/LockOpen';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import { useAlert } from 'react-alert';
 import { login, clearError } from '../../actions/userDataAction';
 import Loader from '../Loader/Loader';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import './Login.css';
+import UIIT from './UIIT.jpg';
 
 const Login = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const navigate = useNavigate();
-  const { error, loading, isAuthenticated,message } = useSelector(
+  const { error, loading, isAuthenticated, message } = useSelector(
     (state) => state.userData
   );
-  // console.log(message);
 
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const loginSubmit = (e) => {
     e.preventDefault();
     dispatch(login(loginEmail, loginPassword));
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   useEffect(() => {
@@ -33,11 +39,10 @@ const Login = () => {
     } else if (message) {
       alert.info(message);
     }
-     if (isAuthenticated) {
+    if (isAuthenticated) {
       navigate('/');
     }
   }, [dispatch, error, alert, navigate, isAuthenticated, message]);
-  
 
   return (
     <Fragment>
@@ -46,9 +51,11 @@ const Login = () => {
       ) : (
         <Fragment>
           <div className="LoginContainer">
-
+            <div className="imageContainer">
+              <img src={UIIT} alt="Department" className="LoginImage" />
+            </div>
             <div className="LoginBox">
-              <p className='login-tag'>LOGIN</p>
+              <p className="login-tag">LOGIN</p>
               <form className="loginForm" onSubmit={loginSubmit}>
                 <div className="loginEmail">
                   <MailOutlineIcon />
@@ -63,12 +70,19 @@ const Login = () => {
                 <div className="loginPassword">
                   <LockOpenIcon />
                   <input
-                    type="password"
+                    type={showPassword ? 'text' : 'password'}
                     placeholder="Password"
                     required
                     value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value)}
                   />
+                  <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="passwordVisibilityButton"
+                  >
+                    {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                  </button>
                 </div>
                 <Link to="/password/forgot">Forgot Password?</Link>
                 <input type="submit" value="Login" className="loginBtn" />

@@ -28,13 +28,14 @@ export const getAllRequest = () => async (dispatch) => {
     try {
       dispatch({ type: GET_ALL_REQUEST_REQUEST })
       const { data } = await axiosInstance.get(`/request/getAllProductRequest`)
-      dispatch({ type: GET_ALL_REQUEST_SUCCESS, payload: data.request })
+      // console.log(data);
+      dispatch({ type: GET_ALL_REQUEST_SUCCESS, payload: data })
     } catch (error) {
       dispatch({ type: GET_ALL_REQUEST_FAIL, payload: error.message })
     }
   }
 export const getProductQuantity = (product_id) => async (dispatch) => {
-  console.log(product_id);
+  // console.log(product_id);
     try {
       dispatch({ type: GET_PRODUCT_QUANTITY_REQUEST })
       const  result  = await axiosInstance.get(`/productLocation/getProductQuantity/${product_id}`)
@@ -47,16 +48,16 @@ export const getProductQuantity = (product_id) => async (dispatch) => {
   }
 
 
-export const updateRequestedProductStatus = (requestId,productId,received_quantity,status) => async (dispatch) => {
+export const updateRequestedProductStatus = (requestId,productId,received_quantity,status,comment) => async (dispatch) => {
   // console.log(requestId);
     try {
       dispatch({ type: UPDATE_REQUESTED_PRODUCT_STATUS_REQUEST })
       let config = {
         headers: { 'Content-Type': 'application/json' }
     }
-      const  result  = await axiosInstance.put(`/request/updateUserRequestedProductById/${requestId}/${productId}`,{ status: `${status}`, received_quantity: `${received_quantity}`,config })
-    // console.log(result.data[0]);
-      dispatch({ type: UPDATE_REQUESTED_PRODUCT_STATUS_SUCCESS, payload: result.data[0] })
+      const  result  = await axiosInstance.put(`/request/updateUserRequestedProductById/${requestId}/${productId}`,{ status: `${status}`, received_quantity: `${received_quantity}`,comment:comment,config })
+    // console.log(result.data);
+      dispatch({ type: UPDATE_REQUESTED_PRODUCT_STATUS_SUCCESS, payload: result.data })
     } catch (error) {
       dispatch({ type: UPDATE_REQUESTED_PRODUCT_STATUS_FAIL, payload: error.data.message })
     }
@@ -109,6 +110,7 @@ export const getRequestById = (currentRequestId) => async (dispatch) => {
         headers: { 'Content-Type': 'application/json' }
       };
        const result = await axiosInstance.put(`/request/updateRequestStatus/${currentRequestId}`, { status: requestStatus }, config);
+       console.log(result.data);
   
       if (result) {
         dispatch({ type: UPDATE_REQUEST_STATUS_SUCCESS, payload: result.data });

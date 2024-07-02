@@ -28,38 +28,55 @@ export const requestReducer = (state = { requests: [] }, action) => {
     switch (action.type) {
         case UPDATE_REQUEST_STATUS_REQUEST:
         case GET_ALL_REQUEST_REQUEST:
-
+        case UPDATE_REQUESTED_PRODUCT_STATUS_REQUEST:
+        case GET_REQUEST_BY_ID_REQUEST:
             return {
                 ...state,
                 loading: true,
-            }
+            };
         case UPDATE_REQUEST_STATUS_SUCCESS:
-        case GET_ALL_REQUEST_SUCCESS:
-            // console.log(action.payload);
+        case UPDATE_REQUESTED_PRODUCT_STATUS_SUCCESS:
+            // console.log(action.payload.newData[0]);
             return {
                 ...state,
                 loading: false,
-                requests: action.payload
+                requests: action.payload.allRequest,
+                requestData: action.payload.newData[0],
+            };
+        case GET_ALL_REQUEST_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                requests: action.payload.allRequest,
+            };
+        case GET_REQUEST_BY_ID_SUCCESS:
+            // case UPDATE_REQUESTED_PRODUCT_STATUS_SUCCESS:
+
+            return {
+                ...state,
+                loading: false,
+                requestData: action.payload
             }
         case UPDATE_REQUEST_STATUS_FAIL:
         case GET_ALL_REQUEST_FAIL:
-
+        case UPDATE_REQUESTED_PRODUCT_STATUS_FAIL:
+        case GET_REQUEST_BY_ID_FAIL:
             return {
                 ...state,
                 loading: false,
                 error: action.payload,
-                requests: null,
-
-            }
+                // requests: null,
+            };
         case CLEAR_ERROR:
             return {
                 ...state,
                 error: null
-            }
+            };
         default:
-            return { ...state }
+            return state;
     }
-}
+};
+
 export const productQuantityReducer = (state = { quantity: 0 }, action) => {
     switch (action.type) {
         case GET_PRODUCT_QUANTITY_REQUEST:
@@ -131,35 +148,35 @@ export const requestedProductReducer = (state = { requestedProduct: [] }, action
 }
 
 
-export const currentRequestReducer = (state = { request: [] }, action) => {
-    switch (action.type) {
-        case GET_REQUEST_BY_ID_REQUEST:
-        case UPDATE_REQUESTED_PRODUCT_STATUS_REQUEST:
-            return {
-                loading: true,
-            }
-        case GET_REQUEST_BY_ID_SUCCESS:
-        case UPDATE_REQUESTED_PRODUCT_STATUS_SUCCESS:
+// export const currentRequestReducer = (state = { requestData: [] }, action) => {
+//     switch (action.type) {
+//         case GET_REQUEST_BY_ID_REQUEST:
+//             // case UPDATE_REQUESTED_PRODUCT_STATUS_REQUEST:
+//             return {
+//                 loading: true,
+//             }
+//         case GET_REQUEST_BY_ID_SUCCESS:
+//             // case UPDATE_REQUESTED_PRODUCT_STATUS_SUCCESS:
 
-            return {
-                loading: false,
-                requestData: action.payload
-            }
-        case GET_REQUEST_BY_ID_FAIL:
-        case UPDATE_REQUESTED_PRODUCT_STATUS_FAIL:
+//             return {
+//                 loading: false,
+//                 requestData: action.payload
+//             }
+//         case GET_REQUEST_BY_ID_FAIL:
+//             // case UPDATE_REQUESTED_PRODUCT_STATUS_FAIL:
 
 
-            return {
-                loading: false,
-                error: action.payload,
+//             return {
+//                 loading: false,
+//                 error: action.payload,
 
-            }
-        case CLEAR_ERROR:
-            return {
-                ...state,
-                error: null
-            }
-        default:
-            return { ...state }
-    }
-}
+//             }
+//         case CLEAR_ERROR:
+//             return {
+//                 ...state,
+//                 error: null
+//             }
+//         default:
+//             return { ...state }
+//     }
+// }

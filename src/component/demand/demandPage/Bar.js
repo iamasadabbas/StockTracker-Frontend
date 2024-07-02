@@ -3,7 +3,7 @@ import './Bar.css';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { DEMAND_DETAIL } from '../../../Redux/constants/demandConstants';
-import { getAllLocation,clearError } from '../../../actions/demandAction';
+import { getAllLocation, clearError } from '../../../actions/demandAction';
 import Loader from '../../Loader/Loader';
 import { useAlert } from 'react-alert';
 
@@ -36,8 +36,8 @@ function Bar({ print }) {
     useEffect(() => {
         if (error) {
             alert.error(error);
-          return ()=>  dispatch(clearError());
-        }else{
+            return () => dispatch(clearError());
+        } else {
 
             dispatch(getAllLocation());
         }
@@ -62,13 +62,15 @@ function Bar({ print }) {
     const handleSubjectChange = (e) => {
         setSubjectInput(e.target.value);
     };
+    const handleViewDemandClick=()=>{
+        navigate('/viewdemand')
+    }
 
     const handleAddItem = () => {
         dispatch({ type: DEMAND_DETAIL, payload: { Subject: subjectInput, ApplicationID: applicationIdInput, Date: dateInput, locationId: locationInput } });
         navigate('/demandproduct');
     };
 
-    // Function to check if all input fields are filled
     const allFieldsFilled = applicationIdInput.trim() !== '' && dateInput.trim() !== '' && subjectInput.trim() !== '' && locationInput.trim() !== '';
 
     return (
@@ -78,25 +80,40 @@ function Bar({ print }) {
             ) : error ? (
                 <div></div>
             ) : (
-                <div>
-                    <h1 className='heading'>Demand</h1>
-                    <div className='body-Bar'>
-                        <label className='label-bar'>Subject: </label>
-                        <textarea type='text' className='Input-Bar' value={subjectInput} onChange={handleSubjectChange} placeholder='Enter subject'></textarea>
-                        <label className='label-bar'>Application id: </label>
-                        <input type='text' className='Input-Bar' value={applicationIdInput} onChange={handleApplicationIdChange} placeholder='Enter application id'></input>
-                        <label className='label-bar'>Application date:</label>
-                        <input type='date' className='Input-Bar' value={dateInput} onChange={handleDateChange}></input>
-                        <label className='label-bar'>Location :</label>
-                        <select className='Input-Bar' value={locationInput} onChange={handleLocationChange}>
+                <div className="main-page-container" style={{paddingTop:'60px'}}>
+                    <div className='pageName_And_Button'>
+                        <h2 className="add-visa-type-title">Add Demand</h2>
+                        <button className="button-yellow" onClick={handleViewDemandClick}>View Demand</button>
+                    </div>
+                    <div className='input-bar' style={{paddingTop:"20px"}}>
+                        <div className='input-container'>
+                        <div className='input-with-label'>
+                        <label className='required'>Subject: </label>
+                        <textarea type='text' required className='Input-Bar' value={subjectInput} onChange={handleSubjectChange} placeholder='Enter subject'></textarea>
+                        </div>
+                        <div className='input-with-label'>
+                        <label className='required'>Application id: </label>
+                        <input type='text' required className='Input-Bar' value={applicationIdInput} onChange={handleApplicationIdChange} placeholder='Enter application id'></input>
+                        </div>
+                        <div className='input-with-label'>
+                        <label className='required'>Application date:</label>
+                        <input type='date' required className='Input-Bar' value={dateInput} onChange={handleDateChange}></input>
+                        </div>
+                        <div className='input-with-label'>
+                        <label className='required'>Location :</label>
+                        <select className='Input-Bar' required value={locationInput} onChange={handleLocationChange}>
                             <option value="" disabled>Select location</option>
                             {allLocation?.map(location => (
                                 <option key={location._id} value={location._id}>{location.name}</option>
                             ))}
                         </select>
+                        </div>
+                        </div>
                     </div>
                     {/* Render button only if all fields are filled */}
-                    {allFieldsFilled && <button className='button-addItem' onClick={handleAddItem}>Add Item</button>}
+                    <div className='clear-and-Add-button-container' style={{marginTop:'10px'}}>
+                    {allFieldsFilled && <button className='clear-And-Add-Record-button' onClick={handleAddItem}>Add Item</button>}
+                    </div>
                 </div>
             )}
         </Fragment>

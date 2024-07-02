@@ -28,6 +28,7 @@ import { PiOfficeChairFill } from "react-icons/pi";
 import { IoTimeSharp } from "react-icons/io5";
 
 const MainDashboard = () => {
+  // console.log('entered');
   // const role='Admin'
   const [role, setRole] = useState('');
   const { loading1, isAuthenticated, user } = useSelector((state) => state.userData);
@@ -134,10 +135,28 @@ const MainDashboard = () => {
   const isDataLoadedForStoreKeeper = () => (
     waitingRequestCount !== undefined && productCount !== undefined && request !== undefined && lowStockProduct !== undefined && requestCounts !== undefined && outOfStockProduct !== undefined
   );
+// console.log(totalUser);
+// console.log(totalActiveUser);
+// console.log(totalRole);
+// console.log(totalUserApproval);
+// console.log(approvalCounts);
+const isDataLoadedForAdmin = () => {
+  console.log('totalUser:', totalUser);
+  console.log('totalActiveUser:', totalActiveUser);
+  console.log('totalRole:', totalRole);
+  console.log('totalUserApproval:', totalUserApproval);
+  console.log('userApproval:', userApproval);
+  console.log('approvalCounts:', approvalCounts);
 
-  const isDataLoadedForAdmin = () => (
-     totalUser !== undefined && totalActiveUser !== undefined && totalRole !== undefined && totalUserApproval !== undefined && userApproval !== undefined && approvalCounts !== undefined
+  return (
+    totalUser !== undefined &&
+    totalActiveUser !== undefined &&
+    totalRole !== undefined &&
+    totalUserApproval !== undefined &&
+    approvalCounts !== undefined
   );
+};
+  console.log(isDataLoadedForAdmin);
 
   return (
     <Fragment>
@@ -146,9 +165,9 @@ const MainDashboard = () => {
         ? (
         <Loader />
       ) : (
-        error ? <div>{}</div> : (
+        error ? <div>{error}</div> : (
           <div>
-            {/* {console.log(isDataLoadedForStoreKeeper)} */}
+            {/* {console.log('enter')} */}
             {role === "StoreKeeper" && isDataLoadedForStoreKeeper() && (
               <div>
                 <h1 className='dashboard-heading'>Dashboard</h1>
@@ -165,8 +184,12 @@ const MainDashboard = () => {
                 </div>
               </div>
             )}
+            {/* {console.log(isDataLoadedForAdmin)} */}
             {(role === "Admin" || role === "SuperAdmin")  && isDataLoadedForAdmin() && (
               <div>
+                {/* {
+                  console.log('enter')
+                } */}
                 <h1 className='dashboard-heading'>Dashboard</h1>
                 <div className='cardView-dashboard'>
                   <CardView cardDetails={cardDetailsAdmin} />
@@ -174,9 +197,12 @@ const MainDashboard = () => {
                 <div className='chartPlusRequestBox'>
                   <div className='LineChart'>
                     <LineChart data={approvalCounts} label={'User Approval'} />
-                  </div>
+                  </div >
+                  <div className='user_request_container'>
+                    <h2>Approval Requests</h2>
                   <div className='requestbox'>
                     <RegistrationApproval show={'requestBox'} />
+                  </div>
                   </div>
                 </div>
               </div>

@@ -17,7 +17,8 @@ import {
     ASSIGN_TASKS_TO_ROLES_FAIL,
     UPDATE_ROLE_TASK_SUCCESS,
     UPDATE_ROLE_TASK_FAIL,
-    CLEAR_ERROR
+    CLEAR_ERROR,
+    CLEAR_MESSAGE,
 } from '../Redux/constants/roleConstant'
 
 export const addRole = (roleInput, descriptionInput) => async (dispatch) => {
@@ -82,7 +83,7 @@ export const getAllTask = () => async (dispatch) => {
 
         dispatch({ type: ASSIGN_TASKS_TO_ROLES_SUCCESS });
     } catch (error) {
-        dispatch({ type: ASSIGN_TASKS_TO_ROLES_FAIL, payload: error.response.data.message });
+        dispatch({ type: ASSIGN_TASKS_TO_ROLES_FAIL, payload: error.response });
     }
 };
 
@@ -109,4 +110,7 @@ export const updateRoleTask = (roleId, taskId, status) => async (dispatch) => {
 };
   export const clearError = () => async (dispatch) => {
     dispatch({ type: CLEAR_ERROR });
+  };
+  export const clearMessage = () => async (dispatch) => {
+    dispatch({ type: CLEAR_MESSAGE });
   };

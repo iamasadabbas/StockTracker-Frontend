@@ -40,7 +40,7 @@ const ApproveModal = ({ isApproveModalOpen, setIsApproveModalOpen, request_id })
                 isOpen={isApproveModalOpen}
                 toggle={clickCloseIcon}
             >
-                <ModalHeader toggle={clickCloseIcon}>
+                <ModalHeader >
                     <FontAwesomeIcon className='svg-icon' icon={faTimes} style={{ float: 'right', cursor: 'pointer' }} onClick={clickCloseIcon} />
                     <table className='View_Modal_Table'>
                         <thead>
@@ -53,17 +53,17 @@ const ApproveModal = ({ isApproveModalOpen, setIsApproveModalOpen, request_id })
                     </table>
                 </ModalHeader>
                 <ModalBody>
-                    <table className='table'>
-                        <thead>
+                    <table className='modal-body-table'>
+                        <thead >
                             <tr>
-                                <th>Product Name</th>
-                                <th>Requested-quantity</th>
+                                <th style={{background:'#d4d3d2', color:'black'}}>Product Name</th>
+                                <th style={{background:'#d4d3d2', color:'black'}}>Requested-quantity</th>
                                 {
-                                    currentDemand.status !=='Pending' &&(<th>Received quantity</th>)
+                                    currentDemand.status !=='Pending' &&(<th style={{background:'#d4d3d2', color:'black'}} >Received quantity</th>)
                                 }
                                 
                                 {
-                                    !isAllProductReceived && (<th colSpan={1}>Action</th>)
+                                    !isAllProductReceived && (<th style={{background:'#d4d3d2', color:'black'}} colSpan={1}>Action</th>)
                                 }
                             </tr>
                         </thead>

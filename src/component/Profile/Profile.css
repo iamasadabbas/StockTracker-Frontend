@@ -4,6 +4,7 @@
     height: 100vh;
     position: fixed;
     max-width: 100%;
+    margin-left: 100px;
     top: 0;
     left: 0;
     background-color: white;

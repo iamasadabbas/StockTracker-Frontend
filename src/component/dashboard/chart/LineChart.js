@@ -31,12 +31,16 @@ const LineChart = ({ data, label }) => {
             title: {
               display: true,
               text: `Number of ${label}`
+            },
+            ticks: {
+              callback: function(value) { if (Number.isInteger(value)) { return value; } },
+              stepSize: 1
             }
           },
           x: {
             title: {
               display: true,
-              text: 'Day'
+              text: 'Days'
             }
           }
         },

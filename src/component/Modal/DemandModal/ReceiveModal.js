@@ -59,7 +59,7 @@ const ReceiveModal = ({ isReceiveModalOpen, setIsReceiveModalOpen, product, requ
                     <FontAwesomeIcon className='svg-icon' icon={faTimes} style={{ float: 'right', cursor: 'pointer' }} onClick={handleCloseClick} />
                 </ModalHeader>
                 <ModalBody>
-                    <table className='table'>
+                    <table className='modal-body-table'>
                         <thead>
 
                             <th>Name</th>

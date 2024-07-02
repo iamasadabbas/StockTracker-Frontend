@@ -12,7 +12,7 @@
 }
 .heading-viewDemand{
     display: flex;
-    margin: 1%;
+    margin-top: 3.5rem;
     align-items: center;
     justify-content: center;
 }

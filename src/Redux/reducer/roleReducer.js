@@ -18,39 +18,10 @@ import {
   CLEAR_ERROR,
   CLEAR_MESSAGE
 } from "../constants/roleConstant";
-export const addRoleReducer = (state = {}, action) => {
+
+export const roleReducer = (state = { allRole: [], allTask: [], roleTasks: [] }, action) => {
   switch (action.type) {
     case ADD_ROLE_REQUEST:
-      return {
-        loading: true,
-      };
-    case ADD_ROLE_SUCCESS:
-      return {
-        loading: false,
-        message: action.payload,
-      };
-    case ADD_ROLE_FAIL:
-      return {
-        loading: false,
-        error: action.payload,
-      };
-    case CLEAR_ERROR:
-      return {
-        ...state,
-        error: null
-      }
-    case CLEAR_MESSAGE:
-      return {
-        ...state,
-        message: null,
-        error: null
-      }
-    default:
-      return state;
-  }
-};
-export const getAllRoleReducer = (state = { allRole: [], allTask: [], roleTasks: [] }, action) => {
-  switch (action.type) {
     case GET_ALL_TASK_REQUEST:
     case GET_ALL_ROLE_REQUEST:
     case GET_ROLE_TASKS_REQUEST:
@@ -59,18 +30,21 @@ export const getAllRoleReducer = (state = { allRole: [], allTask: [], roleTasks:
         loading: true,
       };
     case GET_ALL_ROLE_SUCCESS:
+      // console.log(action.payload);
       return {
         ...state,
         loading: false,
         allRole: action.payload,
       };
     case GET_ALL_TASK_SUCCESS:
+      // console.log(action.payload);
       return {
         ...state,
         loading: false,
         allTask: action.payload,
       };
     case GET_ROLE_TASKS_SUCCESS:
+      console.log(action.payload);
       return {
         ...state,
         loading: false,
@@ -81,11 +55,17 @@ export const getAllRoleReducer = (state = { allRole: [], allTask: [], roleTasks:
         ...state,
         loading: false
       };
+      case ADD_ROLE_SUCCESS:
+      return {
+        loading: false,
+        message: action.payload,
+      };
     case GET_ALL_TASK_FAIL:
     case GET_ALL_ROLE_FAIL:
     case GET_ROLE_TASKS_FAIL:
     case UPDATE_ROLE_TASK_FAIL:
     case ASSIGN_TASKS_TO_ROLES_FAIL:
+      case ADD_ROLE_FAIL:
       return {
         ...state,
         loading: false,
@@ -101,6 +81,11 @@ export const getAllRoleReducer = (state = { allRole: [], allTask: [], roleTasks:
         ...state,
         error: null
       };
+      case CLEAR_MESSAGE:
+        return {
+          ...state,
+          message: null,
+        }
     default:
       return state;
   }

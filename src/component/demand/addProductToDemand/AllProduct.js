@@ -3,28 +3,33 @@ import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Loader from '../../Loader/Loader';
-import '../../Modal/Modal.css';
-import '../AllProduct.css';
+// import '../../Modal/Modal.css';
+// import '../AllProduct.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { ADD_DEMAND_DATA } from '../../../Redux/constants/demandConstants';
 import { useNavigate } from 'react-router-dom';
 import { getAllProduct, clearError } from '../../../actions/demandAction';
 import { useAlert } from 'react-alert';
+import TablePagination from '@mui/material/TablePagination';
+import { IoBagAddOutline } from "react-icons/io5";
+
+// import './test.css';
 
 function AllProductTable() {
     const alert = useAlert();
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const { loading, allProduct, error } = useSelector((state) => state.allProduct);
-    // console.log(allProduct);
+    const { loading, allProduct, error } = useSelector((state) => state.product);
     const [currentProduct, setCurrentProduct] = useState({});
     const [inputQuantityChange, setInputQuantityChange] = useState('');
     const [isQuantityModalOpen, setIsQuantityModalOpen] = useState(false);
     const [searchInput, setSearchInput] = useState('');
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     const handleAddButton = (product) => {
-        setCurrentProduct(product); // Ensure product_id is passed correctly
+        setCurrentProduct(product);
         setIsQuantityModalOpen(true);
     };
 
@@ -63,70 +68,82 @@ function AllProductTable() {
         });
     }, [searchInput, allProduct]);
 
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
+    const indexOfLastProduct = page * rowsPerPage + rowsPerPage;
+    const indexOfFirstProduct = page * rowsPerPage;
+    const currentProducts = searchData.slice(indexOfFirstProduct, indexOfLastProduct);
+
     return (
         <Fragment>
             {loading ? (
                 <Loader />
             ) : (
-                <div className='body-AllProduct'>
-                    <label className='label'>Search: </label>
-                    <input className='search-input' placeholder='Product Name' onChange={handleSearch}></input>
-                    <table className='table'>
-                        <thead>
-                            <tr>
-                                <th>S:No</th>
-                                <th>Name</th>
-                                <th>Specifications</th>
-                                <th>Description</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {searchInput === ''
-                                ? allProduct?.map((product,index) => {
-                                      return (
-                                          <tr key={product._id}>
-                                              <td>{index+1}</td>
-                                              <td>{product?.name}</td>
-                                              <td>{product?.specifications}</td>
-                                              <td>{product?.description}</td>
-                                              <td>
-                                                  <button
-                                                      className='button-AddProduct'
-                                                      onClick={() => handleAddButton(product)}
-                                                  >
-                                                      Add
-                                                  </button>
-                                              </td>
-                                          </tr>
-                                      );
-                                  })
-                                : searchData?.map((product) => {
-                                      return (
-                                        <tr key={product._id}>
-                                        <td>{product.name}</td>
-                                        <td>{product.specifications}</td>
-                                        <td>{product.description}</td>
+                <div className='main-page-container'>
+                    <div className='pageName_And_Button'>
+                        <h3>All Products</h3>
+                    </div>
+                    <div className="search-bar">
+                        <input 
+                            type="text" 
+                            placeholder="Search Product Name" 
+                            value={searchInput} 
+                            onChange={handleSearch} 
+                        />
+                    </div>
+                    <div className='table-container'>
+                        <table className="customer-table">
+                            <thead>
+                                <tr>
+                                    <th>S:No</th>
+                                    <th>Name</th>
+                                    <th>Specifications</th>
+                                    <th>Description</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody className='tablebody_data'>
+                                {currentProducts.map((product, index) => (
+                                    <tr key={product._id}>
+                                        <td>{indexOfFirstProduct + index + 1}</td>
+                                        <td>{product?.name}</td>
+                                        <td>{product?.specifications}</td>
+                                        <td>{product?.description}</td>
                                         <td>
                                             <button
-                                                className='button-AddProduct'
+                                                className='action-btn'
                                                 onClick={() => handleAddButton(product)}
                                             >
-                                                Add
+                                                <IoBagAddOutline/>
                                             </button>
                                         </td>
                                     </tr>
-                                      );
-                                  })}
-                        </tbody>
-                    </table>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    <TablePagination
+                        component="div"
+                        count={searchData.length}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        rowsPerPage={rowsPerPage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
                     <Modal
                         className='Modal'
                         size='lg'
                         isOpen={isQuantityModalOpen}
                         toggle={() => setIsQuantityModalOpen(!isQuantityModalOpen)}
                     >
-                        <ModalHeader toggle={() => setIsQuantityModalOpen(!isQuantityModalOpen)}>
+                        <ModalHeader >
                             <FontAwesomeIcon
                                 className='svg-icon'
                                 icon={faTimes}
@@ -135,7 +152,7 @@ function AllProductTable() {
                             />
                         </ModalHeader>
                         <ModalBody>
-                            <table className='table'>
+                            <table className='modal-body-table'>
                                 <thead>
                                     <tr>
                                         <th>Product Name</th>
@@ -143,18 +160,18 @@ function AllProductTable() {
                                         <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody >
                                     <tr>
                                         <td>{currentProduct?.name}</td>
                                         <td>
                                             <input
-                                             type='number' 
-                                             onChange={handleQuantityInputChange}
-                                             >
-                                             </input>
+                                                type='number'
+                                                onChange={handleQuantityInputChange}
+                                            >
+                                            </input>
                                         </td>
                                         <td>
-                                            <button className='Add-button-Quantity' onClick={handleAddQuantityButton}>
+                                            <button className='submit_button' onClick={handleAddQuantityButton}>
                                                 Add
                                             </button>
                                         </td>

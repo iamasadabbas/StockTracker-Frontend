@@ -1,9 +1,11 @@
 /* Request.css */
+
 .heading-Requests{
   display: flex;
   margin: 1%;
-   justify-content: center;
+  justify-content: center;
   align-items: center; 
+  margin-top: 50px;
 }
 .view-request-container {
     margin-top: 20px;

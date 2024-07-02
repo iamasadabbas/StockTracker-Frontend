@@ -16,7 +16,7 @@ function TemplatePrint() {
     if(data?.length !==0 && detail?.length !==0){
         return (
             <React.Fragment>
-            <div>
+            <div >
                 <div className='body-template'>
                     <div className='heading-template'>
                         <h2>Pir Mehr Ali Shah Arid Agriculture University Rawalpindi</h2>

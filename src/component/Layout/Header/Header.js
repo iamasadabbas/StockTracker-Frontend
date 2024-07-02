@@ -1,27 +1,42 @@
 import React from 'react'
 import './Header.css'
 import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { TbLogout } from "react-icons/tb";
+import { logout } from '../../../actions/userDataAction';
+import { useDispatch } from 'react-redux';
+
 
 const Header = () => {
+  const dispatch=useDispatch()
+  const navigate=useNavigate()
     const baseUrl = "http://localhost:4000"; 
     const { loading1, isAuthenticated, user } = useSelector((state) => state.userData);
     // console.log(user.avatar);
+    const handleLogout = async () => {
+      await dispatch(logout());
+      navigate('/login');
+    };
   return (
     <div className="header-container">
-      <h4>{user.name}</h4>
-      {user && user.avatar ? (
-        <img
+      <div className='headerProfile-div' onClick={()=>navigate('/profile')} >
+      <h3>{user?.name}</h3>
+      {user && user?.avatar ? (
+        <img 
           className='Profile-img'
-          src={`http://localhost:4000/${user.avatar}`}
+          src={`http://localhost:4000/${user?.avatar}`}
           alt='User Avatar'
         />
       ) : (
-        <img
+        <img 
           className='Profile-img'
           src='https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?w=740&t=st=1717397192~exp=1717397792~hmac=66807edf7bf439c218076af2859290a128a51314641557c76cffdcd8fc45af9a'
           alt='Default Avatar'
         />
+
       )}
+      <TbLogout className='Logout-btn' onClick={handleLogout}/>
+      </div>
     </div>
   )
 }

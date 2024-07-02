@@ -6,80 +6,58 @@ import { useDispatch, useSelector } from 'react-redux';
 import AssignModal from './AssignModal';
 import Loader from '../../Loader/Loader';
 import { useAlert } from 'react-alert';
-import './ViewRequestModal.css'
-import '../Modal.css'
-import { getAllRequest,updateRequestedProductStatus,clearError } from '../../../actions/requestAction';
-const ViewRequestModal = ({ isModalOpen, setIsModalOpen,currentRequestId }) => {
-    const { loading, requestData, error } = useSelector((state) => state.currentRequest)
-    // console.log(requestData);
-    const alert =useAlert()
-    const dispatch=useDispatch();
+import './ViewRequestModal.css';
+import '../Modal.css';
+import CommentModal from './CommentModal';
+import { getAllRequest, updateRequestedProductStatus, clearError, getRequestById } from '../../../actions/requestAction';
+
+const ViewRequestModal = ({ isModalOpen, setIsModalOpen, currentRequestId }) => {
+    const { loading, requestData, error } = useSelector((state) => state.requests);
+    const alert = useAlert();
+    const dispatch = useDispatch();
     const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
+    const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
     const [requestItems, setRequestItems] = useState([]);
+    const [currentProductId, setCurrentProductId] = useState('');
+    const [event, setEvent] = useState();
 
-    // Toggle modal function
     const toggleModal = () => {
-        setIsModalOpen(!isModalOpen)
-        dispatch(getAllRequest())
-
+        setIsModalOpen(!isModalOpen);
     };
-    const handleAssign = (requestedItem) => {
-        // console.log(requestedItem);
-        setRequestItems(requestedItem)
-        setIsAssignModalOpen(true)
 
-    }
+    const handleAssign = (requestedItem) => {
+        setRequestItems(requestedItem);
+        setIsAssignModalOpen(true);
+    };
 
     const handleReject = (product_id) => {
-        // console.log(product_id);
-        const status='rejected'
-        const received_quantity=0
-            dispatch(updateRequestedProductStatus(currentRequestId, product_id, received_quantity,status))
-    }
-    
-    const checkStatus=()=>{
-        
-        // console.log(requestedProduct);
-        // console.log(requestStatus,currentRequestId);
-        // dispatch(updateRequestStatus(currentRequestId,requestStatus))
-        
-        //  let allDenied = requestedProduct.every(product => product.status === 'denied')
-        //  console.log(allDenied);
-        //  let allWaiting = requestedProduct.every(product => product.status === 'waiting')
-        //  console.log(allWaiting);
-        //  let others = requestedProduct.every(product => product.status !== 'waiting')
-        //  if(allDelivered){
-        //     dispatch(updateRequestStatus(currentRequestId,allDelivered=true,allDenied=false,others=false))
-        //  }else if(allDenied){
-        //     dispatch(updateRequestStatus(currentRequestId,allDelivered=false,allDenied=true,others=false))
-        //  }else if(allWaiting){
-        //     return
-        //  }else{
-        //      dispatch(updateRequestStatus(currentRequestId,allDelivered=false,allDenied=false,others=true))
-        //  }
-    }
-    useEffect(()=>{
+        setIsCommentModalOpen(true);
+        setCurrentProductId(product_id);
+    };
 
-        if(error){
-            alert.error(error)
-            dispatch(clearError())
+    const handleEdit = (requestedItem) => {
+        setEvent('Edit');
+        setRequestItems(requestedItem);
+        setIsAssignModalOpen(true);
+    };
+
+    useEffect(() => {
+        if (error) {
+            alert.error(error);
+            dispatch(clearError());
         }
-        // checkStatus()
-    },[error])
+    }, [error, alert, dispatch]);
 
     return (
         <Fragment>
-            <Modal className='Modal' size='lg' isOpen={isModalOpen} toggle={toggleModal}>
+            <Modal className="Modal" size="lg" isOpen={isModalOpen} toggle={toggleModal}>
                 {loading ? (
-                    // <div className="fullscreen-loader">
-                        <Loader />
-                    // </div>
+                    <Loader />
                 ) : (
                     <>
-                        <ModalHeader toggle={toggleModal}>
-                            <FontAwesomeIcon className='svg-icon' icon={faTimes} style={{ float: 'right', cursor: 'pointer' }} onClick={toggleModal} />
-
-                            <table className='View_Modal_Table'>
+                        <ModalHeader>
+                            <FontAwesomeIcon className="svg-icon" icon={faTimes} style={{ float: 'right', cursor: 'pointer' }} onClick={toggleModal} />
+                            <table className="View_Modal_Table">
                                 <thead>
                                     <tr>
                                         <th>{requestData?.request_number}</th>
@@ -90,18 +68,15 @@ const ViewRequestModal = ({ isModalOpen, setIsModalOpen,currentRequestId }) => {
                             </table>
                         </ModalHeader>
                         <ModalBody>
-                            <h3 className='heading-productDetails'>Product Details:</h3>
-                            <table className='View_Modal_Table'>
+                            <h3 className="heading-productDetails">Product Details:</h3>
+                            <table className="View_Modal_Table">
                                 <thead>
                                     <tr>
                                         <th>Product Name</th>
                                         <th>Requested Quantity</th>
-                                        {
-                                            requestData.status !== "waiting" &&(<th>Received Quantity</th>)
-                                        }
-                                        
+                                        {requestData.status !== "Requested" && <th>Received Quantity</th>}
                                         <th>Status</th>
-                                        {/* {request.status !== "completed" && request.status !== "rejected" ? <th colSpan={2}>Action</th> : null} */}
+                                        {requestData.status !== "Requested" && <th>comment</th>}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -109,16 +84,18 @@ const ViewRequestModal = ({ isModalOpen, setIsModalOpen,currentRequestId }) => {
                                         <tr key={requestedItem._id}>
                                             <td>{requestedItem._id.name}</td>
                                             <td>{requestedItem.requested_quantity}</td>
-                                            {
-                                                requestedItem.status !=="waiting" && (<td>{requestedItem.received_quantity || 'N/A'}</td>)
-                                            }
-                                            
+                                            {requestData.status !== "Requested" && <td>{requestedItem.received_quantity}</td>}
                                             <td>{requestedItem.status}</td>
-                                            {requestedItem.status === "waiting" && (
+                                            {requestData.status !== "Requested" && <td>{requestedItem.comment}</td>}
+                                            {requestedItem.status === "waiting" ? (
                                                 <>
-                                                    <td><button className='button' onClick={() => { handleReject(requestedItem._id._id) }}>Reject</button></td>
-                                                    <td><button className='button' onClick={() => { handleAssign(requestedItem) }}>Assign</button></td>
+                                                    <td><button className="submit_button" onClick={() => handleReject(requestedItem._id._id)}>Reject</button></td>
+                                                    <td><button className="submit_button" onClick={() => handleAssign(requestedItem)}>Assign</button></td>
                                                 </>
+                                            ) : (
+                                                requestData.status !== 'Completed' && (
+                                                    <td><button className="submit_button" onClick={() => handleEdit(requestedItem)}>Edit</button></td>
+                                                )
                                             )}
                                         </tr>
                                     ))}
@@ -129,13 +106,20 @@ const ViewRequestModal = ({ isModalOpen, setIsModalOpen,currentRequestId }) => {
                 )}
             </Modal>
             {isAssignModalOpen && <AssignModal
+                event={event}
                 isAssignModalOpen={isAssignModalOpen}
                 setIsAssignModalOpen={setIsAssignModalOpen}
                 requestItems={requestItems}
                 currentRequestId={currentRequestId}
             />}
+            {isCommentModalOpen && <CommentModal
+                isCommentModalOpen={isCommentModalOpen}
+                setIsCommentModalOpen={setIsCommentModalOpen}
+                currentProductId={currentProductId}
+                currentRequestId={currentRequestId}
+            />}
         </Fragment>
     );
+};
 
-}
 export default ViewRequestModal;

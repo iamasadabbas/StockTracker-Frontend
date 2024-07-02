@@ -4,7 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import Navigation from './navigation/navigation';
 import Login from './component/login/Login';
 import { loadUser } from './actions/userDataAction';
-import Loader from './component/Loader/Loader'; // Make sure you have this component
+import Loader from './component/Loader/Loader'; 
+import ResetPassword from './component/Profile/ResetPassword';
+import ForgotPassword from './component/Profile/ForgotPassword.js'
 
 export default function App() {
   const { loading1, isAuthenticated } = useSelector((state) => state.userData);
@@ -25,7 +27,11 @@ export default function App() {
         {isAuthenticated ? (
           <Route path="*" element={<Navigation />} />
         ) : (
+          <>
+          <Route path="/user/password/reset/:token" element={<ResetPassword />}/>
+          <Route path="/password/forgot" element={<ForgotPassword />} />
           <Route path="*" element={<Login />} />
+          </>
         )}
       </Routes>
     </Router>

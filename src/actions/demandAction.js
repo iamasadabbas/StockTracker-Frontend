@@ -1,9 +1,9 @@
 import axiosInstance from '../axiosInstance/axiosInstance'
 
 import {
-  GET_ALL_PRODUCT_FROM_LOCATION_REQUEST,
-  GET_ALL_PRODUCT_FROM_LOCATION_SUCCESS,
-  GET_ALL_PRODUCT_FROM_LOCATION_FAIL,
+  GET_ALL_PRODUCT_REQUEST,
+  GET_ALL_PRODUCT_SUCCESS,
+  GET_ALL_PRODUCT_FAIL,
   GET_ALL_LOCATION_REQUEST,
   GET_ALL_LOCATION_SUCCESS,
   GET_ALL_LOCATION_FAIL,
@@ -33,15 +33,16 @@ import {
 
 export const getAllProduct = () => async (dispatch) => {
   try {
-    dispatch({ type: GET_ALL_PRODUCT_FROM_LOCATION_REQUEST })
+    dispatch({ type: GET_ALL_PRODUCT_REQUEST })
     axiosInstance.get(`/product/getAllProduct`).then((response) => {
-      console.log(response.data.product);
-      dispatch({ type: GET_ALL_PRODUCT_FROM_LOCATION_SUCCESS, payload: response.data.product })
+      // console.log(response.data.product);
+      dispatch({ type: GET_ALL_PRODUCT_SUCCESS, payload: response.data.product })
     }) .catch((error) => {
-      dispatch({ type: GET_ALL_PRODUCT_FROM_LOCATION_FAIL, payload: error.message });
+      dispatch({ type: GET_ALL_PRODUCT_FAIL, payload: error.message });
     });
   } catch (error) {
-    dispatch({ type: GET_ALL_PRODUCT_FROM_LOCATION_FAIL, payload: error.data.message })
+    // console.log(error);
+    dispatch({ type: GET_ALL_PRODUCT_FAIL, payload: error.data.message })
   }
 }
 export const getAllLocation = () => async (dispatch) => {

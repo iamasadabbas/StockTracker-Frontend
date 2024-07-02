@@ -10,7 +10,8 @@ const RegistrationApproval = ({show}) => {
     const alert = useAlert();
     const dispatch = useDispatch();
     const { loading, allRegistration, message, error } = useSelector((state) => state.allRegistration);
-    const { allRole } = useSelector((state) => state.allRole);
+    const { allRole } = useSelector((state) => state.role);
+    // console.log(allRole);
     const [selectedRoles, setSelectedRoles] = useState({});
 
     useEffect(() => {
@@ -50,7 +51,9 @@ const RegistrationApproval = ({show}) => {
             ) : (
                 allRegistration && allRegistration.length > 0 ? (
                     <>
+                    {show==="requestBox" ? (null):(
                         <h2 className='page-heading'>User Approval</h2>
+                    )}
                     <table className="registration-table">
                         <thead>
                             <tr>

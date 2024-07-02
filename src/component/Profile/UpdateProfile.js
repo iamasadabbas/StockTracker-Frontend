@@ -8,6 +8,7 @@ import { useAlert } from "react-alert";
 import Loader from "../Loader/Loader";
 import { useNavigate } from "react-router-dom";
 import { UPDATE_PROFILE_RESET } from "../../Redux/constants/userDataConstants";
+import Profile from './Profile.png'
 const UpdateProfile = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
@@ -19,38 +20,46 @@ const UpdateProfile = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [avatar, setAvatar] = useState();
-  const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
+  // console.log(avatar);
+  const [avatarPreview, setAvatarPreview] = useState(Profile);
 
   const updateProfileSubmit = (e) => {
     e.preventDefault();
 // console.log(name,email);
     const myForm = new FormData();
-    myForm.set("_id",user._id)
-    myForm.set("name", name);
-    myForm.set("email", email);
+    myForm.append("_id",user._id)
+    myForm.append("name", name);
+    myForm.append("email", email);
     myForm.append("avatar", avatar); 
     dispatch(updateProfile(myForm));
     // console.log(myForm);
   };
 
   const updateProfileDataChange = (e) => {
+    const file = e.target.files[0]; // Get the first file selected
     const reader = new FileReader();
-
+  
     reader.onload = () => {
       if (reader.readyState === 2) {
         setAvatarPreview(reader.result);
-        setAvatar(reader.result);
+        setAvatar(file); // Set the file object as avatar
       }
     };
-
-    reader.readAsDataURL(e.target.files[0]);
+  
+    if (file) {
+      reader.readAsDataURL(file); // Read the file as data URL
+    }
   };
 
   useEffect(() => {
     if (user) {
       setName(user.name);
       setEmail(user.email);
-      setAvatarPreview(user.avatar.url);
+      if (user.avatar && user.avatar.url) {
+        setAvatarPreview(user.avatar.url);
+      } else {
+        setAvatarPreview(Profile); // Set default avatar if user avatar is not available
+      }
     }
 
     if (error) {
@@ -62,7 +71,7 @@ const UpdateProfile = () => {
       alert.success("Profile Updated Successfully");
       dispatch(loadUser());
 
-      navigate("/update");
+      navigate("/profile");
 
       dispatch({
         type: UPDATE_PROFILE_RESET,

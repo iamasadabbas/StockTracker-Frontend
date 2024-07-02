@@ -41,7 +41,7 @@ export const userDataReducer = (state = { user: {} }, action) => {
         case LOGIN_SUCCESS:
         case REGISTER_USER_SUCCESS:
         case LOAD_USER_SUCCESS:
-            console.log(action.payload);
+            // console.log(action.payload);
             return {
                 loading1: false,
                 isAuthenticated: true,

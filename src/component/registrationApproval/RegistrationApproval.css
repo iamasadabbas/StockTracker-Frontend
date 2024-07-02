@@ -1,5 +1,6 @@
 .registration-approval {
     padding: 20px;
+    width: 100%;
     font-family: Arial, sans-serif;
 }
 
@@ -59,7 +60,8 @@
 }
 .heading-NoRequest {
     display: flex;
+    width: 100%;
     align-items: center;
     justify-content: center;
-    height: 100vh; /* Ensures the div takes up the full height of the viewport */
+    height: 100%; /* Ensures the div takes up the full height of the viewport */
 }

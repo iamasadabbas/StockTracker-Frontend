@@ -3,72 +3,83 @@ import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useAlert } from 'react-alert';
-import { getProductQuantity, updateProductQuantity, updateRequestedProductStatus, getRequestedProduct, updateRequestStatus, clearError } from '../../../actions/requestAction.js';
 import { useDispatch, useSelector } from 'react-redux';
+import { getProductQuantity, updateProductQuantity, updateRequestedProductStatus, clearError } from '../../../actions/requestAction.js';
 
 import Loader from '../../Loader/Loader.js';
-import '../Modal.css'
+import '../Modal.css';
 
-const AssignModal = ({ isAssignModalOpen, setIsAssignModalOpen, requestItems, currentRequestId, requestedProduct }) => {
+const AssignModal = ({ isAssignModalOpen, setIsAssignModalOpen, requestItems, currentRequestId, requestedProduct, event }) => {
     const dispatch = useDispatch();
     const product_id = requestItems?._id._id;
     const alert = useAlert();
-    const { quantity, loading, error } = useSelector((state) => state.quantity)
-    const productAvailableQuantity = quantity
+    const { quantity, loading, error } = useSelector((state) => state.quantity);
+    const productAvailableQuantity = quantity;
 
     const [assignInput, setAssignInput] = useState('');
+    const [commentInput, setCommentInput] = useState('');
 
     const handleInputChange = (e) => {
+        // console.log(e.target.value);
         const enteredValue = e.target.value;
         if (enteredValue === '0') {
             setAssignInput('');
             return;
+        }else if(enteredValue === '') {
+            setAssignInput('')
+            return
+        }{
+
         }
         const newValue = Math.min(parseInt(enteredValue, 10), requestItems?.requested_quantity || 0);
         setAssignInput(newValue.toString());
     }
 
     const handleAssignSubmit = async () => {
-        // console.log(currentRequestId);
+        let remainingQuantity;
+        const received_quantity = assignInput;
         try {
-            const received_quantity = assignInput;
-            const status='assigned'
-            dispatch(updateRequestedProductStatus(currentRequestId, product_id, received_quantity,status))
-            const remainingQuantity = productAvailableQuantity - assignInput;
-            dispatch(updateProductQuantity(product_id, remainingQuantity))
-            dispatch(getRequestedProduct(currentRequestId))
-            setIsAssignModalOpen(!isAssignModalOpen)
-            
+            if(event){
+                const editedQuantity=requestItems?.received_quantity-assignInput
+             remainingQuantity = productAvailableQuantity + editedQuantity;
+            }else{
+                remainingQuantity = productAvailableQuantity - received_quantity;
+            }
+            const status = 'assigned';
+            const comment=commentInput
+
+            // Wait for each dispatch to complete before proceeding to the next
+            dispatch(updateRequestedProductStatus(currentRequestId, product_id, received_quantity, status,comment));
+            dispatch(updateProductQuantity(product_id, remainingQuantity));
+
+            setIsAssignModalOpen(!isAssignModalOpen);
+
         } catch (error) {
-            alert.error(error)
+            alert.error(error);
         }
     }
-
-    const updateStatus = () => {
-
-            // const allDelivered = requestedProduct?.every(product => product.status === 'delivered')
-
-        //    const allDenied = requestedProduct.every(product => product.status === 'denied')
-        //    console.log(allDelivered);
-        //    console.log(allDenied);
-    }
-
 
     const closeIconClick = () => {
-        setIsAssignModalOpen(!isAssignModalOpen)
-        setAssignInput('')
+        setIsAssignModalOpen(!isAssignModalOpen);
+        setAssignInput('');
     }
+    const handleCommentChange=(e)=>{
+        setCommentInput(e.target.value)
+    }
+
     useEffect(() => {
-        // updateStatus()
         if (error) {
-            alert.error(error)
-            return () => dispatch(clearError())
+            alert.error(error);
+            return () => dispatch(clearError());
         }
-        dispatch(getProductQuantity(product_id))
-    }, [error, requestItems])
+        dispatch(getProductQuantity(product_id));
+    }, [error, requestItems]);
 
-
-
+    useEffect(() => {
+        if (requestItems) {
+            setAssignInput(requestItems.received_quantity?.toString() || '');
+        }
+    }, [requestItems]);
 
     return (
         <Fragment>
@@ -82,13 +93,20 @@ const AssignModal = ({ isAssignModalOpen, setIsAssignModalOpen, requestItems, cu
                     </div>
                 ) : (
                     <ModalBody>
-                        <table className='table'>
+                        <table className='modal-body-table'>
                             <thead>
                                 <tr>
-                                    <th>Requested</th>
-                                    <th>Available</th>
-                                    <th>Status</th>
-                                    <th><label>Assign</label></th>
+                                    <th>Requested Quantity</th>
+                                    <th>Available Quantity</th>
+                                    <th>Request Status</th>
+                                    {
+                                        event ? (
+                                            <th><label>Received</label></th>
+                                        ) : (
+                                            <th><label>Assign</label></th>
+                                        )
+                                    }
+                                    <th>Comment</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -106,11 +124,17 @@ const AssignModal = ({ isAssignModalOpen, setIsAssignModalOpen, requestItems, cu
                                             disabled={productAvailableQuantity < 1}
                                         />
                                     </td>
+                                    <td>
+                                        <input
+                                            type='text'
+                                            onChange={handleCommentChange}
+                                        />
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                         <div className='button-div'>
-                            {assignInput && (
+                            {assignInput !=='' && (
                                 <button
                                     className='submit_button'
                                     onClick={handleAssignSubmit}
@@ -124,8 +148,7 @@ const AssignModal = ({ isAssignModalOpen, setIsAssignModalOpen, requestItems, cu
                 )}
             </Modal>
         </Fragment>
-
     )
 }
 
-export default AssignModal
+export default AssignModal;
