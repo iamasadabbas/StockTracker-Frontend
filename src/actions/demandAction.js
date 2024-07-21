@@ -49,8 +49,10 @@ export const getAllLocation = () => async (dispatch) => {
   try {
     dispatch({ type: GET_ALL_LOCATION_REQUEST })
     let response = await axiosInstance.get(`/location/getAllLocation`)
+    
     dispatch({ type: GET_ALL_LOCATION_SUCCESS, payload: response.data.allLocation })
   } catch (error) {
+    console.log(error.message)
     dispatch({ type: GET_ALL_LOCATION_FAIL, payload: error.message })
   }
 }

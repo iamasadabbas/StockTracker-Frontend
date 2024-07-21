@@ -50,7 +50,6 @@ export const requestReducer = (state = { requests: [] }, action) => {
                 requests: action.payload.allRequest,
             };
         case GET_REQUEST_BY_ID_SUCCESS:
-            // case UPDATE_REQUESTED_PRODUCT_STATUS_SUCCESS:
 
             return {
                 ...state,

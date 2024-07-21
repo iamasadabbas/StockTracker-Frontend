@@ -43,9 +43,9 @@ function Bar({ print }) {
         }
     }, [error]);
 
-    const handlePrint = () => {
-        print();
-    };
+    // const handlePrint = () => {
+    //     print();
+    // };
 
     const handleApplicationIdChange = (e) => {
         setApplicationInput(e.target.value);
@@ -74,11 +74,13 @@ function Bar({ print }) {
     const allFieldsFilled = applicationIdInput.trim() !== '' && dateInput.trim() !== '' && subjectInput.trim() !== '' && locationInput.trim() !== '';
 
     return (
-        <Fragment>
+        <div >
             {loading ? (
-                <Loader />
+                <div style={{width:'100%', height:'100vh'}}>
+                    <Loader />
+                </div>
             ) : error ? (
-                <div></div>
+                <div>error</div>
             ) : (
                 <div className="main-page-container" style={{paddingTop:'60px'}}>
                     <div className='pageName_And_Button'>
@@ -89,19 +91,23 @@ function Bar({ print }) {
                         <div className='input-container'>
                         <div className='input-with-label'>
                         <label className='required'>Subject: </label>
-                        <textarea type='text' required className='Input-Bar' value={subjectInput} onChange={handleSubjectChange} placeholder='Enter subject'></textarea>
+                        <textarea type='text' required className='yellow_border' value={subjectInput} onChange={handleSubjectChange} placeholder='Enter subject'></textarea>
                         </div>
                         <div className='input-with-label'>
                         <label className='required'>Application id: </label>
-                        <input type='text' required className='Input-Bar' value={applicationIdInput} onChange={handleApplicationIdChange} placeholder='Enter application id'></input>
+                        <input type='text' required className='yellow_border' value={applicationIdInput} onChange={handleApplicationIdChange} placeholder='Enter application id'></input>
                         </div>
+                        </div>
+                    </div>
+                    <div className='input-bar' style={{paddingTop:"20px"}}>
+                        <div className='input-container'>
                         <div className='input-with-label'>
                         <label className='required'>Application date:</label>
-                        <input type='date' required className='Input-Bar' value={dateInput} onChange={handleDateChange}></input>
+                        <input type='date' required className='yellow_border' value={dateInput} onChange={handleDateChange}></input>
                         </div>
                         <div className='input-with-label'>
                         <label className='required'>Location :</label>
-                        <select className='Input-Bar' required value={locationInput} onChange={handleLocationChange}>
+                        <select className='yellow_border' required value={locationInput} onChange={handleLocationChange}>
                             <option value="" disabled>Select location</option>
                             {allLocation?.map(location => (
                                 <option key={location._id} value={location._id}>{location.name}</option>
@@ -110,13 +116,12 @@ function Bar({ print }) {
                         </div>
                         </div>
                     </div>
-                    {/* Render button only if all fields are filled */}
                     <div className='clear-and-Add-button-container' style={{marginTop:'10px'}}>
-                    {allFieldsFilled && <button className='clear-And-Add-Record-button' onClick={handleAddItem}>Add Item</button>}
+                    {<button className='clear-And-Add-Record-button' disabled={!allFieldsFilled}onClick={handleAddItem}>Add Item</button>}
                     </div>
                 </div>
             )}
-        </Fragment>
+        </div>
     );
 }
 

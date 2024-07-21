@@ -57,7 +57,7 @@ export default function AddDesignation() {
                             <div className="input-with-label">
                                 <label className="required">Designation</label>
                                 <input
-                                    className="add-visa-type-input"
+                                    className="add-visa-type-input yellow_border"
                                     value={nameInput}
                                     onChange={handleNameChange}
                                     placeholder="Type designation here"
@@ -67,7 +67,7 @@ export default function AddDesignation() {
                             <div className="input-with-label">
                                 <label className="required">Description</label>
                                 <input
-                                    className="add-visa-type-input"
+                                    className="add-visa-type-input yellow_border"
                                     value={descriptionInput}
                                     onChange={handleDesriptionChange}
                                     placeholder="Type description here"

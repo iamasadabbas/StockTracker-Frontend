@@ -7,7 +7,7 @@ import { useAlert } from 'react-alert';
 import { getAllCompany } from '../../../actions/companyAction';
 
 const AddProduct = () => {
-    const navigate=useNavigate()
+    const navigate = useNavigate()
     const alert = useAlert();
     const { loading, allProductType, message, error } = useSelector((state) => state.product);
     const { allCompany } = useSelector((state) => state.company);
@@ -27,7 +27,7 @@ const AddProduct = () => {
         setSelectedType('');
         setSelectedCompany('');
     };
-    const handleViewProductClick=()=>{
+    const handleViewProductClick = () => {
         navigate('/products')
     }
 
@@ -72,60 +72,70 @@ const AddProduct = () => {
                     <button className='button-yellow' onClick={handleViewProductClick}> View Product</button>
                 </div>
                 <form className="input-bar" onSubmit={handleAddProduct} >
-                <div className='input-container'>
-                    <div className='input-with-label'>
-                        <label className='required'>Name</label>
-                        <input
-                            type="text"
-                            placeholder="Enter product name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
+                    <div className='input-container'>
+                        <div className='input-with-label'>
+                            <label className='required'>Name</label>
+                            <input
+                                type="text"
+                                placeholder="Enter product name "
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                required
+                                className='yellow_border'
+                            />
+                        </div>
+                        <div className='input-with-label'>
+                            <label className='required'>Specifications</label>
+                            <input
+                                type="text"
+                                placeholder="Enter specifications"
+                                value={specifications}
+                                onChange={(e) => setSpecifications(e.target.value)}
+                                className='yellow_border'
+                            />
+                        </div>
+                        <div className='input-with-label'>
+                            <label className='required'>Description</label>
+                            <input
+                                type="text"
+                                placeholder="Enter description"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                className='yellow_border'
+                            />
+                        </div>
                     </div>
-                    <div className='input-with-label'>
-                    <label className='required'>Specifications</label>
-                        <input
-                            type="text"
-                            placeholder="Enter specifications"
-                            value={specifications}
-                            onChange={(e) => setSpecifications(e.target.value)}
-                        />
-                    </div>
-                    <div className='input-with-label'>
-                    <label className='required'>Description</label>
-                        <input
-                            type="text"
-                            placeholder="Enter description"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                        />
-                    </div>
-                    <div className='input-with-label'>
-                    <label className='required'>Type</label>
-                        <select
-                            value={selectedType}
-                            onChange={(e) => setSelectedType(e.target.value)}
-                        >
-                            <option value="">Select Type</option>
-                            {allProductType?.map((type) => (
-                                <option key={type.id} value={type._id}>{type.name}</option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className='input-with-label'>
-                    <label className='required'>Company</label>
-                        <select
-                            className="search-input"
-                            value={selectedCompany}
-                            onChange={(e) => setSelectedCompany(e.target.value)}
-                        >
-                            <option value="">Select Company</option>
-                            {allCompany?.map((company) => (
-                                <option key={company.id} value={company._id}>{company.name}</option>
-                            ))}
-                        </select>
-                    </div>
+                    <div className='input-container' style={{ marginTop: '20px' }}>
+
+                        <div style={{display:'flex', width:'65%', gap:'7.55%'}}>
+                            <div className='input-with-label'>
+                                <label className='required'>Type</label>
+                                <select
+                                    value={selectedType}
+                                    className='yellow_border'
+                                    onChange={(e) => setSelectedType(e.target.value)}
+                                >
+                                    <option value="">Select Type</option>
+                                    {allProductType?.map((type) => (
+                                        <option key={type.id} value={type._id}>{type.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className='input-with-label' style={{ display: 'flex' }} >
+                                <label className='required'>Company</label>
+                                <select
+                                    className="search-input yellow_border"
+                                    value={selectedCompany}
+                                    onChange={(e) => setSelectedCompany(e.target.value)}
+                                >
+                                    <option value="">Select Company</option>
+                                    {allCompany?.map((company) => (
+                                        <option key={company.id} value={company._id}>{company.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+                        <div></div>
                     </div>
                     <div className="clear-and-Add-button-container">
                         <button type="submit" className="clear-And-Add-Record-button" onClick={handleClear}>Clear</button>

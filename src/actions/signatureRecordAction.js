@@ -39,15 +39,14 @@ export const getAllSignatureRecord = () => async (dispatch) => {
     }
   };
 
-export const updateSignatureRecordStatus = (id,status) => async (dispatch) => {
+export const updateSignatureRecordStatus = (updatedRecords) => async (dispatch) => {
+  // console.log('enter');
     try {
-      // console.log('enter');
       dispatch({ type: UPDATE_SIGNATURE_RECORD_STATUS_REQUEST });
-      const response = await axiosInstance.put(`/signatureRecord/updateSignatureRecord/${id}`,{status:status});
-      console.log(response.data.result);
+      const response = await axiosInstance.put(`/signatureRecord/updateSignatureRecord`,{updatedRecords});
+      // console.log(response.data.result);
       dispatch({ type: UPDATE_SIGNATURE_RECORD_STATUS_SUCCESS, payload: response.data.result });
     } catch (error) {
-      // console.log(error);
       dispatch({ type: UPDATE_SIGNATURE_RECORD_STATUS_FAIL, payload: error.message });
     }
   };

@@ -14,7 +14,7 @@ import {
   getProductCount,
   getWaitingProductRequest,
   get7DaysRequest,
-  get7DaysUserApproval,
+  getUserApprovalCount,
   clearError
 } from '../../../actions/dashboardAction';
 import './mainDashboard.css';
@@ -26,12 +26,15 @@ import { FaUser } from "react-icons/fa";
 import { FaUserCheck } from "react-icons/fa6";
 import { PiOfficeChairFill } from "react-icons/pi";
 import { IoTimeSharp } from "react-icons/io5";
+import { getAllRegistrationApproval } from '../../../actions/registrationApprovalAction';
 
 const MainDashboard = () => {
-  // console.log('entered');
-  // const role='Admin'
   const [role, setRole] = useState('');
-  const { loading1, isAuthenticated, user } = useSelector((state) => state.userData);
+  const [timePeriod, setTimePeriod] = useState('week');
+  const { loading1,isAuthenticated, user } = useSelector((state) => state.userData);
+  const { allRegistration } = useSelector((state) => state.allRegistration);
+
+
   const alert = useAlert();
   const dispatch = useDispatch();
   const {
@@ -46,16 +49,19 @@ const MainDashboard = () => {
     totalActiveUser,
     totalRole,
     totalUserApproval,
-    userApproval,
     approvalCounts,
     error
   } = useSelector((state) => state.dashboard);
 
-  useEffect(() => {
-    if (isAuthenticated && user && user?.role_id && user?.role_id?.name) {
-      setRole(user.role_id.name);
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (isAuthenticated && user?.role_id?.name) {
+  //     setRole(user.role_id.name);
+  //   }
+  // }, [user]);
+
+  const handleChange = (e) => {
+    setTimePeriod(e.target.value);
+  };
 
   const cardDetailsStoreKeeper = useMemo(() => [
     {
@@ -112,63 +118,73 @@ const MainDashboard = () => {
   ], [totalUser, totalActiveUser, totalRole, totalUserApproval]);
 
   useEffect(() => {
-    if (role === 'StoreKeeper') {
+    if (user?.role_id?.name === 'StoreKeeper') {
       dispatch(get7DaysRequest());
       dispatch(getProductCount());
       dispatch(getWaitingProductRequest());
-    } else if (role === 'Admin' || role === 'SuperAdmin') {
+    } else if (user?.role_id?.name === 'Admin' || user?.role_id?.name === 'SuperAdmin') {
       dispatch(getTotalUserCount());
       dispatch(getTotalActiveUserCount());
       dispatch(getTotalRoleCount());
       dispatch(getUserApproval());
-      dispatch(get7DaysUserApproval());
+      dispatch(getAllRegistrationApproval());
     }
-  }, [dispatch, role]);
+  }, [dispatch, user]);
 
   useEffect(() => {
-    if(error){
-      alert.error(error);
-      return ()=> dispatch(clearError())
+    if (user?.role_id?.name === 'Admin' || user?.role_id?.name === 'SuperAdmin') {
+      dispatch(getUserApprovalCount(timePeriod));
     }
-  }, [error]);
+  }, [dispatch, user, timePeriod]);
+
+  useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch(clearError());
+    }
+  }, [error, alert, dispatch]);
 
   const isDataLoadedForStoreKeeper = () => (
     waitingRequestCount !== undefined && productCount !== undefined && request !== undefined && lowStockProduct !== undefined && requestCounts !== undefined && outOfStockProduct !== undefined
   );
-// console.log(totalUser);
-// console.log(totalActiveUser);
-// console.log(totalRole);
-// console.log(totalUserApproval);
-// console.log(approvalCounts);
-const isDataLoadedForAdmin = () => {
-  console.log('totalUser:', totalUser);
-  console.log('totalActiveUser:', totalActiveUser);
-  console.log('totalRole:', totalRole);
-  console.log('totalUserApproval:', totalUserApproval);
-  console.log('userApproval:', userApproval);
-  console.log('approvalCounts:', approvalCounts);
 
-  return (
+  const isDataLoadedForAdmin = () => (
     totalUser !== undefined &&
     totalActiveUser !== undefined &&
     totalRole !== undefined &&
     totalUserApproval !== undefined &&
     approvalCounts !== undefined
   );
-};
-  console.log(isDataLoadedForAdmin);
+
+  const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const today = new Date();
+  const currentDayIndex = today.getDay();
+  const weekDays = Array.from({ length: 7 }, (_, i) => dayNames[(currentDayIndex - 6 + i + 7) % 7]);
+
+  const last30Days = Array.from({ length: 30 }, (_, i) => {
+    const day = new Date(today);
+    day.setDate(today.getDate() - i);
+    return `${String(day.getMonth() + 1).padStart(2, '0')}-${String(day.getDate()).padStart(2, '0')}`;
+  }).reverse();
+
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const last12Months = Array.from({ length: 12 }, (_, i) => {
+    const month = new Date(today.getFullYear(), today.getMonth() - i, 1);
+    return `${monthNames[month.getMonth()]} ${month.getFullYear()}`;
+  }).reverse();
 
   return (
     <Fragment>
-      {loading &&
-       loading1
-        ? (
+      { loading1? (
+        // <div style={{height:'100%',width:'100%'}}>
         <Loader />
+        // </div>
       ) : (
-        error ? <div>{error}</div> : (
+        error ? (
+          <div>{error}</div>
+        ) : (
           <div>
-            {/* {console.log('enter')} */}
-            {role === "StoreKeeper" && isDataLoadedForStoreKeeper() && (
+            {user?.role_id?.name === "StoreKeeper" && isDataLoadedForStoreKeeper() && (
               <div>
                 <h1 className='dashboard-heading'>Dashboard</h1>
                 <div className='cardView-dashboard'>
@@ -184,25 +200,57 @@ const isDataLoadedForAdmin = () => {
                 </div>
               </div>
             )}
-            {/* {console.log(isDataLoadedForAdmin)} */}
-            {(role === "Admin" || role === "SuperAdmin")  && isDataLoadedForAdmin() && (
+            {(user?.role_id?.name === "Admin" || user?.role_id?.name === "SuperAdmin") && isDataLoadedForAdmin() && (
               <div>
-                {/* {
-                  console.log('enter')
-                } */}
                 <h1 className='dashboard-heading'>Dashboard</h1>
                 <div className='cardView-dashboard'>
                   <CardView cardDetails={cardDetailsAdmin} />
                 </div>
                 <div className='chartPlusRequestBox'>
                   <div className='LineChart'>
-                    <LineChart data={approvalCounts} label={'User Approval'} />
+                    <div className='timeperiod-div'>
+                      <label htmlFor="timePeriod">Select Time Period: </label>
+                      <select id="timePeriod" value={timePeriod} onChange={handleChange}>
+                        <option value="week">Week</option>
+                        <option value="month">Month</option>
+                        <option value="year">Year</option>
+                      </select>
+                    </div>
+                    {
+                      loading ? (<Loader />) : (
+                        <>
+                          {timePeriod === 'week' && <LineChart data={approvalCounts} label={'Weekly Data'} labels={weekDays} />}
+                          {timePeriod === 'month' && <LineChart data={approvalCounts} label={'Monthly Data'} labels={last30Days} />}
+                          {timePeriod === 'year' && <LineChart data={approvalCounts} label={'Yearly Data'} labels={last12Months} />}
+                        </>
+                      )
+                    }
+
                   </div >
                   <div className='user_request_container'>
                     <h2>Approval Requests</h2>
-                  <div className='requestbox'>
-                    <RegistrationApproval show={'requestBox'} />
-                  </div>
+                    <div className='approval-table-container'>
+                      <table className='approval-table'>
+                        <thead>
+                          <tr>
+                            <th>S.No</th>
+                            <th>Name</th>
+                            <th>Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {allRegistration.map((registration, index) => (
+                            <tr key={registration._id}>
+                              <td>{index + 1}</td>
+                              <td>{registration.name}</td>
+                              <td>{registration.role_id == null ? 'waiting' : ''}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+
+                      </table>
+                    </div>
+
                   </div>
                 </div>
               </div>

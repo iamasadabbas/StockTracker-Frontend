@@ -1,0 +1,9 @@
+.main_container_assignModal{
+    display: flex;
+    margin: auto;
+    align-self: center;
+    justify-content: center;
+    width: 100px;
+    height: 200px;
+    background-color: none;
+}

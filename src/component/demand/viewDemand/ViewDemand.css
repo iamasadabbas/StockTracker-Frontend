@@ -1,3 +1,5 @@
+
+
 .container-ViewDemand {
     width: 100%;
     height: 100%;
@@ -7,7 +9,7 @@
     justify-content: center;
 }
 .table-ViewDemand {
-    width: 90%;
+    width: 100%;
     border-collapse: collapse;
 }
 .heading-viewDemand{

@@ -86,10 +86,10 @@ const ReceiveModal = ({ isReceiveModalOpen, setIsReceiveModalOpen, product, requ
                         </tbody>
                     </table>
                     <div className='button-div'>
-                        {receiveInput && <td>
+                        { <td>
                             <button className='submit_button'
                                 onClick={() => { handleReceiveSubmit(product?._id._id) }}
-                                disabled={parseInt(receiveInput, 10) > product?.quantity}
+                                disabled={!receiveInput}
                             >
                                 submit</button>
                         </td>}

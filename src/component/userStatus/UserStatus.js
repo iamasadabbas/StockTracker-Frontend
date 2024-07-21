@@ -1,11 +1,11 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAlert } from 'react-alert';
 import { clearError, getAllUser, updateUserStatus } from '../../actions/userAction';
 import Loader from '../Loader/Loader';
 import Switch from 'react-switch';
-import TablePagination from '@mui/material/TablePagination';
-import './UserStatus.css';
+import ReactTable from '../ReactTable';
+// import './UserStatus.css';
 
 const UserStatus = () => {
     const alert = useAlert();
@@ -33,11 +33,13 @@ const UserStatus = () => {
         dispatch(updateUserStatus(userId, status));
     };
 
-    const filteredUsers = allUser?.filter((user) =>
-        user.name.toLowerCase().includes(searchName.toLowerCase()) &&
-        user.designation_id?.name.toLowerCase().includes(searchDesignation.toLowerCase()) &&
-        user.role_id?.name.toLowerCase().includes(searchRole.toLowerCase())
-    );
+    const filteredUsers = useMemo(() => {
+        return allUser?.filter((user) =>
+            user.name.toLowerCase().includes(searchName.toLowerCase()) &&
+            user.designation_id?.name.toLowerCase().includes(searchDesignation.toLowerCase()) &&
+            user.role_id?.name.toLowerCase().includes(searchRole.toLowerCase())
+        );
+    }, [searchName, searchDesignation, searchRole, allUser]);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -48,18 +50,61 @@ const UserStatus = () => {
         setPage(0);
     };
 
-    const indexOfLastUser = page * rowsPerPage + rowsPerPage;
-    const indexOfFirstUser = page * rowsPerPage;
-    const currentUsers = filteredUsers?.slice(indexOfFirstUser, indexOfLastUser);
+    const columns = useMemo(() => [
+        {
+            Header: 'SrNo',
+            accessor: (row, index) => page * rowsPerPage + index + 1,
+        },
+        {
+            Header: 'Name',
+            accessor: 'name',
+        },
+        {
+            Header: 'Designation',
+            accessor: 'designation_id.name',
+        },
+        {
+            Header: 'Role',
+            accessor: 'role_id.name',
+        },
+        {
+            Header: 'Status',
+            accessor: 'status',
+            Cell: ({ row }) => {
+                const record = row.original;
+                if (user.role_id.name === 'admin') {
+                    return (
+                        record._id !== user._id && record.role_id.name !== 'SuperAdmin' && (
+                            <Switch
+                                onChange={() => toggleStatus(record._id, record.status)}
+                                checked={record.status}
+                                onColor="#0033A0"
+                            />
+                        )
+                    );
+                } else {
+                    return (
+                        
+                            <Switch
+                                onChange={() => toggleStatus(record._id, record.status)}
+                                checked={record.status}
+                                onColor="#0033A0"
+                                disabled={record._id == user._id || record.role_id.name == 'SuperAdmin'}
+                            />
+                    );
+                }
+            },
+        },
+    ], [page, rowsPerPage, toggleStatus, user._id]);
+
+    const data = useMemo(() => filteredUsers || [], [filteredUsers]);
 
     return (
         <Fragment>
-            {loading ? (
-                <Loader />
-            ) : (
+            
                 <div className='main-page-container'>
                     <div className='pageName_And_Button'>
-                        <h2 >User Status</h2>
+                        <h2>User Status</h2>
                     </div>
                     <div className="search-bar">
                         <input
@@ -82,48 +127,21 @@ const UserStatus = () => {
                         />
                     </div>
                     <div className='table-container'>
-                        <table className="customer-table">
-                            <thead>
-                                <tr>
-                                    <th>SrNo</th>
-                                    <th>Name</th>
-                                    <th>Designation</th>
-                                    <th>Role</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody className='tablebody_data'>
-                                {currentUsers?.map((record, index) => (
-                                    <tr key={record._id}>
-                                        <td>{indexOfFirstUser + index + 1}</td>
-                                        <td>{record?.name}</td>
-                                        <td>{record?.designation_id?.name}</td>
-                                        <td>{record?.role_id?.name}</td>
-                                        <td>
-                                            {record._id !== user._id && (
-                                                <Switch
-                                                    onChange={() => toggleStatus(record?._id, record?.status)}
-                                                    checked={record?.status}
-                                                    onColor="#0033A0"
-                                                />
-                                            )}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                    {loading ? (
+                <Loader />
+            ) : (
+                        <ReactTable
+                            columns={columns}
+                            data={data}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            rowsPerPage={rowsPerPage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
+                    )}
                     </div>
-
-                    <TablePagination
-                        component="div"
-                        count={filteredUsers?.length || 0}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        rowsPerPage={rowsPerPage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
                 </div>
-            )}
+            
         </Fragment>
     );
 };

@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-// import './test.css'; // Updated to use the provided CSS
 import { clearError, getAllRole, getAllTask, assignTasksToRoles } from '../../../actions/roleAction';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../../Loader/Loader';
 import { useAlert } from 'react-alert';
 import { useNavigate } from 'react-router-dom';
 import TablePagination from '@mui/material/TablePagination';
-import { AiFillDelete } from "react-icons/ai";
-import { MdOutlineUpdate } from "react-icons/md";
 import { FaUserEdit } from "react-icons/fa";
-
+import ReactTable from '../../ReactTable'; // Ensure the path is correct
+import './RoleTaskEdit.css';
+import Tippy from '@tippyjs/react';
 
 export default function RoleTaskEdit() {
     const alert = useAlert();
@@ -57,59 +56,61 @@ export default function RoleTaskEdit() {
     const indexOfFirstRole = page * rowsPerPage;
     const currentRoles = filteredRoles.slice(indexOfFirstRole, indexOfLastRole);
 
+    const columns = [
+        {
+            Header: 'SrNo',
+            accessor: (row, index) => indexOfFirstRole + index + 1
+        },
+        {
+            Header: 'Role Name',
+            accessor: 'name'
+        },
+        {
+            Header: 'Actions',
+            accessor: 'action',
+            Cell: ({ row }) => (
+                <Tippy content='Edit Task'>
+
+                    <button className="action-btn" onClick={() => handleEditButton(row.original)}><FaUserEdit /></button>
+                </Tippy>
+            )
+        }
+    ];
+
     return (
-        <div className='main-page-container'>
-            {loading ? (
-                <Loader />
-            ) : (
-                error ? null : (
-                    <div>
-                        <div className='pageName_And_Button'>
-                            <h3>Edit Role Task</h3>
-                            {/* <button className="button-yellow">Add Role</button> */}
-                        </div>
-                        <div className="search-bar">
-                            <input
-                                type="text"
-                                placeholder="Enter Role Name"
-                                value={searchRole}
-                                onChange={(e) => setSearchRole(e.target.value)}
-                            />
-                        </div>
-                        <div className='table-container'>
-                            <table className="customer-table">
-                                <thead>
-                                    <tr>
-                                        <th>SrNo</th>
-                                        <th>Role Name</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody className='tablebody_data'>
-                                    {currentRoles.map((roleData, index) => (
-                                        <tr key={roleData._id}>
-                                            <td>{indexOfFirstRole + index + 1}</td>
-                                            <td>{roleData.name}</td>
-                                            <td>
-                                                <button className="action-btn" onClick={() => handleEditButton(roleData)}><FaUserEdit /></button>
-                                                
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                        <TablePagination
-                            component="div"
-                            count={filteredRoles.length}
-                            page={page}
-                            onPageChange={handleChangePage}
-                            rowsPerPage={rowsPerPage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                        />
-                    </div>
-                )
-            )}
+        <div className='full-width-height'>
+
+            error ? null : (
+            <div className='main-page-container'>
+                <div className='pageName_And_Button'>
+                    <h3>Edit Role Task</h3>
+                </div>
+                <div className="search-bar">
+                    <input
+                        type="text"
+                        placeholder="Enter Role Name"
+                        value={searchRole}
+                        onChange={(e) => setSearchRole(e.target.value)}
+                    />
+                </div>
+                <div className='table-container'>
+                    {loading ? (
+                        <Loader />
+                    ) : (
+                        <ReactTable data={currentRoles} columns={columns} />
+                    )}
+                </div>
+                <TablePagination
+                    component="div"
+                    count={filteredRoles.length}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    rowsPerPage={rowsPerPage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </div>
+            )
+
         </div>
     );
 }

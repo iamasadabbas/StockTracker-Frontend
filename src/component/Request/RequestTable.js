@@ -2,6 +2,7 @@ import React, { Fragment, useState,useEffect } from 'react';
 import ViewRequestModal from '../Modal/RequestModel/ViewRequestModal';
 import { getRequestById, getRequestedProduct } from '../../actions/requestAction';
 import { useDispatch } from 'react-redux';
+import LoaderModal from '../Modal/LoaderModal/LoaderModal';
 const RequestTable = (props) => {
     const [currentRequestId,setCurrentRequestId] =useState('')
     const dispatch=useDispatch();
@@ -48,6 +49,12 @@ const RequestTable = (props) => {
                     setIsModalOpen={setIsModalOpen}
                     currentRequestId={currentRequestId}
                     />}
+                    {/* {isModalOpen && <ViewRequestModal 
+                    request={request}
+                    isModalOpen={isModalOpen}
+                    setIsModalOpen={setIsModalOpen}
+                    currentRequestId={currentRequestId}
+                    />} */}
                 </td>
             </tr>
         </Fragment>

@@ -1,0 +1,289 @@
+.main-page-container {
+    font-family: Arial, sans-serif;
+    padding-left: 80px;
+    padding-right: 80px;
+    padding-top: 80px;
+}
+
+.pageName_And_Button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header {
+    background-color: #0033a0;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+.search-bar {
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    background-color: #0033a0;
+    margin: 20px 0;
+    border-radius: 15px;
+    gap: 5%;
+}
+
+.input-bar {
+    /* padding: 30px; */
+    padding-top: 30px;
+    display: flex;
+    flex-direction: column;
+    /* margin: 20px 0; */
+    outline: rgb(240, 223, 39);
+    border-radius: 15px;
+    gap: 5%;
+}
+.input-bar input.yellow_border,
+.input-bar textarea.yellow_border,
+.input-bar select.yellow_border {
+    border: none; /* Remove default border */
+    outline: 1.5px solid rgb(240, 223, 39); /* Set yellow outline */
+}
+
+.required:after {
+    content: " *";
+    color: red;
+}
+
+.search-bar input {
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-bar select {
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.input-bar input {
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+}
+/* .yellow_border {
+    border: none;
+    outline: 2px solid rgb(240, 223, 39);
+} */
+
+.input-bar textarea {
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+}
+
+.input-bar select {
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+}
+
+.input-bar select textarea {
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+}
+
+/* .input-bar input:focus {
+    outline: #ffa500;
+} */
+
+
+.button-yellow {
+    width: 130px;
+    height: 35px;
+    background-color: #ffa500;
+    color: white;
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-customer:hover {
+    background-color: #ff7b00;
+}
+
+.clear-and-Add-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 40px;
+}
+
+.clear-And-Add-Record-button {
+    width: 100px;
+    height: 33px;
+    padding: 5px 10px 5px 10px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    background-color: #003B95;
+}
+
+.clear-And-Add-Record-button:hover {
+    cursor: pointer;
+    background-color: #02317c
+}
+
+.input-with-label {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+
+.table-container {
+    height: 330px;
+    padding: 0px;
+    overflow-y: scroll;
+    border-radius: 10px;
+    margin-top: 20px;
+    border: 1px solid rgb(160, 158, 158);
+}
+
+.customer-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.customer-table th {
+    position: sticky;
+    top: 0px;
+    padding: 10px;
+    text-align: left;
+    height: 50px;
+}
+
+.customer-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    height: 50px;
+    /* Set a fixed height for table cells */
+}
+
+.input-container {
+    display: flex;
+    flex-direction: row;
+    gap: 5%
+}
+
+.customer-table th {
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    background-color: #ECECEC;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.action-btn {
+    margin-right: 10px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #0033a0;
+    background: none;
+    font-size: x-large;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.edit-btn {
+    background-color: #007bff;
+    color: white;
+}
+
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination button {
+    background-color: #0033a0;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 0 5px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.pagination button:hover {
+    background-color: #002080;
+}
+
+.button-genrateInvoice {
+    display: inline-block;
+    border: none;
+    margin-top: 5px;
+    width: 150px;
+    height: 35px;
+    color: white;
+    background-color: #003B95;
+    border-radius: 5px;
+}
+
+/* src/AddVisaType.css */
+.add-visa-type-container {
+    text-align: center;
+    margin-top: 50px;
+    padding: 20px;
+  }
+  
+  .add-visa-type-title {
+    margin-bottom: 20px;
+  }
+  
+  .add-visa-type-form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .add-visa-type-input {
+    margin: 10px;
+    padding: 10px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .add-visa-type-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .add-visa-type-button {
+    padding: 10px 20px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .add-visa-type-button:hover {
+    background-color: #003f7f;
+  }
+  

@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useSelector } from "react-redux";
 import SideBar from '../component/Layout/Siderbar/Sidebar.js';
@@ -21,25 +20,23 @@ import AddUser from '../component/user/AddUser/AddUser.js';
 import ViewUser from '../component/user/ViewUser/ViewUser.js';
 import AddDesignation from '../component/designation/AddDesignation.js';
 import AddSignatureRecord from '../component/signatureRecord/AddSignatureRecord/AddSignatureRecord.js';
-import { ViewSignatureRecord } from '../component/signatureRecord/ViewSignatureRecord/ViewSignatureRecord.js';
 import RegistrationApproval from '../component/registrationApproval/RegistrationApproval.js';
 import UserStatus from '../component/userStatus/UserStatus.js';
 import Login from '../component/login/Login.js';
 import Header from '../component/Layout/Header/Header.js';
 import Profile from '../component/Profile/Profile.js';
-import './Navigation.css'
 import UpdateProfile from '../component/Profile/UpdateProfile.js';
 import ViewProduct from '../component/product/ViewProduct/ViewProduct.js';
-import ForgotPassword from '../component/Profile/ForgotPassword.js'
 import UpdatePassword from '../component/Profile/UpdatePassword.js';
 import AllComapny from '../component/company/AllCompany.js';
 import AddCompany from '../component/company/AddCompany.js';
-import Test from '../component/test.js'
-import Test1 from '../component/test1.js'
 import AddRole from '../component/role/Role/AddRole.js';
 import Task from '../component/task/Task.js';
 import AddProductType from '../component/product/ProductType/AddProductType.js';
 import Designation from '../component/designation/Designation.js'
+import ReactTable from '../component/ReactTable.js';
+import { ViewSignatureRecord } from '../component/signatureRecord/ViewSignatureRecord/ViewSignatureRecord.js';
+import './Navigation.css'
 
 export default function Navigation() {
   const navigate = useNavigate();
@@ -62,8 +59,6 @@ export default function Navigation() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/updateProfile" element={<UpdateProfile />} />
           <Route path="/company" element={<ProtectedRoute component={AllComapny} role={'StoreKeeper'} />} />
-          <Route path="/test" element={<ProtectedRoute component={Test} role={'StoreKeeper'} />} />
-          <Route path="/test1" element={<ProtectedRoute component={Test1} role={'StoreKeeper'} />} />
           <Route path="/addcompany" element={<ProtectedRoute component={AddCompany} role={'StoreKeeper'} />} />
           <Route path="/" element={<ProtectedRoute component={MainDashboard} role={'StoreKeeper'} />} />
           <Route path="/requests" element={<ProtectedRoute component={Request} role={'StoreKeeper'} />} />
@@ -90,6 +85,7 @@ export default function Navigation() {
           <Route path="/viewSignatureRecord" element={<ProtectedRoute component={ViewSignatureRecord} role={'StoreKeeper'} />} />
           <Route path="/registrationApproval" element={<ProtectedRoute component={RegistrationApproval} role={'Admin'} />} />
           <Route path="/userStatus" element={<ProtectedRoute component={UserStatus} role={'Admin'} />} />
+          <Route path="/reactTable" element={<ProtectedRoute component={ReactTable} role={'Admin'} />} />
         </Routes>
       </SideBar>
     </>

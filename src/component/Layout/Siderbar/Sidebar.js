@@ -8,14 +8,17 @@ import { MdPersonalInjury, MdOutlineTask } from "react-icons/md";
 import { BsClipboardData, BsFillPersonCheckFill, BsCartCheck } from "react-icons/bs";
 import { TbBrandProducthunt } from "react-icons/tb";
 import { FaUserTag, FaUserPen } from "react-icons/fa6";
-import { IoIosLogOut } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../../actions/userDataAction";
+import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { GoOrganization } from "react-icons/go";
-import ReactTooltip from 'react-tooltip';
+import { FaUserCircle } from "react-icons/fa";
+import { FaUserShield } from "react-icons/fa";
+
+
+
+
 
 import SidebarMenu from "./SidebarMenu";
 import './Sidebar.css';
@@ -48,7 +51,7 @@ const routes = [
   },
   {
     name: "Role",
-    icon: <BsFillPersonCheckFill />,
+    icon: <FaUserShield />,
     roles: ["Admin"],
     subRoutes: [
       {
@@ -66,11 +69,31 @@ const routes = [
     ]
   },
   {
-    path: "/task",
-    name: "Task",
-    icon: <MdOutlineTask />,
-    roles: ["Admin"]
+    name: "User",
+    icon: <FaUserCircle />,
+    roles: ["Admin"],
+    subRoutes: [
+      {
+        path: "/registrationApproval",
+        name: "User Approval",
+        icon: <FaUserTag />,
+        roles: ["Admin"]
+      },
+      {
+        path: "/userStatus",
+        name: "User Status",
+        icon: <BsFillPersonCheckFill />,
+        roles: ["Admin"]
+      },
+      {
+        path: "/viewuser",
+        name: "View User",
+        icon: <FaUserPen />,
+        roles: ["Admin"]
+      }
+    ]
   },
+  
   // {
   //   path: "/addtask",
   //   name: "Add Task",
@@ -78,18 +101,18 @@ const routes = [
   //   roles: ["Admin"]
   // },
   
-  {
-    path: "/registrationApproval",
-    name: "User Approval",
-    icon: <FaUserTag />,
-    roles: ["Admin"]
-  },
-  {
-    path: "/userStatus",
-    name: "User Status",
-    icon: <FaUserPen />,
-    roles: ["Admin"]
-  },
+  // {
+  //   path: "/registrationApproval",
+  //   name: "User Approval",
+  //   icon: <FaUserTag />,
+  //   roles: ["Admin"]
+  // },
+  // {
+  //   path: "/userStatus",
+  //   name: "User Status",
+  //   icon: <FaUserPen />,
+  //   roles: ["Admin"]
+  // },
   {
     name: "product",
     icon: <TbBrandProducthunt />,
@@ -116,30 +139,37 @@ const routes = [
     ]
   },
   {
-    name: "Signature",
-    icon: <LuClipboardSignature />,
-    roles: ["StoreKeeper"],
-    subRoutes: [
-      {
-        path: "/addSignatureRecord",
-        name: "Add Record",
-        icon: <MdPersonalInjury />,
-        roles: ["StoreKeeper"]
-      },
-      {
-        path: "/viewSignatureRecord",
-        name: "View Record",
-        icon: <BsClipboardData />,
-        roles: ["StoreKeeper"]
-      }
-    ]
-  },
-  {
-    path: "/viewuser",
-    name: "View User",
-    icon: <FaLock />,
+    path: "/task",
+    name: "Task",
+    icon: <MdOutlineTask />,
     roles: ["Admin"]
   },
+  {
+    name: "Signature Record",
+    path: "/viewSignatureRecord",
+    icon: <LuClipboardSignature />,
+    roles: ["StoreKeeper"],
+    // subRoutes: [
+    //   {
+    //     path: "/addSignatureRecord",
+    //     name: "Add Record",
+    //     icon: <MdPersonalInjury />,
+    //     roles: ["StoreKeeper"]
+    //   },
+    //   {
+    //     path: "/viewSignatureRecord",
+    //     name: "View Record",
+    //     icon: <BsClipboardData />,
+    //     roles: ["StoreKeeper"]
+    //   }
+    // ]
+  },
+  // {
+  //   path: "/viewuser",
+  //   name: "View User",
+  //   icon: <FaLock />,
+  //   roles: ["Admin"]
+  // },
   {
     path: "/company",
     name: "Company",
@@ -147,8 +177,8 @@ const routes = [
     roles: ["StoreKeeper"]
   },
   {
-    path: "/adddesignation",
-    name: "Add Designation",
+    path: "/designation",
+    name: "Designation",
     icon: <BsCartCheck />,
     roles: ["Admin"]
   }
@@ -171,6 +201,7 @@ const SideBar = ({ children, role }) => {
     show: {
       width: "140px",
       padding: "5px 15px",
+      
       transition: {
         duration: 0.2,
       },
@@ -181,6 +212,7 @@ const SideBar = ({ children, role }) => {
     hidden: {
       width: 0,
       opacity: 0,
+      marginTop:'5px',
       transition: {
         duration: 0.5,
       },
@@ -200,7 +232,7 @@ const SideBar = ({ children, role }) => {
     <div className="main-container">
       <motion.div
         animate={{
-          width: isOpen ? "15%" : "4%",
+          width: isOpen ? "17%" : "4%",
           transition: {
             duration: 0.5,
             type: "spring",

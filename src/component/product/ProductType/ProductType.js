@@ -8,10 +8,11 @@ import TablePagination from '@mui/material/TablePagination';
 import { AiFillDelete } from "react-icons/ai";
 import { MdOutlineUpdate } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
+import ReactTable from '../../ReactTable'; // Adjust the path as needed
 
 export default function ProductType() {
-    const navigate=useNavigate()
-        const alert = useAlert();
+    const navigate = useNavigate();
+    const alert = useAlert();
     const dispatch = useDispatch();
     const { loading, message, allProductType, error } = useSelector((state) => state.product);
 
@@ -48,9 +49,10 @@ export default function ProductType() {
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
-    const handleAddTypeclick =()=>{
-        navigate('/addProductType')
-    }
+
+    const handleAddTypeclick = () => {
+        navigate('/addProductType');
+    };
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
@@ -61,66 +63,86 @@ export default function ProductType() {
     const indexOfFirstType = page * rowsPerPage;
     const currentProductTypes = filteredProductTypes.slice(indexOfFirstType, indexOfLastType);
 
+    // Define columns for ReactTable
+    const columns = React.useMemo(
+        () => [
+            {
+                Header: 'SrNo',
+                accessor: 'srNo',
+            },
+            {
+                Header: 'Type',
+                accessor: 'name',
+            },
+            {
+                Header: 'Description',
+                accessor: 'description',
+            },
+            // {
+            //     Header: 'Actions',
+            //     accessor: 'actions',
+            //     Cell: ({ row }) => (
+            //         <div>
+            //             <button className="action-btn"><AiFillDelete /></button>
+            //             <button className="action-btn"><MdOutlineUpdate /></button>
+            //         </div>
+            //     ),
+            // },
+        ],
+        []
+    );
+
+    // Format data for ReactTable
+    const tableData = React.useMemo(
+        () =>
+            currentProductTypes.map((type, index) => ({
+                srNo: indexOfFirstType + index + 1,
+                name: type.name,
+                description: type.description,
+                actions: '', // Actions will be rendered by the Cell component
+            })),
+        [currentProductTypes, indexOfFirstType]
+    );
+
     return (
         <Fragment>
-            {loading ? (
-                <Loader />
-            ) : (
-                <div className="main-page-container">
-                    <div className='pageName_And_Button'>
-                        <h3>Product Type</h3>
-                        <button className="button-yellow" onClick={handleAddTypeclick}>Add Type</button>
-                    </div>
-                    
-                    <div className="search-bar">
-                        <input
-                            type="text"
-                            placeholder="Search Product Type"
-                            value={searchType}
-                            onChange={(e) => setSearchType(e.target.value)}
-                        />
-                        <input
-                            type="text"
-                            placeholder="Search Product Type"
-                            value={searchDescription}
-                            onChange={(e) => setSearchDescription(e.target.value)}
-                        />
-                    </div>
-                    <div className='table-container'>
-                        <table className="customer-table">
-                            <thead>
-                                <tr>
-                                    <th>SrNo</th>
-                                    <th>Type</th>
-                                    <th>Description</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody className='tablebody_data'>
-                                {currentProductTypes.map((type, index) => (
-                                    <tr key={type.id}>
-                                        <td>{indexOfFirstType + index + 1}</td>
-                                        <td>{type.name}</td>
-                                        <td>{type.description}</td>
-                                        <td>
-                                            <button className="action-btn"><AiFillDelete /></button>
-                                            <button className="action-btn"><MdOutlineUpdate /></button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                    <TablePagination
-                        component="div"
-                        count={filteredProductTypes.length}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        rowsPerPage={rowsPerPage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
+
+            <div className="main-page-container">
+                <div className='pageName_And_Button'>
+                    <h3>Product Type</h3>
+                    <button className="button-yellow" onClick={handleAddTypeclick}>Add Type</button>
+                </div>
+                <div className="search-bar">
+                    <input
+                        type="text"
+                        placeholder="Search Product Type"
+                        value={searchType}
+                        onChange={(e) => setSearchType(e.target.value)}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Search Product Description"
+                        value={searchDescription}
+                        onChange={(e) => setSearchDescription(e.target.value)}
                     />
                 </div>
-            )}
+                <div className='table-container'>
+                    {loading ? (
+                        <Loader />
+                    ) : (
+                        <ReactTable data={tableData} columns={columns} />
+                    )}
+                </div>
+                <TablePagination
+                    component="div"
+                    count={filteredProductTypes.length}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    rowsPerPage={rowsPerPage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </div>
+
         </Fragment>
     );
 }

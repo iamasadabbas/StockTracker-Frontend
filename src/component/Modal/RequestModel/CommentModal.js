@@ -65,15 +65,15 @@ const CommentModal = ({ isCommentModalOpen, setIsCommentModalOpen, currentReques
                             />
                         </div>
                         <div className='button-div'>
-                            {commentInput !== '' && (
-                                <button
-                                    className='submit_button'
-                                    onClick={handleSubmit}
-                                >
-                                    Submit
-                                </button>
-                            )}
+                            <button
+                                className='submit_button'
+                                onClick={handleSubmit}
+                                disabled={commentInput === ''}
+                            >
+                                Submit
+                            </button>
                         </div>
+
                     </ModalBody>
                 )}
             </Modal>

@@ -1,18 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAlert } from 'react-alert';
 import { getAllRegistrationApproval, updateRole } from '../../actions/registrationApprovalAction';
 import { getAllRole } from '../../actions/roleAction';
 import Loader from '../Loader/Loader';
+import ReactTable from '../ReactTable';
+import TablePagination from '@mui/material/TablePagination';
+import ViewRequestModal from '../Modal/RequestModel/ViewRequestModal';
 import './RegistrationApproval.css';
 
-const RegistrationApproval = ({show}) => {
+const RegistrationApproval = ({ show }) => {
     const alert = useAlert();
     const dispatch = useDispatch();
     const { loading, allRegistration, message, error } = useSelector((state) => state.allRegistration);
     const { allRole } = useSelector((state) => state.role);
-    // console.log(allRole);
     const [selectedRoles, setSelectedRoles] = useState({});
+    const [searchName, setSearchName] = useState('');
+    const [searchDepartment, setSearchDepartment] = useState('');
+    const [searchDesignation, setSearchDesignation] = useState('');
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedRequest, setSelectedRequest] = useState(null);
 
     useEffect(() => {
         dispatch(getAllRegistrationApproval());
@@ -22,12 +31,12 @@ const RegistrationApproval = ({show}) => {
     }, [dispatch, allRole.length]);
 
     useEffect(() => {
-        if(error){
+        if (error) {
             alert.error(error);
-        }else if (message) {
+        } else if (message) {
             alert.success(message);
         }
-    }, [message, alert,error]);
+    }, [message, alert, error]);
 
     const handleRoleChange = (userId, roleId) => {
         setSelectedRoles((prev) => ({ ...prev, [userId]: roleId }));
@@ -42,75 +51,141 @@ const RegistrationApproval = ({show}) => {
         }
     };
 
-    return (
-        <div className="registration-approval">
-            {loading ? (
-                <Loader />
-            ) : error ? ( null
-                // <p className="error">Error: {error}</p>
-            ) : (
-                allRegistration && allRegistration.length > 0 ? (
-                    <>
-                    {show==="requestBox" ? (null):(
-                        <h2 className='page-heading'>User Approval</h2>
-                    )}
-                    <table className="registration-table">
-                        <thead>
-                            <tr>
-                                <th>S:No</th>
-                                <th>Name</th>
-                                {show==='requestBox' ? (
-                                    <th>Status</th>
-                                ):(
-                                    <>
-                                <th>Department</th>
-                                <th>Designation</th>
-                                <th>faculty</th>
-                                <th>Role</th>
-                                <th>Action</th>
-                                </>
-                                )}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {/* {console.log(allRegistration)} */}
-                            {allRegistration.map((user,index) => (
-                                <tr key={user._id}>
-                                    <td>{index+1}</td>
-                                    <td>{user.name}</td>
-                                    {show==='requestBox' ? (
-                                    <td>{user.role_id===null ? ('waiting'):("")}</td>
-                                ):(
-                                    <>
-                                    <td>{user.department_id.name}</td>
-                                    <td>{user.designation_id.name}</td>
-                                    <td>{user.faculty_id.name}</td>
-                                    <td>
-                                        <select
-                                            value={selectedRoles[user._id] || ''}
-                                            onChange={(e) => handleRoleChange(user._id, e.target.value)}
-                                        >
-                                            <option value="">Select role</option>
-                                            {allRole.map((role) => (
-                                                <option key={role._id} value={role._id}>{role.name}</option>
-                                            ))}
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <button onClick={() => handleSubmit(user._id)}>Approve</button>
-                                    </td>
-                                    </>
-                                    )}
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    </>
-                ) : (
-                    <div className='heading-NoRequest'>
-                        <h1 >No requests</h1>
-                    </div>
+    const handleViewButtonClick = (request) => {
+        setIsModalOpen(true);
+        setSelectedRequest(request);
+    };
+
+    const filteredRegistrations = allRegistration?.filter(reg =>
+        reg.name.toLowerCase().includes(searchName.toLowerCase()) &&
+        reg.department_id.name.toLowerCase().includes(searchDepartment.toLowerCase()) &&
+        reg.designation_id.name.toLowerCase().includes(searchDesignation.toLowerCase())
+    );
+
+    const indexOfLastRequest = page * rowsPerPage + rowsPerPage;
+    const indexOfFirstRequest = page * rowsPerPage;
+    const currentRequests = filteredRegistrations.slice(indexOfFirstRequest, indexOfLastRequest);
+
+    const columns = useMemo(() => [
+        {
+            Header: 'S:No',
+            accessor: (row, index) => indexOfFirstRequest + index + 1,
+        },
+        {
+            Header: 'Name',
+            accessor: 'name',
+        },
+        show === 'requestBox' ? {
+            Header: 'Status',
+            accessor: (row) => row.role_id === null ? 'waiting' : '',
+        } : [
+            {
+                Header: 'Department',
+                accessor: 'department_id.name',
+            },
+            {
+                Header: 'Designation',
+                accessor: 'designation_id.name',
+            },
+            {
+                Header: 'Faculty',
+                accessor: 'faculty_id.name',
+            },
+            {
+                Header: 'Role',
+                Cell: ({ row }) => (
+                    <select
+                        className='select-role'
+                        value={selectedRoles[row.original._id] || ''}
+                        onChange={(e) => handleRoleChange(row.original._id, e.target.value)}
+                    >
+                        <option value="">Select role</option>
+                        {allRole.map((role) => (
+                            <option key={role._id} value={role._id}>{role.name}</option>
+                        ))}
+                    </select>
+                ),
+            },
+            {
+                Header: 'Actions',
+                Cell: ({ row }) => (
+                    <button className='btn-Approve-reg' onClick={() => handleViewButtonClick(row.original)}>
+                        Approve
+                    </button>
                 )
+            },
+        ]
+    ].flat(), [show, selectedRoles, allRole, indexOfFirstRequest]);
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
+    return (
+        <div className="main-page-container">
+
+            <>
+            <div className='pageName_And_Button'>
+                {show !== "requestBox" && <h2>User Approval</h2>}
+                </div>
+                <div className="search-bar">
+                    <input
+                        type="text"
+                        placeholder="Enter Name"
+                        value={searchName}
+                        onChange={(e) => setSearchName(e.target.value)}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Enter Department"
+                        value={searchDepartment}
+                        onChange={(e) => setSearchDepartment(e.target.value)}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Enter Designation"
+                        value={searchDesignation}
+                        onChange={(e) => setSearchDesignation(e.target.value)}
+                    />
+                </div>
+                <div className='table-container'>
+
+                    {filteredRegistrations.length > 0 ? (
+                        <>
+                            {loading ? (
+                                <Loader />
+                            ) : (
+                                <ReactTable data={currentRequests} columns={columns} />
+                            )}
+
+                        </>
+                    ) : (
+                        <div className='no-results'>
+                            <p>No matching registrations found.</p>
+                        </div>
+                    )}
+                </div>
+                <TablePagination
+                    component="div"
+                    count={filteredRegistrations.length}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    rowsPerPage={rowsPerPage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </>
+
+            {isModalOpen && selectedRequest && (
+                <ViewRequestModal
+                    request={selectedRequest}
+                    isModalOpen={isModalOpen}
+                    setIsModalOpen={setIsModalOpen}
+                />
             )}
         </div>
     );

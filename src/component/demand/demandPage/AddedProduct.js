@@ -6,7 +6,10 @@ import { MdOutlineDelete } from "react-icons/md";
 import { clearError, saveDemand, getActiveAssistantDirectorSignatureRecord } from '../../../actions/demandAction.js';
 import { useAlert } from 'react-alert';
 import TablePagination from '@mui/material/TablePagination';
-import { CLEAR_DETAILS,CLEAR_DEMAND_DATA,UPDATE_DATA } from '../../../Redux/constants/demandConstants.js';
+import { CLEAR_DETAILS, CLEAR_DEMAND_DATA, UPDATE_DATA } from '../../../Redux/constants/demandConstants.js';
+import ReactTable from '../../ReactTable'; // Ensure the path is correct
+import { Height } from '@material-ui/icons';
+import Tippy from '@tippyjs/react';
 
 function AddedProduct() {
     const dispatch = useDispatch();
@@ -69,6 +72,39 @@ function AddedProduct() {
     const indexOfFirstProduct = page * rowsPerPage;
     const currentProducts = data.slice(indexOfFirstProduct, indexOfLastProduct);
 
+    const columns = [
+        {
+            Header: 'S:No',
+            accessor: (row, index) => indexOfFirstProduct + index + 1,
+        },
+        {
+            Header: 'Name',
+            accessor: 'name',
+        },
+        {
+            Header: 'Specifications',
+            accessor: 'specifications',
+        },
+        {
+            Header: 'Description',
+            accessor: 'description',
+        },
+        {
+            Header: 'Quantity',
+            accessor: 'quantity',
+        },
+        {
+            Header: 'Action',
+            Cell: ({ row }) => (
+                <Tippy content='Delete'>
+                <button className="action-btn" onClick={() => handleDeleteProduct(row.original._id)}>
+                    <MdOutlineDelete />
+                </button>
+                </Tippy>
+            ),
+        },
+    ];
+
     return (
         <div className='main-page-container' style={{ paddingTop: '0px' }}>
             <div ref={componentPDF} className='print-div' style={{ display: 'none' }}>
@@ -79,35 +115,8 @@ function AddedProduct() {
                     <div className='pageName_And_Button'>
                         <h3>Added Products</h3>
                     </div>
-                    <div className='table-container'>
-                        <table className="customer-table">
-                            <thead>
-                                <tr>
-                                    <th>S:No</th>
-                                    <th>Name</th>
-                                    <th>Specifications</th>
-                                    <th>Description</th>
-                                    <th>Quantity</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody className='tablebody_data'>
-                                {currentProducts.map((product, index) => (
-                                    <tr key={product?._id}>
-                                        <td>{indexOfFirstProduct + index + 1}</td>
-                                        <td>{product?.name}</td>
-                                        <td>{product?.specifications}</td>
-                                        <td>{product?.description}</td>
-                                        <td>{product?.quantity}</td>
-                                        <td>
-                                            <button className="action-btn" onClick={() => handleDeleteProduct(product._id)}>
-                                                <MdOutlineDelete />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                    <div className='table-container' style={{height:'250px'}}>
+                        <ReactTable data={currentProducts}  columns={columns} />
                     </div>
                     <button className='button-genrateInvoice' onClick={() => { handlePrint(); handleDemandSave(); }}>Generate Invoice</button>
                     <TablePagination

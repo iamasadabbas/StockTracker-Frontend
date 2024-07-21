@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useRef, Fragment } from 'react';
 import './ViewDemand.css';
-import './ViewDemandModal.css'
+import './ViewDemandModal.css';
 import axiosInstance from '../../../axiosInstance/axiosInstance';
-import TemplatePrint from '../printTemplate/TemplatePrint';
 import { useNavigate } from 'react-router-dom';
 import { CURRENT_DEMAND } from '../../../Redux/constants/demandConstants';
 import { useDispatch, useSelector } from 'react-redux';
-import { useReactToPrint } from 'react-to-print';
 import { useAlert } from 'react-alert';
 import Loader from '../../Loader/Loader';
 import ApproveModal from '../../Modal/DemandModal/ApproveModal';
@@ -14,12 +12,13 @@ import { clearError, getDemandById, getAllDemand } from '../../../actions/demand
 import TablePagination from '@mui/material/TablePagination';
 import { IoEye } from "react-icons/io5";
 import { AiFillInteraction } from "react-icons/ai";
+import ReactTable from '../../ReactTable'; // Ensure the path is correct
+import Tippy from '@tippyjs/react';
 
 const URL = process.env.BASE_URL || 'http://localhost:4000';
 
 function ViewDemandedReciept() {
     const alert = useAlert();
-    const componentPDF = useRef();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { loading, allDemand, error } = useSelector((state) => state.allDemand);
@@ -37,10 +36,10 @@ function ViewDemandedReciept() {
     useEffect(() => {
         if (error) {
             alert.error(error);
-            return () => { dispatch(clearError()) }
+            dispatch(clearError());
         }
-        dispatch(getAllDemand())
-    }, [error]);
+        dispatch(getAllDemand());
+    }, [dispatch, error, alert]);
 
     const fetchDemand = (_id) => {
         axiosInstance.get(`${URL}/demand/getDemandById/${_id}`).then((response) => {
@@ -87,87 +86,93 @@ function ViewDemandedReciept() {
     const indexOfFirstDemand = page * rowsPerPage;
     const currentDemands = filteredDemands?.slice(indexOfFirstDemand, indexOfLastDemand);
 
+    const columns = [
+        {
+            Header: 'SrNo',
+            accessor: (row, index) => indexOfFirstDemand + index + 1,
+        },
+        {
+            Header: 'ApplicationId',
+            accessor: 'applicationId',
+        },
+        {
+            Header: 'Subject',
+            accessor: 'subject',
+        },
+        {
+            Header: 'Date',
+            accessor: 'date',
+        },
+        {
+            Header: 'Status',
+            accessor: 'status',
+        },
+        {
+            Header: 'Action',
+            Cell: ({ row }) => (
+                <div>
+                    <Tippy content='View'>
+                        <button className='action-btn' onClick={() => viewDemand(row.original._id)}>
+                            <IoEye />
+                        </button>
+                    </Tippy>
+                    <Tippy content='Action'>
+                        <button className='action-btn' onClick={() => handleApprove(row.original)}>
+                            <AiFillInteraction />
+                        </button>
+                    </Tippy>
+                </div>
+            ),
+        },
+    ];
+
     return (
         <Fragment>
-            {loading ? (
-                <Loader />
-            ) : (
-                error ? (null) : (
-                    <>
-                        <div className="main-page-container">
-                            <div className='pageName_And_Button'>
-                                <h2>View Demand</h2>
-                                <button className="button-yellow" onClick={handleAddDemandClick}>Add Demand</button>
-                            </div>
-                            <div className="search-bar">
-                                <input 
-                                    type="text" 
-                                    placeholder="Enter Application ID" 
-                                    value={searchApplicationId} 
-                                    onChange={(e) => setSearchApplicationId(e.target.value)} 
-                                />
-                                <input 
-                                    type="text" 
-                                    placeholder="Enter Subject" 
-                                    value={searchSubject} 
-                                    onChange={(e) => setSearchSubject(e.target.value)} 
-                                />
-                                {/* <input 
-                                    type="text" 
-                                    placeholder="Enter Date"  
-                                    value={searchDate} 
-                                    onChange={(e) => setSearchDate(e.target.value)} 
-                                /> */}
-                                <select
-                                    value={searchStatus}
-                                    onChange={(e) => setSearchStatus(e.target.value)}
-                                >
-                                    <option value="">All</option>
-                                    <option value="Pending">Pending</option>
-                                    <option value="Approved">Approved</option>
-                                </select>
-                            </div>
-                            <div className='table-container'>
-                                <table className="customer-table">
-                                    <thead>
-                                        <tr>
-                                            <th>SrNo</th>
-                                            <th>ApplicationId</th>
-                                            <th>Subject</th>
-                                            <th>Date</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className='tablebody_data'>
-                                        {currentDemands?.map((demand, index) => (
-                                            <tr key={demand._id}>
-                                                <td>{index + 1}</td>
-                                                <td>{demand.applicationId}</td>
-                                                <td>{demand.subject}</td>
-                                                <td>{demand.date}</td>
-                                                <td>{demand.status}</td>
-                                                <td>
-                                                    <button className='action-btn' onClick={() => { viewDemand(demand._id) }}><IoEye /></button>
-                                                    <button className='action-btn' onClick={() => { handleApprove(demand) }}><AiFillInteraction /></button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <TablePagination
-                                component="div"
-                                count={filteredDemands?.length}
-                                page={page}
-                                onPageChange={handleChangePage}
-                                rowsPerPage={rowsPerPage}
-                                onRowsPerPageChange={handleChangeRowsPerPage}
-                            />
-                        </div>
-                    </>
-                )
-            )}
+            <div className="main-page-container">
+                <div className='pageName_And_Button'>
+                    <h2>View Demand</h2>
+                    <button className="button-yellow" onClick={handleAddDemandClick}>Add Demand</button>
+                </div>
+                <div className="search-bar">
+                    <input
+                        type="text"
+                        placeholder="Enter Application ID"
+                        value={searchApplicationId}
+                        onChange={(e) => setSearchApplicationId(e.target.value)}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Enter Subject"
+                        value={searchSubject}
+                        onChange={(e) => setSearchSubject(e.target.value)}
+                    />
+                    <select
+                        value={searchStatus}
+                        onChange={(e) => setSearchStatus(e.target.value)}
+                    >
+                        <option value="">All</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Approved">Approved</option>
+                    </select>
+                </div>
+                <div className='table-container'>
+                    {loading ? (
+                        <Loader />
+                    ) : (
+                        <ReactTable data={currentDemands} columns={columns} />
+                    )}
+                </div>
+                <TablePagination
+                    component="div"
+                    count={filteredDemands?.length}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    rowsPerPage={rowsPerPage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </div>
+            )
+
             <div>
                 {isApproveModalOpen && <ApproveModal
                     isApproveModalOpen={isApproveModalOpen}

@@ -29,7 +29,6 @@ export const addSignatureRecordReducer = (state = {message:'', allSignatureRecor
           };
       case GET_SIGNATURE_RECORD_SUCCESS:
       case UPDATE_SIGNATURE_RECORD_STATUS_SUCCESS:
-        console.log(action.payload);
           return {
               ...state,
               loading: false,

@@ -3,8 +3,6 @@ import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Loader from '../../Loader/Loader';
-// import '../../Modal/Modal.css';
-// import '../AllProduct.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { ADD_DEMAND_DATA } from '../../../Redux/constants/demandConstants';
 import { useNavigate } from 'react-router-dom';
@@ -12,8 +10,8 @@ import { getAllProduct, clearError } from '../../../actions/demandAction';
 import { useAlert } from 'react-alert';
 import TablePagination from '@mui/material/TablePagination';
 import { IoBagAddOutline } from "react-icons/io5";
-
-// import './test.css';
+import ReactTable from '../../ReactTable'; 
+import Tippy from '@tippyjs/react';
 
 function AllProductTable() {
     const alert = useAlert();
@@ -81,10 +79,45 @@ function AllProductTable() {
     const indexOfFirstProduct = page * rowsPerPage;
     const currentProducts = searchData.slice(indexOfFirstProduct, indexOfLastProduct);
 
+    const columns = useMemo(() => [
+        {
+            Header: 'S:No',
+            accessor: (row, index) => indexOfFirstProduct + index + 1,
+        },
+        {
+            Header: 'Name',
+            accessor: 'name',
+        },
+        {
+            Header: 'Specifications',
+            accessor: 'specifications',
+        },
+        {
+            Header: 'Description',
+            accessor: 'description',
+        },
+        {
+            Header: 'Action',
+            Cell: ({ row }) => (
+                <Tippy content='Add item'>
+                <button
+                    className='action-btn'
+                    onClick={() => handleAddButton(row.original)}
+                >
+                    <IoBagAddOutline />
+                </button>
+                </Tippy>
+            ),
+        },
+    ], [indexOfFirstProduct]);
+
     return (
         <Fragment>
+            
             {loading ? (
-                <Loader />
+                <div style={{width:'100%', height:'100vh'}}>
+                    <Loader />
+                </div>
             ) : (
                 <div className='main-page-container'>
                     <div className='pageName_And_Button'>
@@ -99,35 +132,7 @@ function AllProductTable() {
                         />
                     </div>
                     <div className='table-container'>
-                        <table className="customer-table">
-                            <thead>
-                                <tr>
-                                    <th>S:No</th>
-                                    <th>Name</th>
-                                    <th>Specifications</th>
-                                    <th>Description</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody className='tablebody_data'>
-                                {currentProducts.map((product, index) => (
-                                    <tr key={product._id}>
-                                        <td>{indexOfFirstProduct + index + 1}</td>
-                                        <td>{product?.name}</td>
-                                        <td>{product?.specifications}</td>
-                                        <td>{product?.description}</td>
-                                        <td>
-                                            <button
-                                                className='action-btn'
-                                                onClick={() => handleAddButton(product)}
-                                            >
-                                                <IoBagAddOutline/>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                        <ReactTable data={currentProducts} columns={columns} />
                     </div>
                     <TablePagination
                         component="div"

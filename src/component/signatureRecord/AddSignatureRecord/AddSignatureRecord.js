@@ -4,6 +4,7 @@ import Loader from '../../Loader/Loader';
 import { useAlert } from 'react-alert';
 import { addSignatureRecord, clearMessage, clearError } from '../../../actions/signatureRecordAction';
 import { useNavigate } from 'react-router-dom';
+// import '../../test.css'
 
 export default function AddSignatureRecord() {
   const navigate = useNavigate()
@@ -66,7 +67,7 @@ export default function AddSignatureRecord() {
                 placeholder="Type name here"
                 value={nameInput}
                 onChange={handleNameChange}
-                className="add-visa-type-input"
+                className="add-visa-type-input yellow_border"
                 required
               />
             </div>
@@ -78,7 +79,7 @@ export default function AddSignatureRecord() {
                 placeholder="Type designation here"
                 value={designationInput}
                 onChange={handleDesignationChange}
-                className="add-visa-type-input"
+                className="add-visa-type-input yellow_border"
                 required
               />
             </div>

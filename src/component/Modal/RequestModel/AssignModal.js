@@ -5,9 +5,8 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { useAlert } from 'react-alert';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProductQuantity, updateProductQuantity, updateRequestedProductStatus, clearError } from '../../../actions/requestAction.js';
-
+import './AssignModal.css'
 import Loader from '../../Loader/Loader.js';
-import '../Modal.css';
 
 const AssignModal = ({ isAssignModalOpen, setIsAssignModalOpen, requestItems, currentRequestId, requestedProduct, event }) => {
     const dispatch = useDispatch();
@@ -25,10 +24,10 @@ const AssignModal = ({ isAssignModalOpen, setIsAssignModalOpen, requestItems, cu
         if (enteredValue === '0') {
             setAssignInput('');
             return;
-        }else if(enteredValue === '') {
+        } else if (enteredValue === '') {
             setAssignInput('')
             return
-        }{
+        } {
 
         }
         const newValue = Math.min(parseInt(enteredValue, 10), requestItems?.requested_quantity || 0);
@@ -39,17 +38,17 @@ const AssignModal = ({ isAssignModalOpen, setIsAssignModalOpen, requestItems, cu
         let remainingQuantity;
         const received_quantity = assignInput;
         try {
-            if(event){
-                const editedQuantity=requestItems?.received_quantity-assignInput
-             remainingQuantity = productAvailableQuantity + editedQuantity;
-            }else{
+            if (event) {
+                const editedQuantity = requestItems?.received_quantity - assignInput
+                remainingQuantity = productAvailableQuantity + editedQuantity;
+            } else {
                 remainingQuantity = productAvailableQuantity - received_quantity;
             }
             const status = 'assigned';
-            const comment=commentInput
+            const comment = commentInput
 
             // Wait for each dispatch to complete before proceeding to the next
-            dispatch(updateRequestedProductStatus(currentRequestId, product_id, received_quantity, status,comment));
+            dispatch(updateRequestedProductStatus(currentRequestId, product_id, received_quantity, status, comment));
             dispatch(updateProductQuantity(product_id, remainingQuantity));
 
             setIsAssignModalOpen(!isAssignModalOpen);
@@ -63,7 +62,7 @@ const AssignModal = ({ isAssignModalOpen, setIsAssignModalOpen, requestItems, cu
         setIsAssignModalOpen(!isAssignModalOpen);
         setAssignInput('');
     }
-    const handleCommentChange=(e)=>{
+    const handleCommentChange = (e) => {
         setCommentInput(e.target.value)
     }
 
@@ -84,15 +83,18 @@ const AssignModal = ({ isAssignModalOpen, setIsAssignModalOpen, requestItems, cu
     return (
         <Fragment>
             <Modal className='Modal' size='lg' isOpen={isAssignModalOpen} toggle={() => setIsAssignModalOpen(!isAssignModalOpen)}>
-                <ModalHeader>
-                    <FontAwesomeIcon className='svg-icon' icon={faTimes} style={{ float: 'right', cursor: 'pointer' }} onClick={closeIconClick} />
-                </ModalHeader>
                 {loading ? (
-                    <div className="fullscreen-loader">
+                    <div className="main_container_assignModal">
                         <Loader />
                     </div>
                 ) : (
-                    <ModalBody>
+                    <>
+                <ModalHeader>
+                    <FontAwesomeIcon className='svg-icon' icon={faTimes} style={{ float: 'right', cursor: 'pointer' }} onClick={closeIconClick} />
+                </ModalHeader>
+                    <ModalBody >
+                        <div className=''>
+
                         <table className='modal-body-table'>
                             <thead>
                                 <tr>
@@ -134,18 +136,20 @@ const AssignModal = ({ isAssignModalOpen, setIsAssignModalOpen, requestItems, cu
                             </tbody>
                         </table>
                         <div className='button-div'>
-                            {assignInput !=='' && (
-                                <button
-                                    className='submit_button'
-                                    onClick={handleAssignSubmit}
-                                    disabled={parseInt(assignInput, 10) > requestItems?.requested_quantity}
-                                >
-                                    Submit
-                                </button>
-                            )}
+                            <button
+                                className='submit_button'
+                                onClick={handleAssignSubmit}
+                                disabled={assignInput === '' || parseInt(assignInput, 10) > requestItems?.requested_quantity}
+                            >
+                                Submit
+                            </button>
                         </div>
+
+                        </div>
+
                     </ModalBody>
-                )}
+                    </>
+                    )}
             </Modal>
         </Fragment>
     )

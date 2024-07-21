@@ -77,7 +77,7 @@ const AddProductType = () => {
                                 placeholder="Enter product type"
                                 value={formData.productType}
                                 onChange={handleChange}
-                                className="add-visa-type-input"
+                                className="add-visa-type-input yellow_border"
                                 required
                                 disabled={loading}
                             />
@@ -90,7 +90,7 @@ const AddProductType = () => {
                                 placeholder="Enter Type Description"
                                 value={formData.typeDescription}
                                 onChange={handleChange}
-                                className="add-visa-type-input"
+                                className="add-visa-type-input yellow_border"
                                 required
                                 disabled={loading}
                             />

@@ -56,6 +56,7 @@ const AddRole = () => {
                         <label className='required'>Name</label>
                         <input
                             type="text"
+                            className='yellow_border'
                             name="Name"
                             placeholder="Enter Role Name"
                             value={roleInput}
@@ -67,6 +68,7 @@ const AddRole = () => {
                         <label className='required'>Description</label>
                         <input
                             type="text"
+                            className='yellow_border'
                             name="Description"
                             placeholder="Enter Role Description"
                             value={descriptionInput}

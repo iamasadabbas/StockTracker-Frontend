@@ -17,6 +17,9 @@ import {
     UPDATE_USER_STATUS_SUCCESS,
     UPDATE_USER_STATUS_FAIL,
     DELETE_USER_FAIL,
+    UPDATE_USER_REQUEST,
+    UPDATE_USER_SUCCESS,
+    UPDATE_USER_FAIL,
     CLEAR_ERROR
 } from '../Redux/constants/userConstants'
 import axiosInstance from '../axiosInstance/axiosInstance';
@@ -72,6 +75,25 @@ export const addUser = (name,email,password,phone_No,selectedDesignationId,selec
         : error.message;
   
       dispatch({ type: UPDATE_USER_STATUS_FAIL, payload: errorMessage });
+    }
+  };
+  export const updateUserData = (userId,UpdatedRecord) => async (dispatch) => {
+    console.log(UpdatedRecord);
+    const name=UpdatedRecord.name
+    const email=UpdatedRecord.email
+    const phone_no=UpdatedRecord.phone_no
+    try {
+      dispatch({ type: UPDATE_USER_REQUEST });
+  
+      const response = await axiosInstance.put(`/user/editUser/${userId}`,{name,email,phone_no});
+      console.log(response.data);
+      dispatch({ type: UPDATE_USER_SUCCESS, payload: response.data.allUser });
+    } catch (error) {
+      const errorMessage = error.response && error.response.data && error.response.data.error
+        ? error.response.data.error
+        : error.message;
+  
+      dispatch({ type: UPDATE_USER_FAIL, payload: errorMessage });
     }
   };
   export const getAllUser = () => async (dispatch) => {

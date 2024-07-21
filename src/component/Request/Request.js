@@ -2,19 +2,19 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Loader from '../Loader/Loader';
 import { useAlert } from 'react-alert';
-import './Request.css';
-import { getAllRequest, clearError, getRequestById, getRequestedProduct } from '../../actions/requestAction';
+import { getAllRequest, clearError, getRequestById } from '../../actions/requestAction';
 import ViewRequestModal from '../Modal/RequestModel/ViewRequestModal';
 import TablePagination from '@mui/material/TablePagination';
 import { IoEyeSharp } from "react-icons/io5";
-
+import ReactTable from '../ReactTable';
+import Tippy from '@tippyjs/react';
 
 const Request = () => {
     const [event, setEvent] = useState('');
     const dispatch = useDispatch();
     const alert = useAlert();
 
-    const { requests, loading, error } = useSelector((state) => state.requests);
+    const { requests,loading, error } = useSelector((state) => state.requests);
 
     useEffect(() => {
         if (error) {
@@ -56,109 +56,109 @@ const Request = () => {
     const [selectedRequest, setSelectedRequest] = useState(null);
 
     const handleViewButtonClick = (request) => {
+        setIsModalOpen(true);
         const currentRequestId = request.request_id?._id;
         dispatch(getRequestById(request._id));
         setCurrentRequestId(currentRequestId);
-        dispatch(getRequestedProduct(currentRequestId));
+        // dispatch(getRequestedProduct(currentRequestId));
         setSelectedRequest(request);
-        setIsModalOpen(true);
     };
+
+    const columns = [
+        {
+            Header: 'S.No',
+            accessor: (row, index) => indexOfFirstRequest + index + 1
+        },
+        {
+            Header: 'Request Id',
+            accessor: 'request_number'
+        },
+        {
+            Header: 'User',
+            accessor: 'user_id.name'
+        },
+        {
+            Header: 'Date.Time',
+            accessor: 'createdAt',
+            Cell: ({ value }) => {
+                const utcDateTime = new Date(value);
+                const localTimeString = utcDateTime.toLocaleTimeString();
+                const localDateString = utcDateTime.toLocaleDateString();
+                return `${localTimeString}, ${localDateString}`;
+            }
+        },
+        {
+            Header: 'Status',
+            accessor: 'status'
+        },
+        {
+            Header: 'Actions',
+            Cell: ({ row }) => (
+                <Tippy content='View'>
+                <button className='action-btn' onClick={() => handleViewButtonClick(row.original)}>
+                    <IoEyeSharp />
+                </button>
+                </Tippy>
+            )
+        }
+    ];
 
     return (
         <Fragment>
-            {loading ? (
+            
+            <div className="main-page-container">
+                <div className='pageName_And_Button'>
+                    <h3>User Requests</h3>
+                </div>
+                <div className="search-bar">
+                    <input
+                        type="text"
+                        placeholder="Enter Req.Id"
+                        value={searchReqId}
+                        onChange={(e) => setSearchReqId(e.target.value)}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Enter User Name"
+                        value={searchUser}
+                        onChange={(e) => setSearchUser(e.target.value)}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Enter Date/Time"
+                        value={searchDateTime}
+                        onChange={(e) => setSearchDateTime(e.target.value)}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Enter Status"
+                        value={searchStatus}
+                        onChange={(e) => setSearchStatus(e.target.value)}
+                    />
+                </div>
+                <div className='table-container'>
+                {loading ? (
                 <Loader />
-            ) : (
-                <>
-                    <div className="main-page-container">
-                        <div className='pageName_And_Button'>
-                            <h3>User Requests</h3>
-                        </div>
-                        <div className="search-bar">
-                            <input 
-                                type="text" 
-                                placeholder="Enter Req.Id" 
-                                value={searchReqId} 
-                                onChange={(e) => setSearchReqId(e.target.value)} 
-                            />
-                            <input 
-                                type="text" 
-                                placeholder="Enter User Name" 
-                                value={searchUser} 
-                                onChange={(e) => setSearchUser(e.target.value)} 
-                            />
-                            <input 
-                                type="text" 
-                                placeholder="Enter Date/Time" 
-                                value={searchDateTime} 
-                                onChange={(e) => setSearchDateTime(e.target.value)} 
-                            />
-                            <input 
-                                type="text" 
-                                placeholder="Enter Status" 
-                                value={searchStatus} 
-                                onChange={(e) => setSearchStatus(e.target.value)} 
-                            />
-                        </div>
-                        <div className='table-container'>
-                            <table className="customer-table">
-                                <thead className='table-head'>
-                                    <tr>
-                                        <th>S.No</th>
-                                        <th>Request Id</th>
-                                        <th>User</th>
-                                        <th>Date.Time</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody className='tablebody_data'>
-                                    {currentRequests?.map((request, index) => {
-                                        const SNo = indexOfFirstRequest + index + 1;
-                                        const reqId = request.request_number;
-                                        const userName = request.user_id.name;
-                                        const dateTime = request.createdAt;
-                                        const requestStatus = request.status;
-                                        const utcDateTime = new Date(dateTime);
-                                        const localTimeString = utcDateTime.toLocaleTimeString();
-                                        const localDateString = utcDateTime.toLocaleDateString();
-                                        const formattedDateTime = `${localTimeString}, ${localDateString}`;
-
-                                        return (
-                                            <tr key={index}>
-                                                <td>{SNo}</td>
-                                                <td>{reqId}</td>
-                                                <td>{userName}</td>
-                                                <td>{formattedDateTime}</td>
-                                                <td>{requestStatus}</td>
-                                                <td>
-                                                    <button className='action-btn' onClick={() => handleViewButtonClick(request)}><IoEyeSharp/></button>
-                                                </td>
-                                            </tr>
-                                        );
-                                    })}
-                                </tbody>
-                            </table>
-                        </div>
-                        <TablePagination
-                            component="div"
-                            count={filteredRequests.length}
-                            page={page}
-                            onPageChange={handleChangePage}
-                            rowsPerPage={rowsPerPage}
-                            onRowsPerPageChange={handleChangeRowsPerPage}
-                        />
-                    </div>
-                    {isModalOpen && selectedRequest && (
-                        <ViewRequestModal 
-                            event={event}
-                            request={selectedRequest}
-                            isModalOpen={isModalOpen}
-                            setIsModalOpen={setIsModalOpen}
-                            currentRequestId={currentRequestId}
-                        />
-                    )}
-                </>
+            ) : (null)}
+                    <ReactTable data={currentRequests} columns={columns} />
+                </div>
+                <TablePagination
+                    component="div"
+                    count={filteredRequests.length}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    rowsPerPage={rowsPerPage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </div>
+            {isModalOpen && selectedRequest && (
+                <ViewRequestModal
+                    event={event}
+                    request={selectedRequest}
+                    isModalOpen={isModalOpen}
+                    setIsModalOpen={setIsModalOpen}
+                    currentRequestId={currentRequestId}
+                />
             )}
         </Fragment>
     );

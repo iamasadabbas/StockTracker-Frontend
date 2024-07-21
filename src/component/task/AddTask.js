@@ -60,6 +60,7 @@ const AddTask = () => {
                                 <label className='required'>Task</label>
                                 <input
                                     type="text"
+                                    className='yellow_border'
                                     name="Task"
                                     placeholder="Enter task name"
                                     value={taskInput}
@@ -71,6 +72,7 @@ const AddTask = () => {
                                 <label className='required'>Description</label>
                                 <input
                                     type="text"
+                                    className='yellow_border'
                                     name="Description"
                                     placeholder="Enter task description"
                                     value={descriptionInput}

@@ -1,66 +1,58 @@
-import React, { useEffect, useRef } from 'react';
-import Chart from 'chart.js/auto';
+import React from 'react';
+import { Line } from 'react-chartjs-2';
+import { Chart, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { positions } from 'react-alert';
 
-const LineChart = ({ data, label }) => {
-  const chartRef = useRef(null);
-  const chartInstance = useRef(null);
+Chart.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-  useEffect(() => {
-    if (chartInstance.current) {
-      chartInstance.current.destroy(); // Cleanup existing chart before creating a new one
-    }
-
-    const ctx = chartRef.current.getContext('2d');
-    chartInstance.current = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: data?.map((_, index) => `Day ${index + 1}`),
-        datasets: [{
-          label: `Daily ${label}`,
+const LineChart = ({ data, label, labels }) => {
+  const getChartData = () => {
+    return {
+      labels: labels,
+      datasets: [
+        {
+          label: label,
           data: data,
-          borderColor: 'blue',
-          backgroundColor: 'rgba(0, 0, 255, 0.2)',
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
           borderWidth: 1,
-          fill: true,
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: `Number of ${label}`
-            },
-            ticks: {
-              callback: function(value) { if (Number.isInteger(value)) { return value; } },
-              stepSize: 1
-            }
-          },
-          x: {
-            title: {
-              display: true,
-              text: 'Days'
-            }
-          }
         },
-        plugins: {
-          legend: {
-            display: true,
-            position: 'top'
-          },
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-      }
-    });
-
-    return () => {
-      chartInstance.current.destroy(); // Cleanup on unmount
+      ],
     };
-  }, [data, label]); // Add label to dependencies to handle label changes
+  };
 
-  return <canvas ref={chartRef} style={{ width: '100%', height: '400px' }} />;
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top', // Move the legend to the right side
+      },
+      title: {
+        display: true,
+        text: 'Registration Request',
+        position:'left' // Add a chart title
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          callback: function (value) {
+            if (Number.isInteger(value) && value >= 0) {
+              return value;
+            }
+          },
+        },
+        min: 0,
+      },
+    },
+  };
+
+  return (
+    <div style={{ position: 'relative' }}>
+      <Line data={getChartData()} options={options} />
+    </div>
+  );
 };
 
 export default LineChart;

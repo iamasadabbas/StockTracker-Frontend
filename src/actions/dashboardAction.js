@@ -113,11 +113,11 @@ export const getUserApproval = () => async (dispatch) => {
       dispatch({ type: GET_USER_APPROVAL_REQUEST_FAIL, payload: error.message });
     }
   };
-export const get7DaysUserApproval = () => async (dispatch) => {
+export const getUserApprovalCount = (timePeriod) => async (dispatch) => {
     try {
       dispatch({ type: GET_7DAYS_USER_APPROVAL_REQUEST });
   
-      const response = await axiosInstance.get(`/user/getLast7daysUserApproval`);
+      const response = await axiosInstance.get(`/user/getUserApprovalCount${timePeriod}`);
       // console.log(response.data.totalRole);
       dispatch({ type: GET_7DAYS_USER_APPROVAL_SUCCESS, payload: response.data.approvalCounts });
     } catch (error) {

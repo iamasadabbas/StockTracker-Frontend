@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AddCompany } from '../../actions/companyAction';
 import { useAlert } from 'react-alert';
 import { useNavigate } from 'react-router-dom';
-import '../test.css'
+import '../../App.css'
 
 const AddNewCompany = () => {
   const navigate = useNavigate();
@@ -72,7 +72,7 @@ const AddNewCompany = () => {
               placeholder="Enter Company Name"
               value={formData.name}
               onChange={handleChange}
-              className="add-visa-type-input"
+              className="add-visa-type-input yellow_border"
               required
             />
           </div>
@@ -84,7 +84,7 @@ const AddNewCompany = () => {
               placeholder="Enter Description"
               value={formData.description}
               onChange={handleChange}
-              className="add-visa-type-input"
+              className="add-visa-type-input yellow_border"
               required
             />
           </div>

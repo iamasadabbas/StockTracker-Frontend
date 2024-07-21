@@ -18,7 +18,11 @@ export default function App() {
   }, [dispatch]);
 
   if (loading1 || !authChecked) {
-    return <Loader />;
+    return (
+    <div style={{width:'100%',height:'100vh'}}>
+      <Loader />
+    </div>
+    )
   }
 
   return (
