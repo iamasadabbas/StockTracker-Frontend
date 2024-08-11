@@ -8,6 +8,7 @@ import Loader from './component/Loader/Loader';
 import ResetPassword from './component/Profile/ResetPassword';
 import ForgotPassword from './component/Profile/ForgotPassword.js'
 
+
 export default function App() {
   const { loading1, isAuthenticated } = useSelector((state) => state.userData);
   const dispatch = useDispatch();

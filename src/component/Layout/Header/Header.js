@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 const Header = () => {
   const dispatch=useDispatch()
   const navigate=useNavigate()
-    const baseUrl = "http://localhost:4000"; 
+    const baseUrl = process.env.REACT_APP_BASE_URL; 
     const { loading1, isAuthenticated, user } = useSelector((state) => state.userData);
     // console.log(user.avatar);
     const handleLogout = async () => {
@@ -43,7 +43,7 @@ const Header = () => {
       {user && user?.avatar ? (
         <img 
           className='Profile-img'
-          src={`http://localhost:4000/${user?.avatar}`}
+          src={`${baseUrl}/${user?.avatar}`}
           alt='User Avatar'
           onClick={()=>navigate('/profile')}
         />

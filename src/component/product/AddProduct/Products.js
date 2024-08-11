@@ -125,12 +125,22 @@ const Products = () => {
     [currentProducts, indexOfFirstProduct]
   );
 
+
+  const { roleTask } = useSelector(
+    (state) => state.userData
+  );
+  var task = false;
+  task = roleTask.find((e) => e?.task_id?.name === "Add Product" && e.status === true);
+  
+
+
   return(
   <Fragment>
     <div className="main-page-container">
       <div className='pageName_And_Button'>
         <h3>Products</h3>
-        <button className="button-yellow" onClick={handleAddProduct}>Add Product</button>
+        {task ? <button className="button-yellow" onClick={handleAddProduct}>Add Product</button>: null}
+        
       </div>
       <div className="search-bar">
         <input

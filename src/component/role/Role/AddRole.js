@@ -44,11 +44,23 @@ const AddRole = () => {
         }
     };
 
+    const { roleTask } = useSelector(
+        (state) => state.userData
+      );
+      
+      
+      var task = false;
+      task = roleTask.find((e) => e?.task_id?.name === "View User Role" && e.status === true);
+      
+      
+
+
     return (
         <div className="main-page-container">
             <div className='pageName_And_Button'>
                 <h2 className="add-visa-type-title">Add Role</h2>
-                <button className="button-yellow" onClick={handleViewRoleClick}>View Role</button>
+                {task ? <button className="button-yellow" onClick={handleViewRoleClick}>View Role</button>: null}
+                
             </div>
             <form className="input-bar" onSubmit={handleSubmit}>
             <div className='input-container'>

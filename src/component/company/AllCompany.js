@@ -8,6 +8,7 @@ import Loader from '../Loader/Loader';
 
 const AllCompany = () => {
   const { loading, allCompany, error } = useSelector((state) => state.company);
+  
   const [searchName, setSearchName] = useState('');
   const [searchDescription, setSearchDescription] = useState('');
   const [page, setPage] = useState(0);
@@ -72,11 +73,21 @@ const AllCompany = () => {
     [currentCompanies, indexOfFirstCompany]
   );
 
+  const { roleTask } = useSelector(
+    (state) => state.userData
+  );
+  var task = false;
+  task = roleTask.find((e) => e?.task_id?.name === "Add Product Company" && e.status === true);
+
+
   return (
     <div className="main-page-container">
       <div className='pageName_And_Button'>
         <h1>All Companies</h1>
+        {task ? 
+        
         <button className="button-yellow" onClick={handleAddCompany}>Add Company</button>
+        : null}
       </div>
       <div className="search-bar">
         <input

@@ -7,13 +7,17 @@ import profileAvatar from './Profile.png'
 
 const Profile = () => {
   const navigate = useNavigate();
+  const BASE_URL=process.env.REACT_APP_BASE_URL
 
   const { loading1, user, isAuthenticated } = useSelector((state) => state.userData);
+  console.log(user.avatar);
   useEffect(() => {
     if (isAuthenticated === false || isAuthenticated === "false") {
       navigate("/login");
     }
   }, [navigate, isAuthenticated]);
+
+  
 
   return (
     <Fragment>
@@ -24,11 +28,11 @@ const Profile = () => {
           <div className="profileContainer">
             <div>
               <h1>My Profile</h1>
-              {user?.avatar ? (
-                <img src={`http://localhost:4000/${user?.avatar}`} alt={user?.name} />
+              {user?.avatar? (
+                <img src={`${BASE_URL}/${user?.avatar}`} alt={user?.name} />
               ) : (
                 <img src={profileAvatar} alt="Profile Avatar" />
-              )}
+                )}
               <Link to="/updateProfile">Edit Profile</Link>
             </div>
             <div>

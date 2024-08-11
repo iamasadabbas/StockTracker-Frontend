@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAlert } from 'react-alert';
-import { getAllRegistrationApproval, updateRole } from '../../actions/registrationApprovalAction';
+import { clearMessage, clearError, getAllRegistrationApproval, updateRole } from '../../actions/registrationApprovalAction';
 import { getAllRole } from '../../actions/roleAction';
 import Loader from '../Loader/Loader';
 import ReactTable from '../ReactTable';
@@ -33,38 +33,40 @@ const RegistrationApproval = ({ show }) => {
     useEffect(() => {
         if (error) {
             alert.error(error);
+            dispatch(clearError());
         } else if (message) {
             alert.success(message);
+            dispatch(clearMessage());
         }
-    }, [message, alert, error]);
+    }, [message, alert, error, dispatch]);
 
     const handleRoleChange = (userId, roleId) => {
         setSelectedRoles((prev) => ({ ...prev, [userId]: roleId }));
     };
 
     const handleSubmit = (userId) => {
-        const roleId = selectedRoles[userId];
+        const roleId = selectedRoles[userId._id];
         if (roleId) {
-            dispatch(updateRole(userId, roleId));
+            dispatch(updateRole(userId._id, roleId));
         } else {
             alert.error('Please select a role before submitting.');
         }
     };
 
-    const handleViewButtonClick = (request) => {
-        setIsModalOpen(true);
-        setSelectedRequest(request);
-    };
+    // Simplified filter for debugging
+    const filteredRegistrations = allRegistration?.filter(reg => {
+        return (
+            reg?.name?.toLowerCase().includes(searchName?.toLowerCase()) &&
+            reg?.department_id?.name?.toLowerCase().includes(searchDepartment?.toLowerCase()) &&
+            reg?.designation_id?.name?.toLowerCase().includes(searchDesignation?.toLowerCase())
+        );
+    });
 
-    const filteredRegistrations = allRegistration?.filter(reg =>
-        reg.name.toLowerCase().includes(searchName.toLowerCase()) &&
-        reg.department_id.name.toLowerCase().includes(searchDepartment.toLowerCase()) &&
-        reg.designation_id.name.toLowerCase().includes(searchDesignation.toLowerCase())
-    );
 
     const indexOfLastRequest = page * rowsPerPage + rowsPerPage;
     const indexOfFirstRequest = page * rowsPerPage;
-    const currentRequests = filteredRegistrations.slice(indexOfFirstRequest, indexOfLastRequest);
+    const currentRequests = filteredRegistrations?.length > 0 ? filteredRegistrations.slice(indexOfFirstRequest, indexOfLastRequest) : [];
+
 
     const columns = useMemo(() => [
         {
@@ -109,7 +111,7 @@ const RegistrationApproval = ({ show }) => {
             {
                 Header: 'Actions',
                 Cell: ({ row }) => (
-                    <button className='btn-Approve-reg' onClick={() => handleViewButtonClick(row.original)}>
+                    <button className='btn-Approve-reg' onClick={() => handleSubmit(row.original)}>
                         Approve
                     </button>
                 )
@@ -128,10 +130,9 @@ const RegistrationApproval = ({ show }) => {
 
     return (
         <div className="main-page-container">
-
             <>
-            <div className='pageName_And_Button'>
-                {show !== "requestBox" && <h2>User Approval</h2>}
+                <div className='pageName_And_Button'>
+                    {show !== "requestBox" && <h2>User Approval</h2>}
                 </div>
                 <div className="search-bar">
                     <input
@@ -153,33 +154,31 @@ const RegistrationApproval = ({ show }) => {
                         onChange={(e) => setSearchDesignation(e.target.value)}
                     />
                 </div>
-                <div className='table-container'>
 
-                    {filteredRegistrations.length > 0 ? (
-                        <>
-                            {loading ? (
-                                <Loader />
-                            ) : (
+                {
+                loading ? (
+                    <Loader />
+                ) : (
+                filteredRegistrations?.length > 0 ? (
+                    <>
+                        <div className='table-container'>
+                            
                                 <ReactTable data={currentRequests} columns={columns} />
-                            )}
-
-                        </>
-                    ) : (
-                        <div className='no-results'>
-                            <p>No matching registrations found.</p>
+                            
                         </div>
-                    )}
-                </div>
-                <TablePagination
-                    component="div"
-                    count={filteredRegistrations.length}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    rowsPerPage={rowsPerPage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
+                        <TablePagination
+                            component="div"
+                            count={filteredRegistrations.length}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            rowsPerPage={rowsPerPage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
+                    </>
+                ) : (
+                    <div className='no-data-found'>No Data Found.</div>
+                ))}
             </>
-
             {isModalOpen && selectedRequest && (
                 <ViewRequestModal
                     request={selectedRequest}

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, Fragment } from 'react';
+import { useReactToPrint } from "react-to-print";
 import './ViewDemand.css';
 import './ViewDemandModal.css';
 import axiosInstance from '../../../axiosInstance/axiosInstance';
@@ -14,13 +15,15 @@ import { IoEye } from "react-icons/io5";
 import { AiFillInteraction } from "react-icons/ai";
 import ReactTable from '../../ReactTable'; // Ensure the path is correct
 import Tippy from '@tippyjs/react';
+import TemplatePrint from '../printTemplate/TemplatePrint';
 
-const URL = process.env.BASE_URL || 'http://localhost:4000';
+const URL = process.env.REACT_APP_BASE_URL;
 
 function ViewDemandedReciept() {
     const alert = useAlert();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const componentPDF = useRef();
     const { loading, allDemand, error } = useSelector((state) => state.allDemand);
     const [currentDemand, setCurrentDemand] = useState([]);
     const [currentDemandedProducts, setCurrentDemandedProducts] = useState([]);
@@ -50,9 +53,11 @@ function ViewDemandedReciept() {
 
     const viewDemand = (_id) => {
         fetchDemand(_id);
-        navigate('/templatePrint');
     };
-
+    const handlePrint = useReactToPrint({
+        content: () => componentPDF.current,
+        documentTitle: "Demand"
+    });
     const handleApprove = (demand) => {
         dispatch(getDemandById(demand._id));
         setId(demand._id);
@@ -112,10 +117,11 @@ function ViewDemandedReciept() {
             Cell: ({ row }) => (
                 <div>
                     <Tippy content='View'>
-                        <button className='action-btn' onClick={() => viewDemand(row.original._id)}>
+                        <button className='action-btn' onClick={() => { viewDemand(row.original._id); handlePrint(); }}>
                             <IoEye />
                         </button>
                     </Tippy>
+
                     <Tippy content='Action'>
                         <button className='action-btn' onClick={() => handleApprove(row.original)}>
                             <AiFillInteraction />
@@ -126,12 +132,27 @@ function ViewDemandedReciept() {
         },
     ];
 
+    const { roleTask } = useSelector(
+        (state) => state.userData
+      );
+
+      var task = false;
+      task = roleTask.find((e) => e?.task_id?.name === "Add Product Demand" && e.status === true);
+      
+
+
     return (
         <Fragment>
             <div className="main-page-container">
+                <div ref={componentPDF} className='print-div' style={{ display: 'none' }}>
+                    <TemplatePrint />
+                </div>
                 <div className='pageName_And_Button'>
                     <h2>View Demand</h2>
-                    <button className="button-yellow" onClick={handleAddDemandClick}>Add Demand</button>
+
+{task? <button className="button-yellow" onClick={handleAddDemandClick}>Add Demand</button>: null}
+
+                    
                 </div>
                 <div className="search-bar">
                     <input

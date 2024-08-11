@@ -8,13 +8,14 @@ import TablePagination from '@mui/material/TablePagination';
 import { IoEyeSharp } from "react-icons/io5";
 import ReactTable from '../ReactTable';
 import Tippy from '@tippyjs/react';
+import './Request.css'
 
 const Request = () => {
     const [event, setEvent] = useState('');
     const dispatch = useDispatch();
     const alert = useAlert();
 
-    const { requests,loading, error } = useSelector((state) => state.requests);
+    const { requests, loading, error } = useSelector((state) => state.requests);
 
     useEffect(() => {
         if (error) {
@@ -95,9 +96,9 @@ const Request = () => {
             Header: 'Actions',
             Cell: ({ row }) => (
                 <Tippy content='View'>
-                <button className='action-btn' onClick={() => handleViewButtonClick(row.original)}>
-                    <IoEyeSharp />
-                </button>
+                    <button className='action-btn' onClick={() => handleViewButtonClick(row.original)}>
+                        <IoEyeSharp />
+                    </button>
                 </Tippy>
             )
         }
@@ -105,7 +106,7 @@ const Request = () => {
 
     return (
         <Fragment>
-            
+
             <div className="main-page-container">
                 <div className='pageName_And_Button'>
                     <h3>User Requests</h3>
@@ -136,13 +137,15 @@ const Request = () => {
                         onChange={(e) => setSearchStatus(e.target.value)}
                     />
                 </div>
-                <div className='table-container'>
-                {loading ? (
-                <Loader />
-            ) : (null)}
-                    <ReactTable data={currentRequests} columns={columns} />
-                </div>
-                <TablePagination
+                {currentRequests.length > 0 ? (
+                    <>
+                    <div className='table-container'>
+                        {loading ? (
+                            <Loader />
+                        ) : (null)}
+                        <ReactTable data={currentRequests} columns={columns} />
+                    </div>
+                    <TablePagination
                     component="div"
                     count={filteredRequests.length}
                     page={page}
@@ -150,6 +153,13 @@ const Request = () => {
                     rowsPerPage={rowsPerPage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
+                </>
+                ) : (
+
+                    <div className="no-data-found">No Data Found</div>
+                )}
+
+                
             </div>
             {isModalOpen && selectedRequest && (
                 <ViewRequestModal

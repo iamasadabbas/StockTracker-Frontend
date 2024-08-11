@@ -12,6 +12,7 @@ import './Login.css';
 import UIIT from './UIIT.jpg';
 
 const Login = () => {
+  console.log(process.env.BASE_URL);
   const dispatch = useDispatch();
   const alert = useAlert();
   const navigate = useNavigate();

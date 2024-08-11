@@ -66,12 +66,20 @@ export default function Task() {
         },
     ], [indexOfFirstRole]);
 
+    const { roleTask } = useSelector(
+        (state) => state.userData
+      );
+      var task = false;
+      task = roleTask.find((e) => e?.task_id?.name === "Add Role Task" && e.status === true);
+
+
     return (
         <>
             <div className='main-page-container'>
                 <div className='pageName_And_Button'>
                     <h3>Task</h3>
-                    <button className="button-yellow" onClick={handleAddTaskClick}>Add Task</button>
+                    {task ?<button className="button-yellow" onClick={handleAddTaskClick}>Add Task</button> : null}
+                    
                 </div>
                 <div className="search-bar">
                     <input

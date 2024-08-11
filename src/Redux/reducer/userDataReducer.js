@@ -38,14 +38,15 @@ export const userDataReducer = (state = { user: {} }, action) => {
                 loading1: true,
                 isAuthenticated: false
             }
-        case LOGIN_SUCCESS:
+        case LOGIN_SUCCESS: 
         case REGISTER_USER_SUCCESS:
         case LOAD_USER_SUCCESS:
-            // console.log(action.payload);
+            console.log(action.payload);
             return {
                 loading1: false,
                 isAuthenticated: true,
-                user: action.payload
+                user: action.payload.user,
+                roleTask: action.payload.roleTask,
             }
         case LOGOUT_SUCCESS:
             // console.log('logout success');

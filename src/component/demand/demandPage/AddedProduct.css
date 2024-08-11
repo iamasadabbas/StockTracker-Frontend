@@ -19,3 +19,16 @@
 .addedProduct-container{
   margin-top: 20px;
 }
+.print-only {
+  display: none;
+}
+
+@media print {
+  .print-only {
+      display: block;
+  }
+
+  .main-page-container, .pageName_And_Button, .table-container, .button-genrateInvoice, .MuiTablePagination-root {
+      display: none;
+  }
+}

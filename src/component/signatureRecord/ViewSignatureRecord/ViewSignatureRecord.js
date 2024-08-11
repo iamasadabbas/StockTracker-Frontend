@@ -125,12 +125,21 @@ export const ViewSignatureRecord = () => {
     [currentRecords, indexOfFirstRecord]
   );
 
+  const { roleTask } = useSelector(
+    (state) => state.userData
+  );
+  var task = false;
+  task = roleTask.find((e) => e?.task_id?.name === "Add Signature Record" && e.status === true);
+
+
   return (
     <Fragment>
       <div className="main-page-container">
         <div className="pageName_And_Button">
           <h2 className="add-visa-type-title">Signature Record</h2>
-          <button className="button-yellow" onClick={handleAddSignatureClick}>Add Signature</button>
+
+          {task ? <button className="button-yellow" onClick={handleAddSignatureClick}>Add Signature</button>: null}
+          
         </div>
         <div className="search-bar">
           <input

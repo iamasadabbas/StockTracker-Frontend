@@ -62,6 +62,15 @@ const AddProduct = () => {
         }
     }, [error, dispatch, alert, message]);
 
+
+    const { roleTask } = useSelector(
+        (state) => state.userData
+      );
+      var task = false;
+      task = roleTask.find((e) => e?.task_id?.name === "View Product" && e.status === true);
+      
+
+
     return (
         loading ? (
             <Loader />
@@ -69,7 +78,8 @@ const AddProduct = () => {
             <div className="main-page-container">
                 <div className='pageName_And_Button'>
                     <h3>Add Product</h3>
-                    <button className='button-yellow' onClick={handleViewProductClick}> View Product</button>
+                    {task ? <button className='button-yellow' onClick={handleViewProductClick}>View Product</button>: null}
+                    
                 </div>
                 <form className="input-bar" onSubmit={handleAddProduct} >
                     <div className='input-container'>

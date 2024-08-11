@@ -60,11 +60,20 @@ const Designation = () => {
 
   const data = useMemo(() => filteredDesignations, [filteredDesignations]);
 
+  const { roleTask } = useSelector(
+    (state) => state.userData
+  );
+  var task = false;
+  task = roleTask.find((e) => e?.task_id?.name === "Add User Designation" && e.status === true);
+
   return (
     <div className="main-page-container">
       <div className='pageName_And_Button'>
         <h3>Designation</h3>
+        {task ? 
+        
         <button className="button-yellow" onClick={handleAddDesignationClick}>Add Designation</button>
+        : null}
       </div>
       <div className="search-bar">
         <input 

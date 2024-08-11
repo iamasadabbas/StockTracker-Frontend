@@ -16,7 +16,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <AlertProvider template={AlertTemplate} {...options}>
     <Provider store={store}>
-      <div className="alert-container" style={{ zIndex: 1591 }}> {/* Apply custom class here */}
+      <div className="alert-container" style={{ zIndex: 1591 }}>
         <App />
       </div>
     </Provider>

@@ -1,5 +1,5 @@
 import React from 'react'
-import TemplatePrint from '../components/demand/TemplatePrint'
+import TemplatePrint from './TemplatePrint'
 
 function TemplatePrintPage() {
   return (

@@ -56,11 +56,20 @@ const AddProductType = () => {
         }
     }, [message, error, dispatch]);
 
+
+    const { roleTask } = useSelector(
+        (state) => state.userData
+      );
+      var task = false;
+      task = roleTask.find((e) => e?.task_id?.name === "View Product Type" && e.status === true);
+      
+
     return (
         <div className="main-page-container">
             <div className='pageName_And_Button'>
-                <h2 className="add-visa-type-title">Add Visa Type</h2>
-                <button className="button-yellow" onClick={handleViewTypeClick} disabled={loading}>View Types</button>
+                <h2 className="add-visa-type-title">Add Product Type</h2>
+                {task ? <button className="button-yellow" onClick={handleViewTypeClick} disabled={loading}>View Types</button>: null}
+                
             </div>
             {loading ? (
                 <div className="loader-container">

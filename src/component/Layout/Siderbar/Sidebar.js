@@ -4,22 +4,16 @@ import { RiGitPullRequestFill } from "react-icons/ri";
 import { BiPurchaseTag } from "react-icons/bi";
 import { IoReceiptOutline } from "react-icons/io5";
 import { LuClipboardSignature } from "react-icons/lu";
-import { MdPersonalInjury, MdOutlineTask } from "react-icons/md";
+import { MdOutlineTask } from "react-icons/md";
 import { BsClipboardData, BsFillPersonCheckFill, BsCartCheck } from "react-icons/bs";
 import { TbBrandProducthunt } from "react-icons/tb";
 import { FaUserTag, FaUserPen } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { GoOrganization } from "react-icons/go";
-import { FaUserCircle } from "react-icons/fa";
-import { FaUserShield } from "react-icons/fa";
-
-
-
-
-
+import { FaUserCircle, FaUserShield } from "react-icons/fa";
 import SidebarMenu from "./SidebarMenu";
 import './Sidebar.css';
 
@@ -28,113 +22,100 @@ const routes = [
     path: "/",
     name: "Dashboard",
     icon: <FaHome />,
-    roles: ["Admin", "StoreKeeper","SuperAdmin"]
-    
+    taskName: "View Dashboard",
+    alwaysVisible: true,
   },
   {
     path: "/requests",
     name: "Requests",
     icon: <RiGitPullRequestFill />,
-    roles: ["StoreKeeper"]
+    taskName: "View Product Request",
   },
   {
-    path: "/demand",
     name: "Demand",
-    icon: <BiPurchaseTag />,
-    roles: ["StoreKeeper"]
-  },
-  {
-    path: "/viewDemand",
-    name: "View Demand",
     icon: <IoReceiptOutline />,
-    roles: ["StoreKeeper"]
+    taskName: "View Product Demand",
+    subRoutes: [
+      {
+        path: "/demand",
+        name: "Add Demand",
+        icon: <BiPurchaseTag />,
+        taskName: "Add Product Demand",
+      },
+      {
+        path: "/viewDemand",
+        name: "View Demand",
+        icon: <IoReceiptOutline />,
+        taskName: "View Product Demand",
+      },
+    ]
   },
   {
     name: "Role",
     icon: <FaUserShield />,
-    roles: ["Admin"],
+    taskName: "View User Role",
     subRoutes: [
       {
         path: "/role",
         name: "Role",
         icon: <FaUser />,
-        roles: ["Admin"]
+        taskName: "View User Role",
       },
       {
         path: "/roletaskedit",
         name: "Role Task Edit",
         icon: <FaLock />,
-        roles: ["Admin"]
-      }
+        taskName: "Role Task Edit",
+      },
     ]
   },
   {
     name: "User",
     icon: <FaUserCircle />,
-    roles: ["Admin"],
+    taskName: "View User",
     subRoutes: [
       {
         path: "/registrationApproval",
         name: "User Approval",
         icon: <FaUserTag />,
-        roles: ["Admin"]
+        taskName: "User Approval",
       },
       {
         path: "/userStatus",
         name: "User Status",
         icon: <BsFillPersonCheckFill />,
-        roles: ["Admin"]
+        taskName: "User Status",
       },
       {
         path: "/viewuser",
         name: "View User",
         icon: <FaUserPen />,
-        roles: ["Admin"]
+        taskName: "View User",
       }
     ]
   },
-  
-  // {
-  //   path: "/addtask",
-  //   name: "Add Task",
-  //   icon: <MdOutlineTask />,
-  //   roles: ["Admin"]
-  // },
-  
-  // {
-  //   path: "/registrationApproval",
-  //   name: "User Approval",
-  //   icon: <FaUserTag />,
-  //   roles: ["Admin"]
-  // },
-  // {
-  //   path: "/userStatus",
-  //   name: "User Status",
-  //   icon: <FaUserPen />,
-  //   roles: ["Admin"]
-  // },
   {
-    name: "product",
+    name: "Product",
     icon: <TbBrandProducthunt />,
-    roles: ["StoreKeeper"],
+    taskName: "View Product",
     subRoutes: [
       {
         path: "/products",
         name: "Products",
         icon: <FaUser />,
-        roles: ["StoreKeeper"]
+        taskName: "View Product",
       },
       {
         path: "/producttype",
         name: "Product Type",
         icon: <FaLock />,
-        roles: ["StoreKeeper"]
+        taskName: "View Product Type",
       },
       {
         path: "/availableproduct",
         name: "Available Product",
         icon: <BsClipboardData />,
-        roles: ["StoreKeeper"]
+        taskName: "View Product",
       }
     ]
   },
@@ -142,51 +123,32 @@ const routes = [
     path: "/task",
     name: "Task",
     icon: <MdOutlineTask />,
-    roles: ["Admin"]
+    taskName: "View Role Task",
   },
   {
-    name: "Signature Record",
     path: "/viewSignatureRecord",
+    name: "Signature Record",
     icon: <LuClipboardSignature />,
-    roles: ["StoreKeeper"],
-    // subRoutes: [
-    //   {
-    //     path: "/addSignatureRecord",
-    //     name: "Add Record",
-    //     icon: <MdPersonalInjury />,
-    //     roles: ["StoreKeeper"]
-    //   },
-    //   {
-    //     path: "/viewSignatureRecord",
-    //     name: "View Record",
-    //     icon: <BsClipboardData />,
-    //     roles: ["StoreKeeper"]
-    //   }
-    // ]
+    taskName: "View Signature Record",
   },
-  // {
-  //   path: "/viewuser",
-  //   name: "View User",
-  //   icon: <FaLock />,
-  //   roles: ["Admin"]
-  // },
   {
     path: "/company",
     name: "Company",
     icon: <GoOrganization />,
-    roles: ["StoreKeeper"]
+    taskName: "View Product Company",
   },
   {
     path: "/designation",
     name: "Designation",
     icon: <BsCartCheck />,
-    roles: ["Admin"]
+    taskName: "View User Designation",
   }
 ];
 
-const SideBar = ({ children, role }) => {
+const SideBar = ({ children }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { roleTask } = useSelector((state) => state.userData);
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
 
@@ -201,7 +163,6 @@ const SideBar = ({ children, role }) => {
     show: {
       width: "140px",
       padding: "5px 15px",
-      
       transition: {
         duration: 0.2,
       },
@@ -212,7 +173,7 @@ const SideBar = ({ children, role }) => {
     hidden: {
       width: 0,
       opacity: 0,
-      marginTop:'5px',
+      marginTop: '5px',
       transition: {
         duration: 0.5,
       },
@@ -226,7 +187,24 @@ const SideBar = ({ children, role }) => {
     },
   };
 
-  const filteredRoutes = role === "SuperAdmin" ? routes : routes.filter(route => route.roles.includes(role));
+  const filteredRoutes = routes.filter(route => {
+    const alwaysVisible = route?.alwaysVisible ?? false;
+
+    // Check if the route itself or any of its subRoutes should be visible
+    const hasVisibleSubRoute = route.subRoutes?.some(subRoute => 
+      roleTask.some(task => task?.task_id?.name === subRoute.taskName && task.status === true)
+    );
+
+    const isVisible = alwaysVisible || hasVisibleSubRoute || roleTask.some(task => task?.task_id?.name === route.taskName && task.status === true);
+
+    if (isVisible && route.subRoutes) {
+      route.subRoutes = route.subRoutes.filter(subRoute =>
+        roleTask.some(task => task?.task_id?.name === subRoute.taskName && task.status === true)
+      );
+    }
+
+    return isVisible;
+  });
 
   return (
     <div className="main-container">
@@ -263,7 +241,7 @@ const SideBar = ({ children, role }) => {
 
         <section className="routes">
           {filteredRoutes.map((route, index) => {
-            if (route.subRoutes) {
+            if (route.subRoutes?.length) {
               return (
                 <SidebarMenu
                   key={index}
@@ -300,7 +278,7 @@ const SideBar = ({ children, role }) => {
             );
           })}
         </section>
-        
+
       </motion.div>
 
       <main style={{ height: "100vh", overflowY: "auto" }}>{children}</main>

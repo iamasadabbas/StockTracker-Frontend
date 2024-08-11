@@ -8,8 +8,8 @@ import { useAlert } from 'react-alert';
 import TablePagination from '@mui/material/TablePagination';
 import { CLEAR_DETAILS, CLEAR_DEMAND_DATA, UPDATE_DATA } from '../../../Redux/constants/demandConstants.js';
 import ReactTable from '../../ReactTable'; // Ensure the path is correct
-import { Height } from '@material-ui/icons';
 import Tippy from '@tippyjs/react';
+import './../AllProduct.css'; // Make sure you have this or update the path
 
 function AddedProduct() {
     const dispatch = useDispatch();
@@ -97,9 +97,9 @@ function AddedProduct() {
             Header: 'Action',
             Cell: ({ row }) => (
                 <Tippy content='Delete'>
-                <button className="action-btn" onClick={() => handleDeleteProduct(row.original._id)}>
-                    <MdOutlineDelete />
-                </button>
+                    <button className="action-btn" onClick={() => handleDeleteProduct(row.original._id)}>
+                        <MdOutlineDelete />
+                    </button>
                 </Tippy>
             ),
         },
@@ -107,8 +107,8 @@ function AddedProduct() {
 
     return (
         <div className='main-page-container' style={{ paddingTop: '0px' }}>
-            <div ref={componentPDF} className='print-div' style={{ display: 'none' }}>
-                <TemplatePrint />
+            <div ref={componentPDF} className='print-div' style={{display:'none'}}>
+                <TemplatePrint data={data} detail={detail} />
             </div>
             {data && data.length > 0 ? (
                 <>
@@ -116,7 +116,7 @@ function AddedProduct() {
                         <h3>Added Products</h3>
                     </div>
                     <div className='table-container' style={{height:'250px'}}>
-                        <ReactTable data={currentProducts}  columns={columns} />
+                        <ReactTable data={currentProducts} columns={columns} />
                     </div>
                     <button className='button-genrateInvoice' onClick={() => { handlePrint(); handleDemandSave(); }}>Generate Invoice</button>
                     <TablePagination
@@ -128,8 +128,7 @@ function AddedProduct() {
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
                 </>
-            ) : (
-                null
+            ) : (<></>
             )}
         </div>
     );

@@ -34,8 +34,7 @@ import {
       dispatch({ type: LOGIN_REQUEST, })
       const config = { headers: { "Content-Type": "application/json" } }
       const  data  = await axiosInstance.post(`/user/loginUser`, { email, password }, config)
-      console.log(data.data);
-      dispatch({ type: LOGIN_SUCCESS, payload: data.data.user })
+      dispatch({ type: LOGIN_SUCCESS, payload: data.data })
     } catch (error) {
       console.log(error);
       dispatch({ type: LOGIN_FAIL, payload: error.response.data.error })
@@ -64,8 +63,7 @@ import {
     try {
       dispatch({ type: LOAD_USER_REQUEST, })
       const  data  = await axiosInstance.get(`/user/me`,config)
-      // console.log(data.data)
-      dispatch({ type: LOAD_USER_SUCCESS, payload: data.data.user })
+      dispatch({ type: LOAD_USER_SUCCESS, payload: data.data })
     } catch (error) {
       console.error(error);
       dispatch({ type: LOAD_USER_FAIL, payload: error.message })

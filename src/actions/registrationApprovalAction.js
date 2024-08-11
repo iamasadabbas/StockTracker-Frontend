@@ -34,7 +34,7 @@ export const updateRole = (userId,roleId) => async (dispatch) => {
   
       axiosInstance.put(`/user/updateRole`,{userId,roleId})
         .then((response) => {
-            // console.log(response);
+            console.log(response.data.user);
           dispatch({ type: UPDATE_ROLE_SUCCESS, payload: response.data });
         })
         .catch((error) => {
